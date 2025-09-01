@@ -446,6 +446,64 @@ nav a:hover {
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
+/* Museum Image Section */
+.museum-image-section {
+    margin-top: 80px;
+    padding: 0;
+    background: var(--secondary-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.museum-main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 0;
+    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.museum-main-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 40px rgba(76, 175, 80, 0.15);
+}
+
+/* Add overlay effect for better text readability if needed */
+.museum-image-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(76, 175, 80, 0.1) 0%, 
+        transparent 50%, 
+        rgba(229, 115, 115, 0.1) 100%
+    );
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .museum-main-image {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .museum-main-image {
+        height: 200px;
+    }
+    
+    .museum-image-section {
+        margin-top: 70px;
+    }
+}
+
 /* Hero Section - Liberation War Heritage Showcase */
 .hero {
     margin-top: 80px;
@@ -650,13 +708,19 @@ nav a:hover {
 }
 
 .search-box {
-    background: var(--card-bg);
+    background: linear-gradient(135deg, var(--light-green), var(--light-red));
     backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
+    border: 2px solid rgba(76, 175, 80, 0.2);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 16px 48px var(--shadow-color);
+    box-shadow: 0 16px 48px rgba(76, 175, 80, 0.1);
     position: relative;
+    transition: var(--transition-smooth);
+}
+
+.search-box:hover {
+    border-color: rgba(229, 115, 115, 0.3);
+    box-shadow: 0 20px 60px rgba(76, 175, 80, 0.15);
 }
 
 .search-box::before {
@@ -666,7 +730,7 @@ nav a:hover {
     left: 0;
     right: 0;
     height: 4px;
-    background: var(--accent-gradient);
+    background: linear-gradient(135deg, var(--medium-green), var(--medium-red));
     border-radius: 20px 20px 0 0;
 }
 
@@ -683,21 +747,32 @@ nav a:hover {
     margin-bottom: 20px;
 }
 
+.search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--medium-green);
+    z-index: 2;
+    font-size: 16px;
+}
+
 .search-container input {
     width: 100%;
-    padding: 16px 20px 16px 50px;
-    border: 2px solid var(--border-color);
+    padding: 16px 60px 16px 50px;
+    border: 2px solid rgba(76, 175, 80, 0.2);
     border-radius: 50px;
     font-size: 16px;
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.9);
     color: var(--text-primary);
     transition: var(--transition-smooth);
 }
 
 .search-container input:focus {
     outline: none;
-    border-color: var(--liberation-green);
-    box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.1);
+    border-color: var(--medium-green);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
 }
 
 .search-btn {
@@ -705,7 +780,7 @@ nav a:hover {
     right: 6px;
     top: 50%;
     transform: translateY(-50%);
-    background: var(--accent-gradient);
+    background: linear-gradient(135deg, var(--medium-green), var(--medium-red));
     border: none;
     color: white;
     width: 40px;
@@ -717,6 +792,7 @@ nav a:hover {
 
 .search-btn:hover {
     transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
 /* Search Suggestions */
@@ -725,10 +801,11 @@ nav a:hover {
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(76, 175, 80, 0.2);
     border-radius: 15px;
-    box-shadow: 0 8px 32px var(--shadow-color);
+    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.1);
     z-index: 10;
     max-height: 250px;
     overflow-y: auto;
@@ -743,10 +820,19 @@ nav a:hover {
 .suggestion-item {
     padding: 12px 20px;
     cursor: pointer;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(76, 175, 80, 0.1);
     color: var(--text-primary);
     transition: var(--transition-smooth);
     font-size: 14px;
+}
+
+.suggestion-item:hover {
+    background: linear-gradient(135deg, var(--light-green), var(--light-red));
+    color: var(--charcoal);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
 }
 
 .suggestion-item:hover {
@@ -786,9 +872,9 @@ nav a:hover {
 /* Voice Search Button */
 .voice-search-btn {
     width: 100%;
-    background: rgba(244, 42, 65, 0.1);
-    color: var(--freedom-red);
-    border: 2px solid rgba(244, 42, 65, 0.3);
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(229, 115, 115, 0.1));
+    color: var(--medium-green);
+    border: 2px solid rgba(76, 175, 80, 0.3);
     padding: 12px;
     border-radius: 12px;
     cursor: pointer;
@@ -797,12 +883,21 @@ nav a:hover {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    font-weight: 500;
 }
 
 .voice-search-btn:hover {
-    background: var(--freedom-red);
+    background: linear-gradient(135deg, var(--medium-green), var(--medium-red));
     color: white;
+    border-color: var(--medium-green);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+}
+
+.voice-search-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* Quick Access Section with Heritage Pattern */
