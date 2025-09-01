@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Artifact Management — Liberation War Museum (Admin)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
+  <style>
+
+    
+    /* ---------- THEME VARIABLES (shared with public frontend) ---------- */
+    :root{
+      --bg:#0f1115; --surface:#151922; --paper:#13161d; --text:#e9edf4; --muted:#b9c2cf;
+      --accent-red:#be1e2d; --accent-green:#006a4e; --accent-gold:#d4b070; --link:#7cc0ff;
+      --card-radius:14px; --maxw:1200px; --shadow: rgba(0,0,0,0.45);
+    }
+    /* explicit theme overrides */
+    html[data-theme="light"]{
+      --bg:#f6f5f2;--surface:#ffffff;--paper:#faf7f2;--text:#1f242b;--muted:#505a66;--link:#0b67d1;--shadow: rgba(0,0,0,0.08);
+    }
+    html[data-theme="dark"]{
+      /* mirrors :root defaults to guarantee override order */
+      --bg:#0f1115; --surface:#151922; --paper:#13161d; --text:#e9edf4; --muted:#b9c2cf;
+      --accent-red:#be1e2d; --accent-green:#006a4e; --accent-gold:#d4b070; --link:#7cc0ff;
+      --card-radius:14px; --maxw:1200px; --shadow: rgba(0,0,0,0.45);
+    }
+    *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh;color:var(--text);background:linear-gradient(180deg,var(--bg),var(--bg));transition: background-color .2s ease,color .2s ease;}
+    .container{max-width:var(--maxw);margin:20px auto;padding:18px}
+
+    /* ---------- HEADER ---------- */
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .brand{display:flex;gap:12px;align-items:center;font-family:Merriweather,serif}
+    .flag{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 55% 50%,var(--accent-red) 0 30%,transparent 31%),var(--accent-green);box-shadow:0 6px 14px var(--shadow)}
+    h1{font-size:18px;margin:0}
+    .sub{color:var(--muted);font-size:13px}
+
+    /* ---------- LAYOUT ---------- */
+    .grid{display:grid;grid-template-columns:300px 1fr;gap:18px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+
+    /* ---------- SIDEBAR ---------- */
+    .sidebar{background:var(--surface);border-radius:12px;padding:14px;border:1px solid rgba(212,176,112,0.08);box-shadow:0 8px 20px var(--shadow)}
+    .stat{display:flex;justify-content:space-between;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(212,176,112,0.04),transparent);margin-bottom:10px}
+    .filters{margin-top:10px}
+    .filter-row{display:flex;gap:8px;margin-bottom:8px}
+    .select,input[type=search]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(212,176,112,0.08);background:var(--paper);color:var(--text)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:1px solid rgba(212,176,112,0.12);background:linear-gradient(180deg,rgba(212,176,112,0.06),transparent);cursor:pointer}
+
+    /* ---------- MAIN ---------- */
+    .main{display:flex;flex-direction:column;gap:18px}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .toolbar .left{display:flex;gap:10px;align-items:center}
+    .table-wrap{background:var(--surface);padding:12px;border-radius:12px;border:1px solid rgba(212,176,112,0.08);box-shadow:0 12px 28px var(--shadow)}
+
+    /* ---------- LIST (grid/cards) ---------- */
+    .artifact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media (max-width:1100px){.artifact-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.artifact-grid{grid-template-columns:1fr}}
+    .artifact-card{background:linear-gradient(180deg,var(--paper),var(--surface));border-radius:12px;padding:12px;border:1px solid rgba(212,176,112,0.06);display:flex;gap:12px;align-items:flex-start}
+    .thumb{width:96px;height:72px;border-radius:8px;background:var(--border);flex-shrink:0;display:grid;place-items:center;color:var(--muted);font-size:12px;overflow:hidden;position:relative}
+    .thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .meta{flex:1}
+    .meta h3{margin:0 0 6px;font-family:Merriweather,serif;font-size:16px}
+    .meta p{margin:0;color:var(--muted);font-size:13px}
+    .card-actions{display:flex;gap:8px;margin-top:10px}
+
+    /* ---------- MODALS / FORMS ---------- */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:2000}
+    .modal{width:100%;max-width:920px;background:var(--surface);border-radius:12px;padding:18px;border:1px solid rgba(212,176,112,0.08);box-shadow:0 20px 60px var(--shadow);}
+    .form-grid{display:grid;grid-template-columns:1fr 320px;gap:12px}
+    @media (max-width:980px){.form-grid{grid-template-columns:1fr}}
+    label{display:block;font-size:13px;margin-bottom:6px}
+    input[type=text],input[type=date],textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(212,176,112,0.06);background:var(--paper);color:var(--text)}
+    textarea{min-height:120px;resize:vertical}
+    .wysiwyg{min-height:160px;padding:10px;border-radius:8px;border:1px solid rgba(212,176,112,0.06);background:var(--paper);overflow:auto}
+    .media-preview{display:flex;flex-direction:column;gap:8px}
+    .media-preview img{max-width:100%;border-radius:8px}
+
+    /* ---------- LOGS & VERSIONS ---------- */
+    .log{background:linear-gradient(180deg,rgba(212,176,112,0.03),transparent);padding:10px;border-radius:8px;max-height:240px;overflow:auto;border:1px dashed rgba(212,176,112,0.06)}
+    .log-item{padding:8px;border-bottom:1px solid rgba(212,176,112,0.03);font-size:13px}
+
+    /* ---------- PAGINATION ---------- */
+    .pagination{display:flex;gap:8px;align-items:center}
+    .page-btn{padding:8px 10px;border-radius:8px;border:1px solid rgba(212,176,112,0.06);background:transparent;color:var(--text);cursor:pointer}
+  .btn[disabled], .page-btn[disabled]{opacity:.5;cursor:not-allowed}
+
+    /* ---------- ACCESSIBILITY ---------- */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    /* ---------- SMALL HELPERS ---------- */
+    .muted{color:var(--muted);font-size:13px}
+    .row{display:flex;gap:8px;align-items:center}
+    .badge{padding:6px 8px;border-radius:999px;background:rgba(0,0,0,0.12);font-size:12px}
+
+
+    /* ---------- TIMELINE & MAP ---------- */
+.view-toggle{display:flex;gap:8px;margin-bottom:10px}
+.timeline{display:flex;flex-direction:column;gap:12px}
+.timeline-item{padding:10px;border-left:3px solid var(--accent-gold);margin-left:8px;background:linear-gradient(180deg,var(--paper),var(--surface));border-radius:8px}
+.timeline-item h4{margin:0;font-size:15px;font-family:Merriweather,serif}
+
+#mapView{height:420px;border-radius:12px;border:1px solid rgba(212,176,112,0.08);display:none}
+
+.view-toggle {
+  margin-left: 10px;
+}
+
+.view-toggle .btn {
+  margin-right: 5px;
+}
+
+/* search suggestions */
+.suggest{position:relative}
+.suggest-list{position:absolute;z-index:1000;left:0;right:0;top:100%;background:var(--surface);border:1px solid rgba(212,176,112,0.08);border-radius:8px;box-shadow:0 12px 28px var(--shadow);padding:4px;max-height:220px;overflow:auto;display:none}
+.suggest-item{padding:8px;border-radius:6px;cursor:pointer}
+.suggest-item:hover{background:rgba(212,176,112,0.06)}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);z-index:3000}
+.lightbox img{max-width:90%;max-height:90%;border-radius:8px}
+
+/* dropzone */
+.media-preview.dragover{outline:2px dashed var(--accent-gold); outline-offset:6px}
+
+  </style>
+  <!-- Optional: Fuse.js for fuzzy search (will gracefully fallback if offline) -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="flag" aria-hidden="true"></div>
+        <div>
+          <h1>Artifact Management</h1>
+          <div class="sub">Curator interface — add, edit, review and version artifacts</div>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <div class="muted">Role:</div>
+        <select id="roleSelect" aria-label="Select role">
+          <option value="admin">Admin</option>
+          <option value="curator">Curator</option>
+          <option value="researcher">Researcher</option>
+        </select>
+        <button type="button" class="btn" id="themeToggle" aria-pressed="false" title="Toggle light/dark">Theme</button>
+      </div>
+    </header>
+
+    <main class="grid" id="app">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" aria-label="Controls">
+        <div class="stat" aria-hidden>
+          <div>
+            <div style="font-size:13px;color:var(--muted)">Total Artifacts</div>
+            <div style="font-weight:700;font-size:18px" id="statTotal">0</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;color:var(--muted)">Pending</div>
+            <div style="font-weight:700;font-size:18px;color:var(--accent-gold)" id="statPending">0</div>
+          </div>
+        </div>
+
+        <div class="filters" aria-label="Search and filters">
+          <div class="filter-row suggest">
+            <input type="search" id="search" placeholder="Search title, place, year..." aria-label="Search artifacts">
+            <div id="searchSuggest" class="suggest-list" role="listbox" aria-label="Suggestions"></div>
+          </div>
+          <div class="filter-row">
+            <select id="filterCategory" class="select" aria-label="Filter by category">
+              <option value="">All categories</option>
+              <option>Photograph</option>
+              <option>Document</option>
+              <option>Artifact</option>
+              <option>Audio</option>
+              <option>Map</option>
+              <option>Poster</option>
+            </select>
+          </div>
+          <div class="filter-row">
+            <select id="filterDistrict" class="select" aria-label="Filter by district">
+              <option value="">All districts</option>
+              <option>Dhaka</option>
+              <option>Jessore</option>
+              <option>Mymensingh</option>
+              <option>Chittagong</option>
+              <option>Sylhet</option>
+              <option>Rajshahi</option>
+              <option>Barisal</option>
+              <option>Rangpur</option>
+              <option>Khulna</option>
+              <option>Comilla</option>
+              <option>Brahmanbaria</option>
+              <option>Tangail</option>
+            </select>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;">
+            <button type="button" class="btn" id="clearFilters">Clear</button>
+            <button type="button" class="btn" id="newArtifact">+ New Artifact</button>
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(212,176,112,0.06);margin:12px 0">
+        <div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Quick Actions</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button type="button" class="btn" id="importBtn">Import CSV</button>
+            <button type="button" class="btn" id="exportBtn">Export (CSV/JSON)</button>
+            <button type="button" class="btn" id="auditBtn">View Audit Log</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <section class="main">
+        <div class="toolbar">
+          <div class="left">
+            <div class="muted">Showing</div>
+            <select id="perPage" aria-label="Per page">
+              <option>9</option>
+              <option>18</option>
+              <option>36</option>
+            </select>
+            <div class="muted">items</div>
+          </div>
+          <div class="row">
+            <div class="muted">Language:</div>
+            <button type="button" class="btn" id="langToggle">EN / বাংলা</button>
+          </div>
+
+          <div class="view-toggle">
+            <button type="button" class="btn" id="gridViewBtn">Grid</button>
+            <button type="button" class="btn" id="timelineViewBtn">Timeline</button>
+            <button type="button" class="btn" id="mapViewBtn">Map</button>
+          </div>
+        </div>
+
+        <div class="table-wrap" role="region" aria-label="Artifact list">
+          <div id="artifactGrid" class="artifact-grid"></div>
+<div id="timelineView" class="timeline-view" style="display:none;"></div>
+<div id="mapView" class="map-view" style="display:none; height:500px;"></div>
+
+
+          <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+            <div class="muted" id="showingInfo">0–0 of 0</div>
+            <div class="pagination">
+              <button type="button" class="page-btn" id="prevPage">Prev</button>
+              <button type="button" class="page-btn" id="nextPage">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <section>
+          <h2 style="margin:0 0 10px;font-family:Merriweather,serif">Recent Activity</h2>
+          <div class="log" id="activityLog" aria-live="polite"></div>
+        </section>
+      </section>
+    </main>
+
+    <!-- MODAL: Add / Edit Artifact -->
+    <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal" role="document">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <h3 id="modalTitle">New Artifact</h3>
+          <div class="row"><button type="button" class="btn" id="saveBtn">Save</button><button type="button" class="btn" id="closeModal">Close</button></div>
+        </div>
+        <form id="artifactForm">
+          <div class="form-grid">
+            <div>
+              <label for="titleEn">Title (EN)</label>
+              <input id="titleEn" name="titleEn" type="text" required>
+
+              <label for="titleBn" style="margin-top:8px">Title (BN)</label>
+              <input id="titleBn" name="titleBn" type="text">
+
+              <label for="category" style="margin-top:8px">Category</label>
+              <select id="category" name="category">
+                <option>Photograph</option>
+                <option>Document</option>
+                <option>Artifact</option>
+                <option>Audio</option>
+                <option>Map</option>
+                <option>Poster</option>
+              </select>
+
+              <label for="year" style="margin-top:8px">Year / Date</label>
+              <input id="year" name="year" type="text" placeholder="1971 or 1970-03-25">
+
+              <label for="district" style="margin-top:8px">Place / District</label>
+              <input id="district" name="district" type="text">
+
+              <label for="origin" style="margin-top:8px">Origin / Donor</label>
+              <input id="origin" name="origin" type="text">
+
+              <label for="refs" style="margin-top:8px">References / Accession ID</label>
+              <input id="refs" name="refs" type="text" placeholder="e.g., LWM-1971-0001">
+
+              <label style="margin-top:8px">Historical Context (WYSIWYG)</label>
+              <div id="context" class="wysiwyg" contenteditable="true" aria-label="Historical context editor"></div>
+
+              <label style="margin-top:8px">Research Notes / Admin Only</label>
+              <textarea id="notes"></textarea>
+            </div>
+
+            <aside>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="muted">Media</div>
+                <div class="muted" style="font-size:12px">Upload images, audio & video</div>
+              </div>
+              <div style="margin-top:8px" class="media-preview" id="mediaPreview">
+                <div class="thumb" id="thumbPlaceholder">No media</div>
+              </div>
+              <label style="margin-top:8px">Upload (image/audio/video)</label>
+              <input id="mediaInput" type="file" accept="image/*,audio/*,video/*">
+
+              <label style="margin-top:8px">Assign to Timeline</label>
+              <select id="timelineSelect">
+                <option>Pre-1971 Movements</option>
+                <option>1971 - War</option>
+                <option>Post-1971 Reconstruction</option>
+              </select>
+
+              <label style="margin-top:8px">Status</label>
+              <select id="statusSelect">
+                <option value="published">Published</option>
+                <option value="pending">Pending Review</option>
+                <option value="archived">Archived</option>
+              </select>
+
+              <div style="margin-top:12px">
+                <div class="muted">Version Log</div>
+                <div class="log" id="versionLog"></div>
+              </div>
+
+              <div style="margin-top:12px">
+  <div class="muted">Similar Artifacts</div>
+  <div id="similarList" class="log"></div>
+</div>
+
+            </aside>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- lightbox root -->
+  <div id="lightbox" class="lightbox" aria-hidden="true"><img alt="preview"></div>
+
+  <script>
+    // Minimal client-side artifact manager demo (no backend). Replace storage with real API.
+    const state = {
+      artifacts: [],
+      page: 1,
+      perPage: 9,
+      lang: 'en',
+      role: 'admin',
+      filtered: []
+    };
+
+    // Demo seed data
+    function seed(){
+      // TEMPORARY: Force refresh to load new image data - remove this line later
+      if(state.artifacts.length && !state.artifacts[0].media) { state.artifacts = []; }
+      
+      if(state.artifacts.length) return; // Don't overwrite existing data
+      const districts = ['Dhaka','Jessore','Mymensingh','Chittagong','Khulna','Barishal','Sylhet','Rangpur','Rajshahi','Comilla','Faridpur','Bogra'];
+      const categories = ['Photograph','Document','Artifact','Audio','Map','Poster'];
+      const timelines = ['Pre-1971 Movements','1971 - War','Post-1971 Reconstruction'];
+      
+      // Sample artifacts with realistic data and local images
+      const artifacts = [
+        { category: 'Photograph', title: 'Mukti Bahini Training Camp', titleBn: 'মুক্তিবাহিনীর প্রশিক্ষণ শিবির', district: 'Dhaka', year: '1971', media: 'images/muktibahini.jpg' },
+        { category: 'Document', title: 'Proclamation of Independence', titleBn: 'স্বাধীনতার ঘোষণাপত্র', district: 'Chittagong', year: '1971', media: 'images/Procl.jpg' },
+        { category: 'Artifact', title: 'Freedom Fighter\'s Rifle', titleBn: 'মুক্তিযোদ্ধার রাইফেল', district: 'Jessore', year: '1971', media: 'images/rifel.jpg' },
+        { category: 'Photograph', title: 'Liberation War Victory Parade', titleBn: 'মুক্তিযুদ্ধ বিজয় কুচকাওয়াজ', district: 'Dhaka', year: '1971', media: 'images/parade.jpg' },
+        { category: 'Map', title: 'Battle Strategy Map - Jessore', titleBn: 'যুদ্ধের কৌশল মানচিত্র - যশোর', district: 'Jessore', year: '1971', media: 'images/jossore2.jpg' },
+        { category: 'Document', title: 'Martyred Intellectuals List', titleBn: 'নিহত বুদ্ধিজীবীদের তালিকা', district: 'Dhaka', year: '1971', media: 'images/list.jpg' },
+        { category: 'Poster', title: 'Joy Bangla Propaganda Poster', titleBn: 'জয় বাংলা প্রচারণা পোস্টার', district: 'Chittagong', year: '1971', media: 'images/poster_1.jpg' },
+        { category: 'Artifact', title: 'Mukti Bahini Uniform', titleBn: 'মুক্তিবাহিনীর পোশাক', district: 'Sylhet', year: '1971', media: 'images/artifact_2.jpg' },
+        { category: 'Audio', title: 'Radio Broadcast - Swadhin Bangla Betar', titleBn: 'স্বাধীন বাংলা বেতার সম্প্রচার', district: 'Chittagong', year: '1971', media: '' },
+        { category: 'Photograph', title: 'Refugee Camp in India', titleBn: 'ভারতে শরণার্থী শিবির', district: 'Comilla', year: '1971', media: 'images/photograph_1.jpg' },
+        { category: 'Document', title: 'Geneva Convention Appeal', titleBn: 'জেনেভা কনভেনশন আবেদন', district: 'Dhaka', year: '1971', media: 'images/document_1.jpg' },
+        { category: 'Artifact', title: 'Swadhin Bangla Flag', titleBn: 'স্বাধীন বাংলার পতাকা', district: 'Mymensingh', year: '1971', media: 'Bangladeshi Flag.jpg' },
+        { category: 'Map', title: 'Sector Division Map', titleBn: 'সেক্টর বিভাগের মানচিত্র', district: 'Dhaka', year: '1971', media: 'images/map_1.jpg' },
+        { category: 'Photograph', title: 'Mass Grave Discovery', titleBn: 'গণকবর আবিষ্কার', district: 'Rajshahi', year: '1972', media: 'images/photograph_2.jpg' },
+        { category: 'Poster', title: 'Bir Sreshtho Memorial Poster', titleBn: 'বীরশ্রেষ্ঠ স্মৃতি পোস্টার', district: 'Rangpur', year: '1972', media: 'images/poster_1.jpg' },
+        { category: 'Document', title: 'War Crimes Documentation', titleBn: 'যুদ্ধাপরাধের দলিলপত্র', district: 'Khulna', year: '1971', media: 'images/document_2.jpg' },
+        { category: 'Artifact', title: 'Liberation Medal', titleBn: 'মুক্তিযুদ্ধের পদক', district: 'Barishal', year: '1973', media: 'images/artifact_1.jpg' },
+        { category: 'Audio', title: 'Bangabandhu\'s 7th March Speech', titleBn: 'বঙ্গবন্ধুর ৭ই মার্চের ভাষণ', district: 'Dhaka', year: '1971', media: '' },
+        { category: 'Photograph', title: 'Pakistani Surrender Ceremony', titleBn: 'পাকিস্তানি আত্মসমর্পণ অনুষ্ঠান', district: 'Dhaka', year: '1971', media: 'images/photograph_1.jpg' },
+        { category: 'Map', title: 'Liberation Route Map', titleBn: 'মুক্তিযুদ্ধের রুট মানচিত্র', district: 'Faridpur', year: '1971', media: 'images/map_1.jpg' }
+      ];
+      
+      const sample = [];
+      for(let i=0; i<20; i++){
+        const artifact = artifacts[i];
+        sample.push({
+          id: 'A'+String(i+1).padStart(4,'0'),
+          titleEn: artifact.title,
+          titleBn: artifact.titleBn,
+          category: artifact.category,
+          year: artifact.year,
+          district: artifact.district,
+          origin: `Museum Collection ${i+1}`,
+          refs: 'LWM-'+String(i+1).padStart(3,'0'),
+          context: `Historical context for ${artifact.title} from ${artifact.district} during the Liberation War period.`,
+          notes: i%3===0 ? 'Requires additional research' : '',
+          media: artifact.media,
+          timeline: timelines[i%3],
+          status: i%4===0?'published':'pending',
+          versions: [{by:'system',when:new Date().toLocaleString(),note:'created'}]
+        });
+      }
+      state.artifacts = sample;
+    }
+
+    // ---------- DOM helpers ----------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+    // ---------- Renderers ----------
+    function renderStats(){
+      $('#statTotal').textContent = state.artifacts.length;
+      $('#statPending').textContent = state.artifacts.filter(a=>a.status==='pending').length;
+    }
+
+    function paginated(){
+      const start = (state.page-1)*state.perPage;
+      return state.filtered.slice(start,start+state.perPage);
+    }
+
+  function renderGrid(){
+      const grid = $('#artifactGrid'); grid.innerHTML='';
+      state.filtered = applyFilters();
+      const pageItems = paginated();
+      pageItems.forEach(a=>{
+        const card = document.createElement('article'); card.className='artifact-card';
+    const thumb = document.createElement('div'); thumb.className='thumb';
+    if(a.media){ 
+      const img=document.createElement('img'); 
+      img.src=a.media; 
+      img.alt=a.titleEn||'media'; 
+      img.loading='lazy';
+      img.onerror = function() {
+        this.style.display = 'none';
+        thumb.textContent = a.category || 'Image error';
+        thumb.style.background = 'var(--border)';
+        thumb.style.color = 'var(--muted)';
+      };
+      img.onload = function() {
+        thumb.style.background = 'transparent';
+      };
+      thumb.appendChild(img); 
+    }
+    else { thumb.textContent = a.category||'No media'; }
+        const meta = document.createElement('div'); meta.className='meta';
+        meta.innerHTML = `<h3>${escapeHtml(a.titleEn)}</h3><p class='muted'>${escapeHtml(a.category)} • ${escapeHtml(a.district)} • ${escapeHtml(a.year)}</p>`;
+        const actions = document.createElement('div'); actions.className='card-actions';
+    const edit = document.createElement('button'); edit.type='button'; edit.className='btn'; edit.textContent='Edit'; edit.addEventListener('click',()=>openModal(a.id));
+    const del = document.createElement('button'); del.type='button'; del.className='btn'; del.textContent='Delete'; del.addEventListener('click',()=>tryDelete(a.id));
+        actions.appendChild(edit); if(state.role==='admin') actions.appendChild(del);
+        meta.appendChild(actions);
+        card.appendChild(thumb); card.appendChild(meta); grid.appendChild(card);
+      });
+
+      const total = state.filtered.length;
+      const start = state.filtered.length? (state.page-1)*state.perPage+1:0;
+      const end = Math.min(state.page*state.perPage, total);
+  $('#showingInfo').textContent = `${start}–${end} of ${total}`;
+  const prev=$('#prevPage'), next=$('#nextPage');
+  const max = Math.max(1, Math.ceil(total/Math.max(1,state.perPage)));
+  if(prev) prev.disabled = state.page<=1;
+  if(next) next.disabled = state.page>=max;
+      renderStats();
+    }
+
+    // ---------- Filters ----------
+    let fuse = null;
+    function buildFuse(){ try{ fuse = new Fuse(state.artifacts,{keys:['titleEn','titleBn','refs','district','category'],threshold:.35}); }catch(e){ fuse=null; } }
+    function applyFilters(){
+      const q = $('#search').value.trim();
+      const cat = $('#filterCategory').value;
+      const dist = $('#filterDistrict').value;
+      let list = state.artifacts.slice();
+      if(q && window.Fuse){ if(!fuse) buildFuse(); try{ list = fuse.search(q).map(r=>r.item); }catch(e){} }
+      return list.filter(a=>{
+        if(cat && a.category!==cat) return false;
+        if(dist && a.district!==dist) return false;
+        return true;
+      });
+    }
+
+    // ---------- Modal / Form ----------
+    function openModal(id){
+      const modal = $('#modal'); modal.style.display='flex'; modal.setAttribute('aria-hidden','false');
+      const form = $('#artifactForm'); form.reset(); $('#mediaPreview').innerHTML=''; $('#versionLog').innerHTML='';
+      if(!id){
+        $('#modalTitle').textContent='New Artifact';
+        $('#saveBtn').textContent='Create';
+        $('#context').innerHTML='';
+        currentEditing = null;
+      } else {
+        $('#modalTitle').textContent='Edit Artifact'; $('#saveBtn').textContent='Save Changes';
+        const a = state.artifacts.find(x=>x.id===id); if(!a) return;
+        currentEditing = a.id;
+        $('#titleEn').value = a.titleEn; $('#titleBn').value=a.titleBn; $('#category').value=a.category; $('#year').value=a.year; $('#district').value=a.district; $('#origin').value=a.origin; $('#refs').value=a.refs; $('#context').innerHTML=a.context; $('#notes').value=a.notes; $('#timelineSelect').value=a.timeline; $('#statusSelect').value=a.status;
+        if(a.media){ const img = document.createElement('img'); img.src=a.media; $('#mediaPreview').appendChild(img);} 
+        a.versions.forEach(v=>{addVersionLine(v)});
+      }
+    }
+    function closeModal(){ const modal = $('#modal'); modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+
+    // ---------- Save / Delete ----------
+    let currentEditing = null;
+    function saveArtifact(){
+      const obj = {
+        id: currentEditing || 'A'+String(Math.floor(Math.random()*99999)).padStart(4,'0'),
+        titleEn: $('#titleEn').value.trim() || 'Untitled',
+        titleBn: $('#titleBn').value.trim() || '',
+        category: $('#category').value,
+        year: $('#year').value,
+        district: $('#district').value,
+        origin: $('#origin').value,
+        refs: $('#refs').value,
+        context: $('#context').innerHTML,
+        notes: $('#notes').value,
+        media: $('#mediaPreview img') ? $('#mediaPreview img').src : null,
+        timeline: $('#timelineSelect').value,
+        status: $('#statusSelect').value,
+        versions: []
+      };
+      const note = currentEditing ? 'edited' : 'created';
+      const version = {by:state.role,when:new Date().toLocaleString(),note};
+      if(currentEditing){
+        const idx = state.artifacts.findIndex(a=>a.id===currentEditing);
+        obj.versions = state.artifacts[idx].versions.concat([version]);
+        state.artifacts[idx] = obj;
+        log(`${state.role} updated ${obj.id}`);
+      } else {
+        obj.versions = [version];
+        state.artifacts.unshift(obj);
+        log(`${state.role} created ${obj.id}`);
+      }
+      closeModal(); renderGrid(); renderActivity();
+    }
+    function tryDelete(id){ if(state.role!=='admin'){alert('Only admin can delete.'); return;} if(!confirm('Delete artifact? This is irreversible in demo.')) return; state.artifacts = state.artifacts.filter(a=>a.id!==id); log(`${state.role} deleted ${id}`); renderGrid(); renderActivity(); }
+
+    // ---------- Media upload preview ----------
+    $('#mediaInput').addEventListener('change', (e)=>{
+      const file = e.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = ev=>{
+        $('#mediaPreview').innerHTML='';
+        if(file.type.startsWith('image/')){
+          const img = document.createElement('img'); img.src = ev.target.result; $('#mediaPreview').appendChild(img);
+        } else if(file.type.startsWith('audio/')){
+          const audio = document.createElement('audio'); audio.controls=true; audio.src=ev.target.result; $('#mediaPreview').appendChild(audio);
+        } else if(file.type.startsWith('video/')){
+          const vid = document.createElement('video'); vid.controls=true; vid.style.maxWidth='100%'; vid.src=ev.target.result; $('#mediaPreview').appendChild(vid);
+        }
+      }; reader.readAsDataURL(file);
+    });
+
+    // ---------- Activity log & versions ----------
+    function log(msg){ const node = document.createElement('div'); node.className='log-item'; node.textContent = `${new Date().toLocaleString()} — ${msg}`; $('#activityLog').prepend(node); }
+    function renderActivity(){ /* already built as live list */ }
+    function addVersionLine(v){ const c = document.createElement('div'); c.className='log-item'; c.textContent = `${v.when} — ${v.by} — ${v.note}`; $('#versionLog').prepend(c); }
+
+    // ---------- Utilities ----------
+    function escapeHtml(s){ return (''+s).replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+// ---------- EXTRA VIEWS ---------- //
+function renderTimeline(){
+  const tl = $('#timelineView'); tl.innerHTML='';
+  state.filtered.sort((a,b)=> (a.year||'').localeCompare(b.year||''));
+  state.filtered.forEach(a=>{
+    const item=document.createElement('div'); item.className='timeline-item';
+    item.innerHTML=`<h4>${escapeHtml(a.titleEn)} (${escapeHtml(a.year)})</h4>
+      <div class='muted'>${escapeHtml(a.category)} • ${escapeHtml(a.district)}</div>`;
+    tl.appendChild(item);
+  });
+}
+
+let map=null, markers=[];
+function renderMap(){
+  if(!map){
+    map=L.map('mapView').setView([23.685,90.3563],6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(map);
+  }
+  markers.forEach(m=>m.remove()); markers=[];
+  
+  // Group artifacts by district to add slight offsets for overlapping markers
+  const districtGroups = {};
+  state.filtered.forEach(a => {
+    if(!districtGroups[a.district]) districtGroups[a.district] = [];
+    districtGroups[a.district].push(a);
+  });
+  
+  Object.entries(districtGroups).forEach(([district, artifacts]) => {
+    const baseCoords = districtCoords[district];
+    if(!baseCoords){
+      console.warn(`No coordinates for district: ${district}`);
+      // Use default coordinates for unknown districts
+      artifacts.forEach(a => {
+        const marker = L.marker([23.685, 90.3563])
+          .addTo(map)
+          .bindPopup(`<b>${escapeHtml(a.titleEn)}</b><br>${escapeHtml(a.year)}<br><small>District: ${escapeHtml(district)} (location unknown)</small>`);
+        markers.push(marker);
+      });
+      return;
+    }
+    
+    // Add markers with slight random offsets to avoid complete overlap
+    artifacts.forEach((a, index) => {
+      const offsetLat = (Math.random() - 0.5) * 0.02; // ±0.01 degree offset
+      const offsetLng = (Math.random() - 0.5) * 0.02;
+      const coords = [baseCoords[0] + offsetLat, baseCoords[1] + offsetLng];
+      
+      const marker = L.marker(coords)
+        .addTo(map)
+        .bindPopup(`<b>${escapeHtml(a.titleEn)}</b><br>
+                   <small>Year: ${escapeHtml(a.year)}</small><br>
+                   <small>Category: ${escapeHtml(a.category)}</small><br>
+                   <small>District: ${escapeHtml(district)}</small>`);
+      markers.push(marker);
+    });
+  });
+  
+  // Fit map to show all markers if any exist
+  if(markers.length > 0) {
+    const group = new L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.1));
+  }
+}
+const districtCoords = {
+  Dhaka:[23.8103,90.4125],
+  Jessore:[23.1667,89.2],
+  Mymensingh:[24.75,90.4167],
+  Chittagong:[22.3569,91.7832],
+  Khulna:[22.8456,89.5403],
+  Barishal:[22.7010,90.3535],
+  Sylhet:[24.8949,91.8687],
+  Rangpur:[25.7439,89.2752],
+  Rajshahi:[24.3745,88.6042],
+  Comilla:[23.4682,91.1788],
+  Faridpur:[23.6070,89.8429],
+  Bogra:[24.8465,89.3776],
+  Pabna:[24.0064,89.2372],
+  Dinajpur:[25.6217,88.6354],
+  Tangail:[24.2513,89.9167],
+  Jamalpur:[24.9375,89.9372],
+  Sherpur:[25.0204,90.0152],
+  Kushtia:[23.9013,89.1206],
+  Chuadanga:[23.6401,88.8410],
+  Meherpur:[23.7621,88.6318],
+  Narail:[23.1725,89.5125],
+  Magura:[23.4871,89.4194],
+  Bagerhat:[22.6602,89.7895],
+  Satkhira:[22.7184,89.0702],
+  Pirojpur:[22.5840,89.9720],
+  Jhalokati:[22.6406,90.1987],
+  Patuakhali:[22.3596,90.3298],
+  Barguna:[22.1596,90.1273]
+};
+
+// ---------- SIMILAR ARTIFACTS ---------- //
+function showSimilar(a){
+  const list=$('#similarList'); list.innerHTML='';
+  const sims=state.artifacts.filter(x=>x.id!==a.id && (x.category===a.category || x.district===a.district)).slice(0,3);
+  sims.forEach(s=>{
+    const div=document.createElement('div'); div.className='log-item'; 
+    div.textContent=`${s.titleEn} (${s.year})`;
+    list.appendChild(div);
+  });
+}
+    // ---------- EVENTS ----------
+    $('#newArtifact').addEventListener('click',()=>openModal(null));
+    $('#closeModal').addEventListener('click',closeModal);
+    $('#saveBtn').addEventListener('click', (e)=>{ e.preventDefault(); saveArtifact(); });
+    $('#clearFilters').addEventListener('click', ()=>{ $('#search').value=''; $('#filterCategory').value=''; $('#filterDistrict').value=''; state.page=1; renderGrid(); });
+    function debounce(fn, wait=200){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), wait); } }
+    const suggest = $('#searchSuggest');
+    function renderSuggestions(q){
+      if(!q || !window.Fuse){ if(suggest){ suggest.style.display='none'; suggest.innerHTML=''; } return; }
+      if(!fuse) buildFuse();
+      const res = fuse ? fuse.search(q,{limit:6}) : [];
+      if(!suggest) return;
+      suggest.innerHTML='';
+      res.forEach(r=>{ const it=document.createElement('div'); it.className='suggest-item'; it.role='option'; it.textContent = r.item.titleEn + (r.item.year? ` (${r.item.year})`:''); it.addEventListener('click', ()=>{ $('#search').value = r.item.titleEn; suggest.style.display='none'; state.page=1; renderGrid(); }); suggest.appendChild(it); });
+      suggest.style.display = res.length? 'block':'none';
+    }
+    $('#search').addEventListener('input', debounce((e)=>{ const q=e.target.value.trim(); renderSuggestions(q); state.page=1; renderGrid(); }, 250));
+    document.addEventListener('click', (e)=>{ if(!e.target.closest('.suggest')){ if(suggest){ suggest.style.display='none'; } } });
+    $('#filterCategory').addEventListener('change', ()=>{ state.page=1; renderGrid(); });
+    $('#filterDistrict').addEventListener('change', ()=>{ state.page=1; renderGrid(); });
+    $('#perPage').addEventListener('change', ()=>{ state.perPage = parseInt($('#perPage').value,10); state.page=1; renderGrid(); });
+    $('#prevPage').addEventListener('click', ()=>{ if(state.page>1){ state.page--; renderGrid(); }});
+    $('#nextPage').addEventListener('click', ()=>{ const max = Math.ceil(state.filtered.length/state.perPage); if(state.page<max){ state.page++; renderGrid(); }});
+  $('#roleSelect').addEventListener('change', (e)=>{ state.role = e.target.value; persistPrefs(); log(`Switched role to ${state.role}`); renderGrid(); });
+
+    // language toggle: minimal UI translation for buttons/labels
+    $('#langToggle').addEventListener('click', ()=>{ state.lang = state.lang==='en' ? 'bn' : 'en'; persistPrefs(); applyLang(); });
+    
+    // theme toggle
+    $('#themeToggle').addEventListener('click', ()=>{
+      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      const btn = $('#themeToggle');
+      btn.setAttribute('aria-pressed', String(next === 'light'));
+      btn.textContent = next === 'light' ? '☀️ Light' : '🌙 Dark';
+      persistPrefs();
+    });
+    
+    function applyLang(){
+      if(state.lang==='bn'){
+        document.documentElement.lang='bn'; $('#newArtifact').textContent='+ নতুন'; $('#importBtn').textContent='ইমপোর্ট (CSV)'; $('#exportBtn').textContent='এক্সপোর্ট'; $('#auditBtn').textContent='অডিট লগ';
+      } else {
+        document.documentElement.lang='en'; $('#newArtifact').textContent='+ New Artifact'; $('#importBtn').textContent='Import CSV'; $('#exportBtn').textContent='Export (CSV/JSON)'; $('#auditBtn').textContent='View Audit Log';
+      }
+    }    // Import/Export placeholders
+    $('#exportBtn').addEventListener('click', ()=>{
+      // Show export format choice
+      const choice = confirm('Choose export format:\nOK = CSV\nCancel = JSON');
+      
+      if(choice) {
+        // Export as CSV
+        const headers = ['id','titleEn','titleBn','category','year','district','origin','refs','timeline','status','context','notes'];
+        const csvHeaders = headers.join(',');
+        const csvRows = state.artifacts.map(artifact => {
+          return headers.map(header => {
+            let value = artifact[header] || '';
+            // Escape quotes and wrap in quotes if contains comma or quotes
+            if(typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+              value = '"' + value.replace(/"/g, '""') + '"';
+            }
+            return value;
+          }).join(',');
+        });
+        
+        const csvContent = [csvHeaders, ...csvRows].join('\n');
+        const blob = new Blob([csvContent], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'artifacts.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+        log('Exported artifacts as CSV');
+      } else {
+        // Export as JSON
+        const data = JSON.stringify(state.artifacts, null, 2);
+        const blob = new Blob([data], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'artifacts.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        log('Exported artifacts as JSON');
+      }
+    });
+    
+    // CSV/JSON Import with file picker
+    $('#importBtn').addEventListener('click', ()=>{
+      const input = document.createElement('input'); 
+      input.type='file'; 
+      input.accept='.csv,.json,text/csv,application/json'; 
+      input.onchange = e => {
+        const file = e.target.files[0]; 
+        if(!file) return; 
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const text = ev.target.result;
+          try {
+            let imported = [];
+            if(file.name.toLowerCase().endsWith('.json')){
+              const parsed = JSON.parse(text);
+              imported = Array.isArray(parsed) ? parsed : [parsed];
+            } else {
+              // Simple CSV parsing - split by lines, then by commas
+              const lines = text.split(/\r?\n/).filter(line => line.trim());
+              if(lines.length < 2) { alert('CSV must have at least a header and one data row'); return; }
+              
+              const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+              const rows = lines.slice(1);
+              
+              imported = rows.map(row => {
+                const values = row.split(',').map(v => v.trim().replace(/"/g, ''));
+                const obj = {};
+                headers.forEach((header, i) => {
+                  obj[header] = values[i] || '';
+                });
+                // Ensure required fields
+                if(!obj.id) obj.id = 'A'+String(Math.floor(Math.random()*99999)).padStart(4,'0');
+                if(!obj.titleEn) obj.titleEn = obj.title || obj.Title || 'Imported Item';
+                if(!obj.category) obj.category = obj.Category || 'Document';
+                if(!obj.status) obj.status = 'pending';
+                if(!obj.versions) obj.versions = [{by:'import',when:new Date().toLocaleString(),note:'imported from CSV'}];
+                return obj;
+              });
+            }
+            
+            // Add imported items to artifacts
+            const beforeCount = state.artifacts.length;
+            state.artifacts = imported.concat(state.artifacts);
+            persistArtifacts();
+            buildFuse();
+            renderGrid();
+            log(`Imported ${imported.length} artifacts from ${file.name}`);
+            alert(`Successfully imported ${imported.length} artifacts! Total: ${state.artifacts.length}`);
+            
+          } catch(err) {
+            console.error('Import error:', err);
+            alert('Failed to import file. Please check the format.\n\nFor CSV: Use comma-separated values with headers like: titleEn,category,year,district\nFor JSON: Use an array of artifact objects.');
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+    
+    $('#auditBtn').addEventListener('click', ()=>{ alert('Audit log viewer — integrate with server audit endpoint.'); });
+
+    // persistence helpers
+    function persistPrefs(){ try{ localStorage.setItem('museum.prefs', JSON.stringify({lang:state.lang, role:state.role, theme: document.documentElement.getAttribute('data-theme')})); }catch(e){} }
+    function loadPrefs(){ try{ const p = JSON.parse(localStorage.getItem('museum.prefs')||'{}'); if(p.lang) state.lang=p.lang; if(p.role) state.role=p.role; if(p.theme) document.documentElement.setAttribute('data-theme', p.theme); }catch(e){} }
+    function persistArtifacts(){ try{ localStorage.setItem('museum.artifacts', JSON.stringify(state.artifacts)); }catch(e){} }
+    function loadArtifacts(){ try{ const a = JSON.parse(localStorage.getItem('museum.artifacts')||'[]'); if(Array.isArray(a) && a.length) state.artifacts=a; }catch(e){} }
+
+    // Initialize demo
+    loadPrefs(); loadArtifacts();
+    // reflect theme button state after loading preferences
+    (function initThemeBtn(){ 
+      const themeBtn=document.getElementById('themeToggle'); 
+      if(themeBtn){ 
+        const cur=document.documentElement.getAttribute('data-theme')||'dark'; 
+        themeBtn.setAttribute('aria-pressed', String(cur==='light')); 
+        themeBtn.textContent = cur === 'light' ? '☀️ Light' : '🌙 Dark';
+      } 
+    })();
+    seed(); state.perPage = parseInt($('#perPage').value,10)||9; applyLang(); renderGrid(); renderActivity();    // Close modal on backdrop click or Escape
+    $('#modal').addEventListener('click', (e)=>{ if(e.target===e.currentTarget) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+const gridBtn = document.getElementById("gridViewBtn");
+const timelineBtn = document.getElementById("timelineViewBtn");
+const mapBtn = document.getElementById("mapViewBtn");
+
+const gridView = document.getElementById("artifactGrid");
+const timelineView = document.getElementById("timelineView");
+const mapView = document.getElementById("mapView");
+
+function showView(view) {
+  gridView.style.display = (view === "grid") ? "grid" : "none";
+  timelineView.style.display = (view === "timeline") ? "block" : "none";
+  mapView.style.display = (view === "map") ? "block" : "none";
+
+  if (view === "timeline") {
+    renderTimeline();
+  }
+  if (view === "map") {
+    renderMap();
+    setTimeout(() => map.invalidateSize(), 200); // fix blank map rendering
+  }
+}
+
+gridBtn.addEventListener("click", () => showView("grid"));
+timelineBtn.addEventListener("click", () => showView("timeline"));
+mapBtn.addEventListener("click", () => showView("map"));
+
+    
+
+  </script>
+</body>
+</html>
