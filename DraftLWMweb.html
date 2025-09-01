@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="classic">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Liberation War Museum – Digital Archive</title>
+  <meta name="description" content="A classic, internationally accessible, professional frontend for the Bangladesh Liberation War Museum's digital archive." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==    <section id="oral" class="container">
+      <h2 class="section-title" data-i18n="oral.title">Oral Histories & Testimonies</h2>
+      <p class="section-sub" data-i18n="oral.sub">Listen to recorded memories from freedom fighters, civilians, and international witnesses.</p>
+      
+      <!-- Featured Audio: 7 March Speech -->
+      <div class="audio-player">
+        <h3 style="margin-top: 0;">Featured: Bangabandhu's Historic 7 March Speech (1971)</h3>
+        <p style="color: var(--muted); margin-bottom: 0;">"The struggle this time is for our freedom. The struggle this time is for our independence."</p>
+        <div class="audio-controls">
+          <button class="play-btn" id="playBtn" aria-label="Play 7 March Speech">▶</button>
+          <div class="audio-progress" id="audioProgress">
+            <div class="audio-progress-fill" id="audioProgressFill"></div>
+          </div>
+          <span class="audio-time" id="audioTime">0:00</span>
+          <span class="audio-time" id="audioDuration">18:31</span>
+        </div>
+        <audio id="audioPlayer" preload="metadata">
+          <source src="#" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      
+      <div class="grid">
+        <article class="card interactive" onclick="openAudioModal('witness1')">
+          <h3>Witness Account</h3>
+          <div style="background: var(--paper); padding: 10px; border-radius: 8px; margin: 10px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">🎵</span>
+              <span style="color: var(--muted); font-size: 14px;">Audio • 12:45</span>
+            </div>
+          </div>
+          <p class="quote">"I carried this diary through the refugee camp, page by page…"</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">Listen →</div>
+        </article>
+        <article class="card interactive" onclick="openAudioModal('fighter1')">
+          <h3>Freedom Fighter</h3>
+          <div style="background: var(--paper); padding: 10px; border-radius: 8px; margin: 10px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">🎵</span>
+              <span style="color: var(--muted); font-size: 14px;">Audio • 8:23</span>
+            </div>
+          </div>
+          <p class="quote">"We learned to map the routes by the rivers and stars."</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">Listen →</div>
+        </article>
+        <article class="card interactive" onclick="openAudioModal('journalist1')">
+          <h3>International Journalist</h3>
+          <div style="background: var(--paper); padding: 10px; border-radius: 8px; margin: 10px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">🎵</span>
+              <span style="color: var(--muted); font-size: 14px;">Audio • 15:12</span>
+            </div>
+          </div>
+          <p class="quote">"The scale of the atrocities was unprecedented in modern history."</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">Listen →</div>
+        </article>
+      </div>
+    </section>===
+       THEME & RESET
+       ===================== */
+    :root {
+      --bg: #0f1115;
+      --surface: #151922;
+      --paper: #13161d;
+      --text: #e9edf4;
+      --muted: #b9c2cf;
+      --accent-red: #be1e2d;       /* evoking the red circle of the flag */
+      --accent-green: #006a4e;     /* Bangladesh green */
+      --accent-gold: #d4b070;      /* classic museum gild */
+      --link: #7cc0ff;
+      --shadow: rgba(0,0,0,0.45);
+      --ring: rgba(212,176,112,0.45);
+      --maxw: 1200px;
+      --radius: 18px;
+    }
+
+    /* Light theme (auto if user prefers) */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f5f2;
+        --surface: #ffffff;
+        --paper: #faf7f2;
+        --text: #1f242b;
+        --muted: #505a66;
+        --link: #0b67d1;
+        --shadow: rgba(0,0,0,0.08);
+        --ring: rgba(190, 30, 45, 0.25);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(0,106,78,0.15), transparent 60%),
+                  radial-gradient(800px 400px at 80% -10%, rgba(190,30,45,0.10), transparent 60%),
+                  linear-gradient(180deg, var(--bg), var(--bg));
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--ring);
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
+
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+    /* Subtle paper texture overlay */
+    .texture {
+      position: relative;
+      isolation: isolate;
+    }
+    .texture::after {
+      content: "";
+      position: absolute; inset: 0; pointer-events: none; z-index: -1;
+      background-image: repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 3px),
+                        radial-gradient(800px 400px at 20% 0%, rgba(212,176,112,0.08), transparent 60%);
+      mix-blend-mode: multiply;
+      opacity: .35;
+    }
+
+    /* =====================
+       HEADER & NAV
+       ===================== */
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { left: 16px; top: 16px; width: auto; height: auto; background: var(--accent-gold); color: #000; padding: 8px 12px; border-radius: 8px; z-index: 9999; }
+
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(0,0,0,.35), transparent), var(--paper);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+    .nav {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+      padding: 10px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-family: Merriweather, serif; font-weight: 900; letter-spacing: .4px; }
+    .brand .flag {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: radial-gradient(circle at 55% 50%, #be1e2d 0 30%, transparent 31%), #006a4e;
+      box-shadow: 0 0 0 2px rgba(0,0,0,.15), 0 6px 14px var(--shadow);
+    }
+    .nav-links { justify-self: center; display: flex; gap: 18px; flex-wrap: wrap; }
+    .nav-links a { padding: 8px 10px; border-radius: 10px; color: var(--text); opacity: .9; }
+    .nav-links a:hover { background: rgba(212,176,112,0.12); }
+
+    .nav-actions { justify-self: end; display: flex; gap: 10px; }
+    .btn, .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(212,176,112,0.35);
+      background: linear-gradient(180deg, rgba(212,176,112,.15), rgba(212,176,112,.08));
+      color: var(--text);
+      padding: 8px 12px; border-radius: 999px; cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px var(--shadow); }
+    .chip { background: transparent; border-style: dashed; }
+
+    /* =====================
+       HERO
+       ===================== */
+    .hero {
+      position: relative; overflow: hidden; padding: 64px 0 28px; border-bottom: 1px solid rgba(212,176,112,.25);
+      background: linear-gradient(180deg, rgba(0,106,78,.18), transparent 40%), linear-gradient(0deg, rgba(190,30,45,.12), transparent 55%);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 32px; align-items: center; }
+    @media (max-width: 900px){ .hero-grid { grid-template-columns: 1fr; } }
+
+    .hero h1 {
+      font-family: Merriweather, serif; font-size: clamp(28px, 4vw, 48px); line-height: 1.15; margin: 0 0 12px;
+    }
+    .lead { font-size: clamp(16px, 1.6vw, 20px); color: var(--muted); margin: 0 0 18px; }
+
+    .statbar {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px;
+    }
+    .stat {
+      background: var(--surface); border: 1px solid rgba(212,176,112,.25); border-radius: var(--radius);
+      padding: 14px; text-align: center; box-shadow: 0 8px 24px var(--shadow);
+    }
+    .stat .num { font-family: Merriweather, serif; font-size: 22px; }
+    .stat .lab { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; }
+
+    .hero-card {
+      background: var(--surface); border: 1px solid rgba(212,176,112,.35); padding: 18px; border-radius: var(--radius);
+      box-shadow: 0 12px 28px var(--shadow);
+    }
+    .searchbar { display: flex; gap: 8px; margin-top: 6px; position: relative; }
+    .searchbar input { flex: 1; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(212,176,112,.35); background: var(--paper); color: var(--text); }
+
+    /* =====================
+       INTERACTIVE ENHANCEMENTS
+       ===================== */
+    .animated-counter { 
+      transition: all 0.3s ease;
+    }
+    
+    .search-suggestions {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 100;
+      background: var(--surface); border: 1px solid rgba(212,176,112,.35);
+      border-radius: 8px; margin-top: 4px; max-height: 200px; overflow-y: auto;
+      display: none;
+    }
+    .search-suggestions.active { display: block; }
+    .suggestion-item {
+      padding: 10px 14px; cursor: pointer; border-bottom: 1px solid rgba(212,176,112,.15);
+    }
+    .suggestion-item:hover { background: rgba(212,176,112,.1); }
+    .suggestion-item:last-child { border-bottom: none; }
+    
+    .interactive-timeline {
+      display: flex; gap: 20px; overflow-x: auto; padding: 20px 0;
+      scroll-snap-type: x mandatory;
+    }
+    .timeline-item {
+      min-width: 280px; scroll-snap-align: start;
+      background: var(--surface); border-radius: var(--radius); padding: 20px;
+      border: 1px solid rgba(212,176,112,.25); cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .timeline-item:hover {
+      transform: translateY(-5px); box-shadow: 0 15px 35px var(--shadow);
+      border-color: var(--accent-gold);
+    }
+    .timeline-date {
+      color: var(--accent-red); font-weight: 700; font-size: 14px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .timeline-event {
+      font-weight: 600; margin: 8px 0; line-height: 1.4;
+    }
+    .timeline-desc {
+      color: var(--muted); font-size: 14px; line-height: 1.5;
+    }
+    
+    .card.interactive {
+      cursor: pointer; transition: all 0.3s ease;
+      background: var(--surface);
+    }
+    .card.interactive:hover {
+      transform: translateY(-8px); box-shadow: 0 20px 40px var(--shadow);
+      border-color: var(--accent-gold);
+    }
+    .card.interactive:active {
+      transform: translateY(-2px);
+    }
+    
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+      background: var(--surface); border-radius: var(--radius); padding: 30px;
+      max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto;
+      border: 1px solid rgba(212,176,112,.35);
+    }
+    .modal-close {
+      float: right; font-size: 24px; cursor: pointer; color: var(--muted);
+      padding: 5px 10px; border-radius: 50%;
+    }
+    .modal-close:hover { background: rgba(212,176,112,.2); }
+    
+    .audio-player {
+      background: var(--paper); border-radius: 12px; padding: 20px;
+      border: 1px solid rgba(212,176,112,.25); margin: 20px 0;
+    }
+    .audio-controls {
+      display: flex; align-items: center; gap: 15px; margin-top: 15px;
+    }
+    .play-btn {
+      width: 50px; height: 50px; border-radius: 50%; background: var(--accent-red);
+      border: none; color: white; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .play-btn:hover { transform: scale(1.1); box-shadow: 0 8px 20px rgba(190,30,45,0.4); }
+    .audio-progress {
+      flex: 1; height: 6px; background: rgba(212,176,112,.3); border-radius: 3px;
+      cursor: pointer; position: relative;
+    }
+    .audio-progress-fill {
+      height: 100%; background: var(--accent-red); border-radius: 3px;
+      width: 0%; transition: width 0.1s ease;
+    }
+    .audio-time {
+      color: var(--muted); font-size: 14px; min-width: 45px;
+    }
+    
+    .advanced-search {
+      background: var(--paper); border-radius: 12px; padding: 20px;
+      margin-top: 15px; border: 1px solid rgba(212,176,112,.25);
+      display: none;
+    }
+    .advanced-search.active { display: block; }
+    .search-filters {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px; margin-top: 15px;
+    }
+    .filter-group label {
+      display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;
+    }
+    .filter-group select, .filter-group input[type="number"] {
+      width: 100%; padding: 8px 12px; border-radius: 8px;
+      border: 1px solid rgba(212,176,112,.35); background: var(--surface);
+      color: var(--text);
+    }
+
+    /* =====================
+       3D IMAGE VIEWER
+       ===================== */
+    .viewer-3d {
+      background: var(--paper); border-radius: 12px; padding: 20px;
+      border: 1px solid rgba(212,176,112,.25); margin: 20px 0;
+      position: relative; overflow: hidden;
+    }
+    
+    .viewer-3d-container {
+      width: 100%; height: 400px; border-radius: 8px; overflow: hidden;
+      background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+                  linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
+                  linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
+                  linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      position: relative; cursor: grab;
+    }
+    
+    .viewer-3d-container:active { cursor: grabbing; }
+    
+    .viewer-3d-model {
+      width: 100%; height: 100%; background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+    }
+    
+    .model-placeholder {
+      width: 200px; height: 200px; background: var(--accent-gold);
+      border-radius: 12px; transform-style: preserve-3d;
+      position: relative; animation: rotate3d 8s linear infinite;
+    }
+    
+    .model-placeholder::before,
+    .model-placeholder::after {
+      content: ''; position: absolute; width: 100%; height: 100%;
+      background: var(--accent-red); border-radius: 12px;
+    }
+    
+    .model-placeholder::before {
+      transform: rotateY(90deg) translateZ(100px);
+    }
+    
+    .model-placeholder::after {
+      transform: rotateX(90deg) translateZ(100px);
+      background: var(--accent-green);
+    }
+    
+    @keyframes rotate3d {
+      0% { transform: rotateX(0deg) rotateY(0deg); }
+      25% { transform: rotateX(15deg) rotateY(90deg); }
+      50% { transform: rotateX(0deg) rotateY(180deg); }
+      75% { transform: rotateX(-15deg) rotateY(270deg); }
+      100% { transform: rotateX(0deg) rotateY(360deg); }
+    }
+    
+    .viewer-360 {
+      width: 100%; height: 300px; border-radius: 8px; overflow: hidden;
+      background: radial-gradient(circle, var(--surface), var(--paper));
+      position: relative; cursor: move;
+    }
+    
+    .panorama-image {
+      width: 200%; height: 100%; object-fit: cover;
+      transition: transform 0.1s ease-out;
+    }
+    
+    .viewer-controls {
+      display: flex; align-items: center; gap: 15px; margin-top: 15px;
+      padding: 10px; background: rgba(0,0,0,0.1); border-radius: 8px;
+    }
+    
+    .control-btn {
+      padding: 8px 12px; border: 1px solid rgba(212,176,112,.35);
+      background: var(--surface); color: var(--text); border-radius: 6px;
+      cursor: pointer; transition: all 0.3s ease; font-size: 12px;
+    }
+    
+    .control-btn:hover {
+      background: var(--accent-gold); color: #000;
+    }
+    
+    .control-btn.active {
+      background: var(--accent-red); color: white; border-color: var(--accent-red);
+    }
+    
+    .zoom-slider {
+      flex: 1; height: 4px; background: rgba(212,176,112,.3);
+      border-radius: 2px; cursor: pointer; position: relative;
+    }
+    
+    .zoom-slider-thumb {
+      width: 16px; height: 16px; background: var(--accent-gold);
+      border-radius: 50%; position: absolute; top: -6px;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    
+    .zoom-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    
+    .viewer-info {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 10px; font-size: 12px; color: var(--muted);
+    }
+    
+    .artifact-3d-card {
+      background: var(--surface); border-radius: var(--radius);
+      padding: 20px; border: 1px solid rgba(212,176,112,.25);
+      cursor: pointer; transition: all 0.3s ease; position: relative;
+      overflow: hidden;
+    }
+    
+    .artifact-3d-card::before {
+      content: '3D'; position: absolute; top: 10px; right: 10px;
+      background: var(--accent-red); color: white; padding: 4px 8px;
+      border-radius: 4px; font-size: 10px; font-weight: 700;
+      z-index: 2;
+    }
+    
+    .artifact-3d-card:hover {
+      transform: translateY(-5px); box-shadow: 0 15px 35px var(--shadow);
+      border-color: var(--accent-gold);
+    }
+    
+    .panorama-preview {
+      width: 100%; height: 120px; border-radius: 8px;
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-red));
+      margin-bottom: 15px; overflow: hidden; position: relative;
+    }
+    
+    .panorama-preview::after {
+      content: '360°'; position: absolute; bottom: 5px; right: 5px;
+      background: rgba(0,0,0,0.7); color: white; padding: 2px 6px;
+      border-radius: 3px; font-size: 10px; font-weight: 700;
+    }
+
+    /* =====================
+       SECTION STYLES
+       ===================== */
+    section { padding: 44px 0; }
+    .section-title { font-family: Merriweather, serif; font-size: clamp(22px, 3vw, 32px); margin: 0 0 12px; }
+    .section-sub { color: var(--muted); margin: 0 0 20px; }
+
+    /* Collections grid */
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .card { grid-column: span 4; background: var(--surface); border: 1px solid rgba(212,176,112,.25); border-radius: var(--radius); padding: 18px; box-shadow: 0 8px 20px var(--shadow); position: relative; overflow: hidden; }
+    @media (max-width: 900px){ .card { grid-column: span 6; } }
+    @media (max-width: 640px){ .card { grid-column: span 12; } }
+    .card h3 { margin: 6px 0 6px; font-family: Merriweather, serif; }
+    .card p { color: var(--muted); }
+    .card .pill { position: absolute; top: 12px; right: 12px; font-size: 12px; background: rgba(0,106,78,.15); border: 1px solid rgba(0,106,78,.35); padding: 6px 10px; border-radius: 999px; }
+    .card:hover { transform: translateY(-2px); transition: transform .25s ease; }
+
+    /* Awards (Gallantry) */
+    .awards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 900px){ .awards { grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .awards { grid-template-columns: 1fr;} }
+    .medal { background: var(--surface); border: 1px solid rgba(212,176,112,.35); border-radius: var(--radius); padding: 16px; display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: center; }
+    .medal .icon { width: 52px; height: 52px; border-radius: 50%; background: radial-gradient(circle at 50% 50%, #d6c08a, #9c8348); box-shadow: inset 0 2px 4px rgba(0,0,0,.25), 0 6px 12px var(--shadow); position: relative; }
+    .medal .ribbon { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 36px; height: 12px; background: linear-gradient(90deg, #006a4e 50%, #be1e2d 50%); border-radius: 2px; box-shadow: 0 2px 4px rgba(0,0,0,.35); }
+    .medal h4 { margin: 0; font-family: Merriweather, serif; }
+    .medal small { color: var(--muted); }
+
+    /* Timeline (horizontal) */
+    .timeline {
+      display: grid; gap: 14px;
+      overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory;
+      grid-auto-flow: column; grid-auto-columns: minmax(260px, 30%);
+    }
+    .moment { scroll-snap-align: start; background: var(--surface); border: 1px solid rgba(212,176,112,.25); border-radius: var(--radius); padding: 16px; box-shadow: 0 8px 18px var(--shadow); }
+    .moment h5 { margin: 0 0 6px; font-family: Merriweather, serif; }
+    .moment time { font-size: 12px; color: var(--muted); }
+
+    /* Oral histories (audio) */
+    audio { width: 100%; }
+    .quote { font-style: italic; border-left: 4px solid var(--accent-gold); padding-left: 12px; color: var(--muted); }
+
+    /* Map placeholder */
+    .mapbox { height: 320px; border-radius: var(--radius); background: repeating-linear-gradient(45deg, rgba(212,176,112,.08), rgba(212,176,112,.08) 12px, transparent 12px, transparent 24px), linear-gradient(180deg, var(--paper), var(--surface)); border: 1px dashed rgba(212,176,112,.35); display: grid; place-items: center; color: var(--muted); }
+
+    /* Footer */
+    footer { border-top: 1px solid rgba(212,176,112,.25); background: linear-gradient(180deg, transparent, rgba(0,0,0,.25)); padding: 28px 0 48px; }
+    .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media (max-width: 900px){ .footer-grid { grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .footer-grid { grid-template-columns: 1fr;} }
+
+    /* Animations */
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-up { opacity: 0; transform: translateY(10px); animation: fadeUp .7s ease forwards; }
+      .fade-late { animation-delay: .25s; }
+      .pulse { animation: pulse 3s ease-in-out infinite; }
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+    @keyframes pulse { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.02);} }
+
+    /* Print styles */
+    @media print {
+      header, .nav-actions, .searchbar, .timeline { display: none !important; }
+      body { background: white; color: black; }
+      .card, .medal, .moment { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body class="texture">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header role="banner" aria-label="Primary">
+    <div class="container nav">
+      <div class="brand" aria-label="Site brand">
+        <div class="flag" aria-hidden="true"></div>
+        <div>
+          <div style="font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);" data-i18n="brand.tag">Liberation War Museum</div>
+          <div style="font-size: 18px;">Digital Archive</div>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#collections" data-i18n="nav.collections">Collections</a>
+        <a href="#timeline" data-i18n="nav.timeline">Timeline</a>
+        <a href="#awards" data-i18n="nav.awards">Gallantry</a>
+        <a href="#oral" data-i18n="nav.oral">Oral Histories</a>
+        <a href="#research" data-i18n="nav.research">Research</a>
+        <a href="#visit" data-i18n="nav.visit">Visit</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="chip" id="langToggle" aria-label="Switch language">EN/বাংলা</button>
+        <button class="btn" id="themeToggle" aria-label="Toggle theme">Theme</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1 data-i18n="hero.title">Bangladesh Liberation War Museum — Digital Archive</h1>
+          <p class="lead" data-i18n="hero.lead">Explore authentic records from 1947–1971–1972 and beyond: documents, photographs, personal artifacts, letters, newspapers, maps, and testimonies curated for scholars, educators, and the public worldwide.</p>
+          <div class="statbar">
+            <div class="stat fade-up">
+              <div class="num" id="stat-items" aria-live="polite">125,430+</div>
+              <div class="lab" data-i18n="hero.stats1">Digitized Items</div>
+            </div>
+            <div class="stat fade-up fade-late">
+              <div class="num">3,200+</div>
+              <div class="lab" data-i18n="hero.stats2">Oral Histories</div>
+            </div>
+            <div class="stat fade-up fade-late">
+              <div class="num">97</div>
+              <div class="lab" data-i18n="hero.stats3">Exhibitions</div>
+            </div>
+            <div class="stat fade-up fade-late">
+              <div class="num">Global</div>
+              <div class="lab" data-i18n="hero.stats4">Access</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <label for="q" style="font-weight: 600;" data-i18n="hero.searchLabel">Search the Archive</label>
+          <div class="searchbar">
+            <input id="q" name="q" type="search" placeholder="e.g., Mujibnagar Government, 7 March Speech" aria-label="Search the archive" />
+            <button class="btn" id="searchBtn" data-i18n="hero.searchBtn">Search</button>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+          </div>
+          <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="chip" onclick="addSearchTerm('1971')">1971</span>
+            <span class="chip" data-i18n="chips.genocide" onclick="addSearchTerm('genocide')">Genocide</span>
+            <span class="chip" data-i18n="chips.mukti" onclick="addSearchTerm('mukti bahini')">Mukti Bahini</span>
+            <span class="chip" data-i18n="chips.exile" onclick="addSearchTerm('government in exile')">Govt-in-Exile</span>
+            <span class="chip" data-i18n="chips.treaty" onclick="addSearchTerm('international support')">International Support</span>
+            <button class="btn" id="advancedSearchToggle" style="margin-left: auto; padding: 6px 12px; font-size: 12px;">Advanced</button>
+          </div>
+          <div class="advanced-search" id="advancedSearch">
+            <div class="search-filters">
+              <div class="filter-group">
+                <label>Content Type</label>
+                <select id="filterType">
+                  <option value="">All Types</option>
+                  <option value="photograph">Photographs</option>
+                  <option value="document">Documents</option>
+                  <option value="audio">Audio</option>
+                  <option value="video">Video</option>
+                  <option value="artifact">Artifacts</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Year Range</label>
+                <input type="number" id="yearFrom" placeholder="From (e.g., 1971)" min="1947" max="1975">
+              </div>
+              <div class="filter-group">
+                <label>To Year</label>
+                <input type="number" id="yearTo" placeholder="To (e.g., 1971)" min="1947" max="1975">
+              </div>
+              <div class="filter-group">
+                <label>Location</label>
+                <select id="filterLocation">
+                  <option value="">All Locations</option>
+                  <option value="dhaka">Dhaka</option>
+                  <option value="chittagong">Chittagong</option>
+                  <option value="sylhet">Sylhet</option>
+                  <option value="jessore">Jessore</option>
+                  <option value="comilla">Comilla</option>
+                  <option value="mymensingh">Mymensingh</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <small style="display:block; margin-top: 8px; color: var(--muted);" data-i18n="hero.hint">Tip: Use filters like type:photo year:1971 place:Jessore</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLECTIONS -->
+    <section id="collections" class="container">
+      <h2 class="section-title" data-i18n="collections.title">Collections & Exhibits</h2>
+      <p class="section-sub" data-i18n="collections.sub">Browse curated sets: newspapers, diaries, identity papers, uniforms, weapons, maps, posters, and art that document the struggle for independence.</p>
+      <div class="grid">
+        <article class="card interactive fade-up" onclick="openCollectionModal('photographs')">
+          <span class="pill" data-i18n="collections.type_photo">Photographs</span>
+          <h3 data-i18n="collections.c1">Frontline & Civilian Life</h3>
+          <p data-i18n="collections.c1d">Photo essays showing resistance, refugee camps, international coverage, and daily life under occupation.</p>
+          <div style="margin-top: 15px; color: var(--accent-gold); font-size: 14px; font-weight: 600;">15,420 items → </div>
+        </article>
+        <article class="card interactive fade-up" onclick="openCollectionModal('documents')">
+          <span class="pill" data-i18n="collections.type_doc">Documents</span>
+          <h3 data-i18n="collections.c2">Government & Movement Papers</h3>
+          <p data-i18n="collections.c2d">Proclamations, letters, minutes, foreign communiqués, and trial records.</p>
+          <div style="margin-top: 15px; color: var(--accent-gold); font-size: 14px; font-weight: 600;">8,235 items → </div>
+        </article>
+        <article class="card interactive fade-up" onclick="openCollectionModal('audio')">
+          <span class="pill" data-i18n="collections.type_audio">Audio</span>
+          <h3 data-i18n="collections.c3">Broadcasts & Speeches</h3>
+          <p data-i18n="collections.c3d">Radio transmissions, announcements, and historic speeches including 7 March.</p>
+          <div style="margin-top: 15px; color: var(--accent-gold); font-size: 14px; font-weight: 600;">1,120 items → </div>
+        </article>
+        <article class="card interactive fade-up" onclick="openCollectionModal('maps')">
+          <span class="pill" data-i18n="collections.type_maps">Maps</span>
+          <h3 data-i18n="collections.c4">Campaigns & Atrocities</h3>
+          <p data-i18n="collections.c4d">Operational maps, border movements, and documented mass-atrocity sites.</p>
+          <div style="margin-top: 15px; color: var(--accent-gold); font-size: 14px; font-weight: 600;">892 items → </div>
+        </article>
+        <article class="card interactive fade-up" onclick="openCollectionModal('artifacts')">
+          <span class="pill" data-i18n="collections.type_artifacts">Artifacts</span>
+          <h3 data-i18n="collections.c5">Artifacts & Uniforms</h3>
+          <p data-i18n="collections.c5d">Badges, armbands, fieldgear, and personal items donated by veterans and families.</p>
+          <div style="margin-top: 15px; color: var(--accent-gold); font-size: 14px; font-weight: 600;">2,340 items → </div>
+        </article>
+        <article class="card interactive fade-up" onclick="openCollectionModal('press')">
+          <span class="pill" data-i18n="collections.type_press">Press</span>
+          <h3 data-i18n="collections.c6">Press & Posters</h3>
+          <p data-i18n="collections.c6d">Newspapers, editorials, protest posters, and international solidarity materials.</p>
+          <div style="margin-top: 15px; color: var(--accent-gold); font-size: 14px; font-weight: 600;">4,680 items → </div>
+        </article>
+      </div>
+          <span class="pill" data-i18n="collections.type_doc">Documents</span>
+          <h3 data-i18n="collections.c2">Government & Movement Papers</h3>
+          <p data-i18n="collections.c2d">Proclamations, letters, minutes, foreign communiqués, and trial records.</p>
+        </article>
+        <article class="card fade-up">
+          <span class="pill" data-i18n="collections.type_audio">Audio</span>
+          <h3 data-i18n="collections.c3">Broadcasts & Speeches</h3>
+          <p data-i18n="collections.c3d">Radio transmissions, announcements, and historic speeches including 7 March.</p>
+        </article>
+        <article class="card fade-up">
+          <span class="pill" data-i18n="collections.type_maps">Maps</span>
+          <h3 data-i18n="collections.c4">Campaigns & Atrocities</h3>
+          <p data-i18n="collections.c4d">Operational maps, border movements, and documented mass-atrocity sites.</p>
+        </article>
+        <article class="card fade-up">
+          <span class="pill" data-i18n="collections.type_artifacts">Artifacts</span>
+          <h3 data-i18n="collections.c5">Artifacts & Uniforms</h3>
+          <p data-i18n="collections.c5d">Badges, armbands, fieldgear, and personal items donated by veterans and families.</p>
+        </article>
+        <article class="card fade-up">
+          <span class="pill" data-i18n="collections.type_press">Press</span>
+          <h3 data-i18n="collections.c6">Press & Posters</h3>
+          <p data-i18n="collections.c6d">Newspapers, editorials, protest posters, and international solidarity materials.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3D ARTIFACTS & VIRTUAL TOURS -->
+    <section id="artifacts-3d" class="container">
+      <h2 class="section-title">3D Artifacts & Virtual Tours</h2>
+      <p class="section-sub">Explore historical artifacts in 3D and take virtual tours of significant locations from the Liberation War.</p>
+      
+      <!-- Featured 3D Artifact -->
+      <div class="viewer-3d">
+        <h3 style="margin-top: 0;">Featured: Bangabandhu's Pipe (3D Model)</h3>
+        <div class="viewer-3d-container" id="artifact3DViewer">
+          <div class="viewer-3d-model">
+            <div class="model-placeholder" id="artifactModel"></div>
+          </div>
+        </div>
+        <div class="viewer-controls">
+          <button class="control-btn active" id="rotateBtn">🔄 Auto Rotate</button>
+          <button class="control-btn" id="resetBtn">🏠 Reset View</button>
+          <span style="color: var(--muted); font-size: 12px;">Zoom:</span>
+          <div class="zoom-slider" id="zoomSlider">
+            <div class="zoom-slider-thumb" id="zoomThumb" style="left: 50%;"></div>
+          </div>
+          <button class="control-btn" id="fullscreenBtn">⛶ Fullscreen</button>
+        </div>
+        <div class="viewer-info">
+          <span>Drag to rotate • Scroll to zoom</span>
+          <span>Historical significance: Personal item of Sheikh Mujibur Rahman</span>
+        </div>
+      </div>
+
+      <!-- 360° Virtual Tour -->
+      <div class="viewer-3d">
+        <h3 style="margin-top: 0;">Virtual Tour: Mujibnagar Memorial (360°)</h3>
+        <div class="viewer-360" id="panoramaViewer">
+          <img class="panorama-image" id="panoramaImage" 
+               src="https://via.placeholder.com/800x300/006a4e/ffffff?text=360%C2%B0+Mujibnagar+Memorial+%28Drag+to+Look+Around%29" 
+               alt="360° view of Mujibnagar Memorial">
+        </div>
+        <div class="viewer-controls">
+          <button class="control-btn" id="tourPlay">▶ Auto Tour</button>
+          <button class="control-btn" id="tourReset">🏠 Reset View</button>
+          <span style="color: var(--muted); font-size: 12px;">Location:</span>
+          <select class="control-btn" id="locationSelect" style="background: var(--surface);">
+            <option value="mujibnagar">Mujibnagar Memorial</option>
+            <option value="museum">Liberation War Museum</option>
+            <option value="shaheed-minar">Shaheed Minar</option>
+            <option value="national-memorial">National Memorial</option>
+          </select>
+        </div>
+        <div class="viewer-info">
+          <span>Click and drag to look around • Use location selector to change view</span>
+          <span>Site of the Provisional Government of Bangladesh (1971)</span>
+        </div>
+      </div>
+
+      <!-- 3D Artifacts Grid -->
+      <div class="grid">
+        <article class="artifact-3d-card" onclick="open3DArtifact('freedom-fighter-uniform')">
+          <div class="panorama-preview" style="background: linear-gradient(45deg, #8B4513, #2F4F4F);"></div>
+          <h3>Freedom Fighter Uniform</h3>
+          <p>Complete 3D scan of a Mukti Bahini uniform with interactive annotations showing historical details.</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">View in 3D →</div>
+        </article>
+        
+        <article class="artifact-3d-card" onclick="open3DArtifact('liberation-medal')">
+          <div class="panorama-preview" style="background: linear-gradient(45deg, #FFD700, #B8860B);"></div>
+          <h3>Bir Sreshtho Medal</h3>
+          <p>Detailed 3D model of the highest military decoration, with close-up views of engravings and craftsmanship.</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">View in 3D →</div>
+        </article>
+        
+        <article class="artifact-3d-card" onclick="open3DArtifact('historic-rifle')">
+          <div class="panorama-preview" style="background: linear-gradient(45deg, #4A4A4A, #696969);"></div>
+          <h3>Liberation War Rifle</h3>
+          <p>3D model of a rifle used during the Liberation War, with interactive hotspots explaining its historical significance.</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">View in 3D →</div>
+        </article>
+        
+        <article class="artifact-3d-card" onclick="openVirtualTour('dhaka-university')">
+          <div class="panorama-preview"></div>
+          <h3>Dhaka University 1971</h3>
+          <p>360° virtual tour of Dhaka University campus as it was during the Liberation War period.</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">Take Virtual Tour →</div>
+        </article>
+        
+        <article class="artifact-3d-card" onclick="openVirtualTour('racecourse')">
+          <div class="panorama-preview" style="background: linear-gradient(45deg, #228B22, #32CD32);"></div>
+          <h3>Race Course Ground 1971</h3>
+          <p>Experience the historic venue where Bangabandhu delivered the 7 March speech to millions.</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">Take Virtual Tour →</div>
+        </article>
+        
+        <article class="artifact-3d-card" onclick="open3DArtifact('independence-flag')">
+          <div class="panorama-preview" style="background: linear-gradient(45deg, #006a4e, #be1e2d);"></div>
+          <h3>First Bangladesh Flag</h3>
+          <p>High-resolution 3D scan of one of the first Bangladesh flags, showing textile details and historical wear.</p>
+          <div style="margin-top: 10px; color: var(--accent-gold); font-size: 14px;">View in 3D →</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- GALLANTRY AWARDS -->
+    <section id="awards" class="container">
+      <h2 class="section-title" data-i18n="awards.title">Gallantry Awards</h2>
+      <p class="section-sub" data-i18n="awards.sub">Recipients recognized for extraordinary bravery in the Liberation War.</p>
+      <div class="awards">
+        <div class="medal fade-up" role="group" aria-label="Bir Sreshtho">
+          <div class="icon"><span class="ribbon" aria-hidden="true"></span></div>
+          <div>
+            <h4>Bir Sreshtho</h4>
+            <small data-i18n="awards.sreshtho">Highest gallantry honour • <span aria-live="polite">7 recipients</span></small>
+          </div>
+        </div>
+        <div class="medal fade-up" role="group" aria-label="Bir Uttom">
+          <div class="icon"><span class="ribbon" aria-hidden="true"></span></div>
+          <div>
+            <h4>Bir Uttom</h4>
+            <small data-i18n="awards.uttom">Second highest honour • <span>68 recipients</span></small>
+          </div>
+        </div>
+        <div class="medal fade-up" role="group" aria-label="Bir Bikrom">
+          <div class="icon"><span class="ribbon" aria-hidden="true"></span></div>
+          <div>
+            <h4>Bir Bikrom</h4>
+            <small data-i18n="awards.bikrom">Third highest honour • <span>175 recipients</span></small>
+          </div>
+        </div>
+        <div class="medal fade-up" role="group" aria-label="Bir Protik">
+          <div class="icon"><span class="ribbon" aria-hidden="true"></span></div>
+          <div>
+            <h4>Bir Protik</h4>
+            <small data-i18n="awards.protik">Gallantry honour • <span>426 recipients</span></small>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap: wrap;">
+        <button class="btn" id="recipientsBtn" data-i18n="awards.view">View all recipients</button>
+        <button class="chip" id="apiDocsBtn" title="API docs">API</button>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="timeline" class="container">
+      <h2 class="section-title" data-i18n="timeline.title">Historical Timeline</h2>
+      <p class="section-sub" data-i18n="timeline.sub">Key moments contextualized with primary sources. Click to explore.</p>
+      <div class="interactive-timeline" aria-label="Interactive Timeline" role="group">
+        <div class="timeline-item" onclick="openTimelineModal('1947')">
+          <div class="timeline-date">1947–1956</div>
+          <div class="timeline-event">Partition & Language Movement</div>
+          <div class="timeline-desc">Language rights and cultural identity movements lay the foundation for self-determination.</div>
+        </div>
+        <div class="timeline-item" onclick="openTimelineModal('1966')">
+          <div class="timeline-date">1966</div>
+          <div class="timeline-event">Six-Point Movement</div>
+          <div class="timeline-desc">Autonomy demands accelerate; mass mobilization expands across East Bengal.</div>
+        </div>
+        <div class="timeline-item" onclick="openTimelineModal('1970')">
+          <div class="timeline-date">7 March 1971</div>
+          <div class="timeline-event">Historic Speech</div>
+          <div class="timeline-desc">"The struggle this time is for our freedom. The struggle this time is for our independence."</div>
+        </div>
+        <div class="timeline-item" onclick="openTimelineModal('1971-start')">
+          <div class="timeline-date">25 March 1971</div>
+          <div class="timeline-event">Operation Searchlight</div>
+          <div class="timeline-desc">Pakistani military launches genocide. Liberation War begins.</div>
+        </div>
+        <div class="timeline-item" onclick="openTimelineModal('1971-mid')">
+          <div class="timeline-date">April 1971</div>
+          <div class="timeline-event">Provisional Government</div>
+          <div class="timeline-desc">Government-in-exile formed at Mujibnagar. International diplomatic efforts intensify.</div>
+        </div>
+        <div class="timeline-item" onclick="openTimelineModal('1971-end')">
+          <div class="timeline-date">16 December 1971</div>
+          <div class="timeline-event">Victory Day</div>
+          <div class="timeline-desc">Pakistani forces surrender. Bangladesh achieves independence after 9 months of war.</div>
+        </div>
+        <div class="timeline-item" onclick="openTimelineModal('1972')">
+          <div class="timeline-date">1972</div>
+          <div class="timeline-event">Reconstruction</div>
+          <div class="timeline-desc">Nation-building begins. Constitution drafted, war crimes tribunals established.</div>
+        </div>
+      </div>
+    </section>
+        <div class="moment">
+          <h5>Partition & Language Movement</h5>
+          <time>1947–1956</time>
+          <p class="quote">Language rights and cultural identity movements lay the foundation for self-determination.</p>
+        </div>
+        <div class="moment">
+          <h5>1966 Six-Point Movement</h5>
+          <time>1966</time>
+          <p>Autonomy demands accelerate; mass mobilization expands.</p>
+        </div>
+        <div class="moment">
+          <h5>Historic Speech</h5>
+          <time>7 March 1971</time>
+          <p>Call for resistance and preparation for independence.</p>
+        </div>
+        <div class="moment">
+          <h5>Operation Searchlight</h5>
+          <time>25 March 1971</time>
+          <p>Crackdown and atrocities trigger full-scale resistance.</p>
+        </div>
+        <div class="moment">
+          <h5>Provisional Govt</h5>
+          <time>10 April 1971</time>
+          <p>Mujibnagar Government formed; diplomatic campaign begins.</p>
+        </div>
+        <div class="moment">
+          <h5>Victory Day</h5>
+          <time>16 December 1971</time>
+          <p>Formal surrender; an independent Bangladesh emerges.</p>
+        </div>
+        <div class="moment">
+          <h5>Constitution & Reconstruction</h5>
+          <time>1972</time>
+          <p>State-building, justice efforts, and rehabilitation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORAL HISTORIES -->
+    <section id="oral" class="container">
+      <h2 class="section-title" data-i18n="oral.title">Oral Histories & Testimonies</h2>
+      <p class="section-sub" data-i18n="oral.sub">Listen to recorded memories from freedom fighters, civilians, and international witnesses.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Witness Account</h3>
+          <audio controls preload="none" src="#" aria-label="Oral history audio placeholder"></audio>
+          <p class="quote">“I carried this diary through the refugee camp, page by page…”</p>
+        </article>
+        <article class="card">
+          <h3>Freedom Fighter</h3>
+          <audio controls preload="none" src="#"></audio>
+          <p class="quote">“We learned to map the routes by the rivers and stars.”</p>
+        </article>
+        <article class="card">
+          <h3>International Journalist</h3>
+          <audio controls preload="none" src="#"></audio>
+          <p class="quote">“In the press darkroom, the truth fixed onto paper.”</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- RESEARCH PORTAL -->
+    <section id="research" class="container">
+      <h2 class="section-title" data-i18n="research.title">Research Portal</h2>
+      <p class="section-sub" data-i18n="research.sub">Citeable records, IIIF-ready images, persistent identifiers, and exportable metadata for academic use.</p>
+      <div class="grid">
+        <article class="card">
+          <h3 data-i18n="research.api">Public API</h3>
+          <p data-i18n="research.apiD">Query items, collections, and authority records (people, places, organizations). Supports filters by type, decade, district, language.</p>
+          <code style="display:block; background: #0b0e13; color:#d9e7ff; padding: 12px; border-radius: 12px; overflow:auto;">
+GET /api/v1/items?type=photo&year=1971&district=Jessore
+GET /api/v1/awards?class=Bir%20Sreshtho
+GET /api/v1/people?role=freedom-fighter
+          </code>
+        </article>
+        <article class="card">
+          <h3 data-i18n="research.tools">Tools</h3>
+          <p data-i18n="research.toolsD">CSV/JSON export, Zotero/RIS citations, IIIF manifests, and geocoded maps.</p>
+        </article>
+        <article class="card">
+          <h3 data-i18n="research.access">Access & Rights</h3>
+          <p data-i18n="research.accessD">Clear rights statements, watermarks for sensitive material, and ethical-use guidance for genocide documentation.</p>
+        </article>
+      </div>
+      <div class="mapbox" role="img" aria-label="Map placeholder">
+        <div>
+          <strong data-i18n="map.title">Interactive Map (Districts & Sites)</strong>
+          <div style="font-size: 12px; color: var(--muted);" data-i18n="map.hint">Embed your map provider here (Leaflet/Mapbox/ArcGIS).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISIT INFO -->
+    <section id="visit" class="container">
+      <h2 class="section-title" data-i18n="visit.title">Visit the Museum</h2>
+      <p class="section-sub" data-i18n="visit.sub">Plan your visit and explore learning resources for schools and communities.</p>
+      <div class="grid">
+        <article class="card">
+          <h3 data-i18n="visit.hours">Hours & Tickets</h3>
+          <p data-i18n="visit.hoursD">Open Tue–Sun. Discounted student & researcher passes. Check local holidays.</p>
+        </article>
+        <article class="card">
+          <h3 data-i18n="visit.educ">Education</h3>
+          <p data-i18n="visit.educD">Lesson plans, educator guides, and touring trunk materials for classrooms.</p>
+        </article>
+        <article class="card">
+          <h3 data-i18n="visit.support">Support</h3>
+          <p data-i18n="visit.supportD">Donate artifacts, sponsor digitization, or volunteer for description and translation.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container" role="contentinfo">
+    <div class="footer-grid">
+      <div>
+        <h4 style="margin-top:0; font-family:Merriweather,serif;">About</h4>
+        <p style="color:var(--muted)">This interface presents the Liberation War Museum's digital holdings with international, accessible design. Content usage follows rights and attribution policies.</p>
+      </div>
+      <div>
+        <h4 style="margin-top:0; font-family:Merriweather,serif;">Contact</h4>
+        <p style="color:var(--muted)">Research desk • education • media • partnerships</p>
+      </div>
+      <div>
+        <h4 style="margin-top:0; font-family:Merriweather,serif;">Policies</h4>
+        <p style="color:var(--muted)">Ethical handling of atrocity records • Privacy • Takedown • Accessibility (WCAG 2.2 AA)</p>
+      </div>
+      <div>
+        <h4 style="margin-top:0; font-family:Merriweather,serif;">Languages</h4>
+        <p style="color:var(--muted)">Bengali (বাংলা), English — more coming.</p>
+      </div>
+    </div>
+    <div style="margin-top: 18px; color: var(--muted); font-size: 12px;">© Liberation War Museum. For demonstration: replace placeholders with live data and APIs.</div>
+  </footer>
+
+  <!-- Modal Overlays -->
+  <div class="modal-overlay" id="collectionModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('collectionModal')">&times;</span>
+      <div id="collectionModalContent"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="timelineModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('timelineModal')">&times;</span>
+      <div id="timelineModalContent"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="audioModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('audioModal')">&times;</span>
+      <div id="audioModalContent"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="artifact3DModal">
+    <div class="modal-content" style="max-width: 900px;">
+      <span class="modal-close" onclick="closeModal('artifact3DModal')">&times;</span>
+      <div id="artifact3DModalContent"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="virtualTourModal">
+    <div class="modal-content" style="max-width: 1000px; max-height: 90vh;">
+      <span class="modal-close" onclick="closeModal('virtualTourModal')">&times;</span>
+      <div id="virtualTourModalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // =====================
+    // Enhanced Interactive Features
+    // =====================
+    
+    // Search suggestions
+    const searchSuggestions = [
+      "Bangabandhu Sheikh Mujibur Rahman", "7 March Speech", "Operation Searchlight",
+      "Mujibnagar Government", "Liberation War 1971", "Genocide 1971", "Mukti Bahini",
+      "Pakistani Surrender", "Victory Day", "Bir Sreshtho", "Freedom Fighters",
+      "Refugee Crisis", "International Support", "Indian Army", "Dhaka University"
+    ];
+    
+    function showSearchSuggestions(query) {
+      const container = $('#searchSuggestions');
+      if (!query || query.length < 2) {
+        container.classList.remove('active');
+        return;
+      }
+      
+      const filtered = searchSuggestions.filter(item => 
+        item.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 5);
+      
+      if (filtered.length > 0) {
+        container.innerHTML = filtered.map(item => 
+          `<div class="suggestion-item" onclick="selectSuggestion('${item}')">${item}</div>`
+        ).join('');
+        container.classList.add('active');
+      } else {
+        container.classList.remove('active');
+      }
+    }
+    
+    function selectSuggestion(suggestion) {
+      $('#q').value = suggestion;
+      $('#searchSuggestions').classList.remove('active');
+    }
+    
+    function addSearchTerm(term) {
+      const searchInput = $('#q');
+      const currentValue = searchInput.value.trim();
+      if (currentValue && !currentValue.includes(term)) {
+        searchInput.value = currentValue + ' ' + term;
+      } else if (!currentValue) {
+        searchInput.value = term;
+      }
+    }
+    
+    // Advanced search toggle
+    function toggleAdvancedSearch() {
+      const advanced = $('#advancedSearch');
+      advanced.classList.toggle('active');
+    }
+    
+    // Modal functions
+    function openCollectionModal(type) {
+      const modal = $('#collectionModal');
+      const content = $('#collectionModalContent');
+      
+      const collections = {
+        photographs: {
+          title: "Frontline & Civilian Life Photographs",
+          count: "15,420 items",
+          description: "A comprehensive collection of photographs documenting both military operations and civilian experiences during the Liberation War.",
+          highlights: [
+            "Mukti Bahini training camps",
+            "Refugee camps in India", 
+            "International press coverage",
+            "Victory celebrations",
+            "Reconstruction efforts"
+          ]
+        },
+        documents: {
+          title: "Government & Movement Papers",
+          count: "8,235 items",
+          description: "Official documents, letters, and papers from the liberation movement and government-in-exile.",
+          highlights: [
+            "Proclamation of Independence",
+            "Mujibnagar Government records",
+            "International diplomatic correspondence",
+            "Military operation plans",
+            "Post-war reconstruction documents"
+          ]
+        },
+        audio: {
+          title: "Broadcasts & Historic Speeches",
+          count: "1,120 items",
+          description: "Audio recordings of historic speeches, radio broadcasts, and oral testimonies.",
+          highlights: [
+            "7 March 1971 Speech",
+            "Swadhin Bangla Betar broadcasts",
+            "International radio coverage",
+            "Freedom fighter testimonies",
+            "Victory Day speeches"
+          ]
+        }
+      };
+      
+      const collection = collections[type] || collections.photographs;
+      
+      content.innerHTML = `
+        <h2>${collection.title}</h2>
+        <p style="color: var(--accent-gold); font-weight: 600; margin: 10px 0;">${collection.count}</p>
+        <p style="margin: 15px 0; line-height: 1.6;">${collection.description}</p>
+        <h4 style="margin: 20px 0 10px 0;">Collection Highlights:</h4>
+        <ul style="line-height: 1.8;">
+          ${collection.highlights.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+        <div style="margin-top: 25px;">
+          <button class="btn" onclick="alert('This would navigate to the full collection in a real application')">
+            Browse Collection →
+          </button>
+        </div>
+      `;
+      
+      modal.classList.add('active');
+    }
+    
+    function openTimelineModal(period) {
+      const modal = $('#timelineModal');
+      const content = $('#timelineModalContent');
+      
+      const timelineData = {
+        '1947': {
+          title: "1947–1956: Partition & Language Movement",
+          description: "The partition of British India creates Pakistan with East Bengal as East Pakistan. Growing cultural and linguistic tensions emerge.",
+          events: [
+            "1947: Partition of India, creation of Pakistan",
+            "1948: Urdu declared sole national language",
+            "1952: Language Movement martyrs",
+            "1954: United Front election victory",
+            "1956: Constitution recognizes Bengali"
+          ]
+        },
+        '1966': {
+          title: "1966: Six-Point Movement",
+          description: "Sheikh Mujibur Rahman presents the Six-Point Program demanding autonomy for East Pakistan.",
+          events: [
+            "Lahore Declaration of Six Points",
+            "Mass arrests of Awami League leaders", 
+            "Growing support for autonomy",
+            "Economic disparity highlighted"
+          ]
+        },
+        '1970': {
+          title: "7 March 1971: Historic Speech",
+          description: "Bangabandhu delivers the historic speech that galvanizes the independence movement.",
+          events: [
+            "Race Course rally with 1 million attendees",
+            "Call for civil disobedience",
+            "De facto independence declaration",
+            "Mass mobilization begins"
+          ]
+        }
+      };
+      
+      const data = timelineData[period] || timelineData['1970'];
+      
+      content.innerHTML = `
+        <h2>${data.title}</h2>
+        <p style="margin: 15px 0; line-height: 1.6; color: var(--muted);">${data.description}</p>
+        <h4 style="margin: 20px 0 10px 0;">Key Events:</h4>
+        <ul style="line-height: 1.8;">
+          ${data.events.map(event => `<li>${event}</li>`).join('')}
+        </ul>
+        <div style="margin-top: 25px;">
+          <button class="btn" onclick="alert('This would show related documents and media')">
+            View Related Documents →
+          </button>
+        </div>
+      `;
+      
+      modal.classList.add('active');
+    }
+    
+    function openAudioModal(audioId) {
+      const modal = $('#audioModal');
+      const content = $('#audioModalContent');
+      
+      const audioData = {
+        witness1: {
+          title: "Refugee Camp Witness Account",
+          speaker: "Rashida Begum",
+          duration: "12:45",
+          description: "A firsthand account of life in the refugee camps across the border in India during 1971."
+        },
+        fighter1: {
+          title: "Freedom Fighter's Story",
+          speaker: "Major (Retd.) Abdul Halim",
+          duration: "8:23", 
+          description: "Military tactics and personal experiences from the Liberation War frontlines."
+        },
+        journalist1: {
+          title: "International Press Coverage",
+          speaker: "Sydney Schanberg",
+          duration: "15:12",
+          description: "Foreign correspondent's account of reporting on the 1971 genocide and war."
+        }
+      };
+      
+      const audio = audioData[audioId] || audioData.witness1;
+      
+      content.innerHTML = `
+        <h2>${audio.title}</h2>
+        <p style="color: var(--accent-gold); margin: 5px 0;"><strong>Speaker:</strong> ${audio.speaker}</p>
+        <p style="color: var(--muted); margin: 5px 0;"><strong>Duration:</strong> ${audio.duration}</p>
+        <p style="margin: 15px 0; line-height: 1.6;">${audio.description}</p>
+        
+        <div class="audio-player" style="margin: 20px 0;">
+          <div class="audio-controls">
+            <button class="play-btn" aria-label="Play audio">▶</button>
+            <div class="audio-progress">
+              <div class="audio-progress-fill" style="width: 0%;"></div>
+            </div>
+            <span class="audio-time">0:00</span>
+            <span class="audio-time">${audio.duration}</span>
+          </div>
+        </div>
+        
+        <div style="margin-top: 25px;">
+          <button class="btn" onclick="alert('This would play the actual audio file')">
+            Play Full Audio →
+          </button>
+        </div>
+      `;
+      
+      modal.classList.add('active');
+    }
+    
+    function closeModal(modalId) {
+      $('#' + modalId).classList.remove('active');
+    }
+    
+    // Audio player functionality
+    function initAudioPlayer() {
+      const playBtn = $('#playBtn');
+      const audioPlayer = $('#audioPlayer');
+      const progressFill = $('#audioProgressFill');
+      const audioTime = $('#audioTime');
+      let isPlaying = false;
+      
+      playBtn.addEventListener('click', function() {
+        if (!isPlaying) {
+          // Simulate audio playing
+          playBtn.innerHTML = '⏸';
+          isPlaying = true;
+          simulateAudioProgress();
+        } else {
+          playBtn.innerHTML = '▶';
+          isPlaying = false;
+        }
+      });
+      
+      function simulateAudioProgress() {
+        let progress = 0;
+        const interval = setInterval(() => {
+          if (!isPlaying) {
+            clearInterval(interval);
+            return;
+          }
+          progress += 0.5;
+          const percentage = (progress / 1111) * 100; // 18:31 = 1111 seconds
+          progressFill.style.width = percentage + '%';
+          
+          const minutes = Math.floor(progress / 60);
+          const seconds = Math.floor(progress % 60);
+          audioTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+          
+          if (progress >= 1111) {
+            clearInterval(interval);
+            playBtn.innerHTML = '▶';
+            isPlaying = false;
+            progressFill.style.width = '0%';
+            audioTime.textContent = '0:00';
+          }
+        }, 100);
+      }
+    }
+    
+    // Animated counter
+    function animateCounter(element, target) {
+      const start = 0;
+      const duration = 2000;
+      const startTime = performance.now();
+      
+      function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(progress * target);
+        
+        if (typeof target === 'number') {
+          element.textContent = current.toLocaleString() + '+';
+        } else {
+          element.textContent = target;
+        }
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        }
+      }
+      
+      requestAnimationFrame(updateCounter);
+    }
+    
+    // Initialize counters when they come into view
+    function initCounters() {
+      const statItems = $('#stat-items');
+      if (statItems) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateCounter(entry.target, 125430);
+              observer.unobserve(entry.target);
+            }
+          });
+        });
+        observer.observe(statItems);
+      }
+    }
+    const dict = {
+      en: {
+        'brand.tag': 'Liberation War Museum',
+        'nav.collections': 'Collections',
+        'nav.timeline': 'Timeline',
+        'nav.awards': 'Gallantry',
+        'nav.oral': 'Oral Histories',
+        'nav.research': 'Research',
+        'nav.visit': 'Visit',
+        'hero.title': 'Bangladesh Liberation War Museum — Digital Archive',
+        'hero.lead': 'Explore authentic records from 1947–1971–1972 and beyond: documents, photographs, personal artifacts, letters, newspapers, maps, and testimonies curated for scholars, educators, and the public worldwide.',
+        'hero.stats1': 'Digitized Items',
+        'hero.stats2': 'Oral Histories',
+        'hero.stats3': 'Exhibitions',
+        'hero.stats4': 'Access',
+        'hero.searchLabel': 'Search the Archive',
+        'hero.searchBtn': 'Search',
+        'hero.hint': 'Tip: Use filters like type:photo year:1971 place:Jessore',
+        'chips.genocide': 'Genocide',
+        'chips.mukti': 'Mukti Bahini',
+        'chips.exile': 'Govt-in-Exile',
+        'chips.treaty': 'International Support',
+        'collections.title': 'Collections & Exhibits',
+        'collections.sub': 'Browse curated sets: newspapers, diaries, identity papers, uniforms, weapons, maps, posters, and art that document the struggle for independence.',
+        'collections.type_photo': 'Photographs',
+        'collections.type_doc': 'Documents',
+        'collections.type_audio': 'Audio',
+        'collections.type_maps': 'Maps',
+        'collections.type_artifacts': 'Artifacts',
+        'collections.type_press': 'Press',
+        'collections.c1': 'Frontline & Civilian Life',
+        'collections.c1d': 'Photo essays showing resistance, refugee camps, international coverage, and daily life under occupation.',
+        'collections.c2': 'Government & Movement Papers',
+        'collections.c2d': 'Proclamations, letters, minutes, foreign communiqués, and trial records.',
+        'collections.c3': 'Broadcasts & Speeches',
+        'collections.c3d': 'Radio transmissions, announcements, and historic speeches including 7 March.',
+        'collections.c4': 'Campaigns & Atrocities',
+        'collections.c4d': 'Operational maps, border movements, and documented mass-atrocity sites.',
+        'collections.c5': 'Artifacts & Uniforms',
+        'collections.c5d': 'Badges, armbands, fieldgear, and personal items donated by veterans and families.',
+        'collections.c6': 'Press & Posters',
+        'collections.c6d': 'Newspapers, editorials, protest posters, and international solidarity materials.',
+        'awards.title': 'Gallantry Awards',
+        'awards.sub': 'Recipients recognized for extraordinary bravery in the Liberation War.',
+        'awards.view': 'View all recipients',
+        'timeline.title': 'Historical Timeline',
+        'timeline.sub': 'Key moments contextualized with primary sources. Scroll horizontally.',
+        'oral.title': 'Oral Histories & Testimonies',
+        'oral.sub': 'Listen to recorded memories from freedom fighters, civilians, and international witnesses.',
+        'research.title': 'Research Portal',
+        'research.sub': 'Citeable records, IIIF-ready images, persistent identifiers, and exportable metadata for academic use.',
+        'research.api': 'Public API',
+        'research.apiD': 'Query items, collections, and authority records (people, places, organizations). Supports filters by type, decade, district, language.',
+        'research.tools': 'Tools',
+        'research.toolsD': 'CSV/JSON export, Zotero/RIS citations, IIIF manifests, and geocoded maps.',
+        'research.access': 'Access & Rights',
+        'research.accessD': 'Clear rights statements, watermarks for sensitive material, and ethical-use guidance for genocide documentation.',
+        'map.title': 'Interactive Map (Districts & Sites)',
+        'map.hint': 'Embed your map provider here (Leaflet/Mapbox/ArcGIS).',
+        'visit.title': 'Visit the Museum',
+        'visit.sub': 'Plan your visit and explore learning resources for schools and communities.',
+        'visit.hours': 'Hours & Tickets',
+        'visit.hoursD': 'Open Tue–Sun. Discounted student & researcher passes. Check local holidays.',
+        'visit.educ': 'Education',
+        'visit.educD': 'Lesson plans, educator guides, and touring trunk materials for classrooms.',
+        'visit.support': 'Support',
+        'visit.supportD': 'Donate artifacts, sponsor digitization, or volunteer for description and translation.'
+      },
+      bn: {
+        'brand.tag': 'মুক্তিযুদ্ধ জাদুঘর',
+        'nav.collections': 'সংগ্রহ',
+        'nav.timeline': 'সময়ের রেখা',
+        'nav.awards': 'বীর সম্মাননা',
+        'nav.oral': 'মৌখিক ইতিহাস',
+        'nav.research': 'গবেষণা',
+        'nav.visit': 'ভিজিট',
+        'hero.title': 'বাংলাদেশ মুক্তিযুদ্ধ জাদুঘর — ডিজিটাল আর্কাইভ',
+        'hero.lead': '১৯৪৭–১৯৭১–১৯৭২ এবং পরবর্তী সময়ের প্রামাণ্য নথি, ছবি, ব্যক্তিগত নিদর্শন, চিঠি, সংবাদপত্র, মানচিত্র ও সাক্ষ্য—বিশ্বব্যাপী গবেষক, শিক্ষার্থী ও জনসাধারণের জন্য।',
+        'hero.stats1': 'ডিজিটাইজড আইটেম',
+        'hero.stats2': 'মৌখিক ইতিহাস',
+        'hero.stats3': 'প্রদর্শনী',
+        'hero.stats4': 'গ্লোবাল এক্সেস',
+        'hero.searchLabel': 'আর্কাইভে খুঁজুন',
+        'hero.searchBtn': 'খোঁজ',
+        'hero.hint': 'টিপ: type:photo year:1971 place:Jessore এর মতো ফিল্টার ব্যবহার করুন',
+        'chips.genocide': 'গণহত্যা',
+        'chips.mukti': 'মুক্তিবাহিনী',
+        'chips.exile': 'অস্থায়ী সরকার',
+        'chips.treaty': 'আন্তর্জাতিক সহায়তা',
+        'collections.title': 'সংগ্রহ ও প্রদর্শনী',
+        'collections.sub': 'পত্রিকা, ডায়েরি, পরিচয়পত্র, ইউনিফর্ম, অস্ত্র, মানচিত্র, পোস্টার ও শিল্পকর্ম—স্বাধীনতা সংগ্রামের নথিপত্র।',
+        'collections.type_photo': 'ফটোগ্রাফ',
+        'collections.type_doc': 'দলিল',
+        'collections.type_audio': 'অডিও',
+        'collections.type_maps': 'মানচিত্র',
+        'collections.type_artifacts': 'নিদর্শন',
+        'collections.type_press': 'প্রেস',
+        'collections.c1': 'ফ্রন্টলাইন ও নাগরিক জীবন',
+        'collections.c1d': 'প্রতিরোধ, শরণার্থী শিবির, আন্তর্জাতিক প্রতিবেদন ও দখলদারিত্বের দৈনন্দিন জীবন।',
+        'collections.c2': 'সরকারি ও আন্দোলনের কাগজপত্র',
+        'collections.c2d': 'ঘোষণা, চিঠি, বৈঠকের নথি, বিদেশি বার্তা ও বিচারপত্র।',
+        'collections.c3': 'বক্তৃতা ও সম্প্রচার',
+        'collections.c3d': 'রেডিও সম্প্রচার, নির্দেশনা ও ঐতিহাসিক ভাষণ, ৭ই মার্চসহ।',
+        'collections.c4': 'অভিযান ও নির্যাতন',
+        'collections.c4d': 'অপারেশনাল মানচিত্র, সীমান্ত চলাচল ও গণহত্যাস্থল।',
+        'collections.c5': 'নিদর্শন ও ইউনিফর্ম',
+        'collections.c5d': 'ব্যাজ, ব্যান্ড, ফিল্ডগিয়ার ও যোদ্ধা এবং পরিবারের দানকৃত ব্যক্তিগত জিনিস।',
+        'collections.c6': 'প্রেস ও পোস্টার',
+        'collections.c6d': 'সংবাদপত্র, সম্পাদকীয়, প্রতিবাদ পোস্টার ও আন্তর্জাতিক সংহতি উপকরণ।',
+        'awards.title': 'বীর সম্মাননা',
+        'awards.sub': 'মুক্তিযুদ্ধে অসামান্য বীরত্বের স্বীকৃতি।',
+        'awards.view': 'সমস্ত নাম দেখুন',
+        'timeline.title': 'ঐতিহাসিক টাইমলাইন',
+        'timeline.sub': 'প্রাথমিক উৎসসহ প্রধান মুহূর্তগুলো। অনুভূমিকভাবে স্ক্রল করুন।',
+        'oral.title': 'মৌখিক ইতিহাস ও সাক্ষ্য',
+        'oral.sub': 'যোদ্ধা, নাগরিক ও আন্তর্জাতিক সাক্ষীদের স্মৃতিচারণ শুনুন।',
+        'research.title': 'গবেষণা পোর্টাল',
+        'research.sub': 'উদ্ধৃতিযোগ্য রেকর্ড, IIIF ইমেজ, স্থায়ী আইডি এবং এক্সপোর্টেবল মেটাডাটা।',
+        'research.api': 'পাবলিক এপিআই',
+        'research.apiD': 'আইটেম, সংগ্রহ ও কর্তৃপক্ষ রেকর্ড (ব্যক্তি, স্থান, সংগঠন) কুয়েরি করুন। টাইপ, দশক, জেলা, ভাষা দ্বারা ফিল্টার সমর্থিত।',
+        'research.tools': 'টুলস',
+        'research.toolsD': 'CSV/JSON এক্সপোর্ট, Zotero/RIS সাইটেশন, IIIF ম্যানিফেস্ট ও জিওকোডেড ম্যাপ।',
+        'research.access': 'অ্যাক্সেস ও অধিকার',
+        'research.accessD': 'রাইটস বিবৃতি, সংবেদনশীল উপকরণে ওয়াটারমার্ক ও নৈতিক ব্যবহার নির্দেশিকা।',
+        'map.title': 'ইন্টারঅ্যাকটিভ ম্যাপ (জেলা ও সাইট)',
+        'map.hint': 'এখানে আপনার ম্যাপ প্রোভাইডার এম্বেড করুন (Leaflet/Mapbox/ArcGIS)।',
+        'visit.title': 'জাদুঘর ভিজিট',
+        'visit.sub': 'পরিদর্শনের পরিকল্পনা ও শিক্ষাসংক্রান্ত রিসোর্স।',
+        'visit.hours': 'সময়সূচি ও টিকিট',
+        'visit.hoursD': 'মঙ্গল–রবি খোলা। ছাত্র ও গবেষকদের জন্য ছাড়। স্থানীয় ছুটি দেখুন।',
+        'visit.educ': 'শিক্ষা',
+        'visit.educD': 'পাঠ পরিকল্পনা, গাইড ও চলমান প্রদর্শনী কিট।',
+        'visit.support': 'সহযোগিতা',
+        'visit.supportD': 'নিদর্শন দান, ডিজিটাইজেশন স্পনসর বা অনুবাদ/বর্ণনায় স্বেচ্ছাসেবা।'
+      }
+    };
+
+    const $ = (sel, ctx=document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+    function setLang(lang){
+      document.documentElement.lang = lang === 'bn' ? 'bn' : 'en';
+      $$('[data-i18n]').forEach(node => {
+        const key = node.getAttribute('data-i18n');
+        const val = (dict[lang] && dict[lang][key]) || dict.en[key] || node.textContent;
+        node.innerHTML = val;
+      });
+      localStorage.setItem('lwm-lang', lang);
+    }
+
+    // Toggle theme (classic <-> modern) as a fun extra
+    function toggleTheme(){
+      const cur = document.documentElement.getAttribute('data-theme');
+      const nxt = cur === 'classic' ? 'modern' : 'classic';
+      document.documentElement.setAttribute('data-theme', nxt);
+    }
+
+    // Optional: hook up demo buttons
+    $('#langToggle').addEventListener('click', () => {
+      const cur = document.documentElement.lang === 'bn' ? 'en' : 'bn';
+      setLang(cur);
+    });
+    $('#themeToggle').addEventListener('click', toggleTheme);
+    $('#advancedSearchToggle').addEventListener('click', toggleAdvancedSearch);
+
+    // Search functionality
+    $('#q').addEventListener('input', (e) => {
+      showSearchSuggestions(e.target.value);
+    });
+    
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.searchbar')) {
+        $('#searchSuggestions').classList.remove('active');
+      }
+    });
+
+    // Persist language
+    const saved = localStorage.getItem('lwm-lang');
+    if(saved) setLang(saved);
+
+    // Demo: search click with advanced filters
+    $('#searchBtn').addEventListener('click', () => {
+      const q = $('#q').value.trim();
+      if(!q){ alert(document.documentElement.lang === 'bn' ? 'অনুগ্রহ করে একটি কীওয়ার্ড লিখুন' : 'Please enter a keyword'); return; }
+      
+      // Collect advanced search filters
+      const filters = {
+        type: $('#filterType').value,
+        yearFrom: $('#yearFrom').value,
+        yearTo: $('#yearTo').value,
+        location: $('#filterLocation').value
+      };
+      
+      // Build search URL with filters
+      let searchUrl = `/search?q=${encodeURIComponent(q)}`;
+      Object.keys(filters).forEach(key => {
+        if (filters[key]) {
+          searchUrl += `&${key}=${encodeURIComponent(filters[key])}`;
+        }
+      });
+      
+      // In a real app, this would navigate to search results
+      alert(`Searching for: "${q}"\nFilters: ${JSON.stringify(filters, null, 2)}`);
+    });
+
+    // =====================
+    // 3D Viewer Functionality
+    // =====================
+    
+    let artifact3D = {
+      rotation: { x: 0, y: 0 },
+      zoom: 1,
+      autoRotate: true,
+      isDragging: false,
+      lastMouse: { x: 0, y: 0 }
+    };
+    
+    let panorama = {
+      position: 0,
+      isDragging: false,
+      autoTour: false,
+      lastMouse: { x: 0 }
+    };
+    
+    function init3DViewer() {
+      const viewer = $('#artifact3DViewer');
+      const model = $('#artifactModel');
+      const rotateBtn = $('#rotateBtn');
+      const resetBtn = $('#resetBtn');
+      const zoomSlider = $('#zoomSlider');
+      const zoomThumb = $('#zoomThumb');
+      const fullscreenBtn = $('#fullscreenBtn');
+      
+      if (!viewer) return;
+      
+      // Mouse interactions for 3D model
+      viewer.addEventListener('mousedown', (e) => {
+        artifact3D.isDragging = true;
+        artifact3D.lastMouse = { x: e.clientX, y: e.clientY };
+        artifact3D.autoRotate = false;
+        rotateBtn.classList.remove('active');
+        e.preventDefault();
+      });
+      
+      document.addEventListener('mousemove', (e) => {
+        if (!artifact3D.isDragging) return;
+        
+        const deltaX = e.clientX - artifact3D.lastMouse.x;
+        const deltaY = e.clientY - artifact3D.lastMouse.y;
+        
+        artifact3D.rotation.y += deltaX * 0.5;
+        artifact3D.rotation.x += deltaY * 0.5;
+        
+        // Limit X rotation
+        artifact3D.rotation.x = Math.max(-45, Math.min(45, artifact3D.rotation.x));
+        
+        updateModel();
+        artifact3D.lastMouse = { x: e.clientX, y: e.clientY };
+      });
+      
+      document.addEventListener('mouseup', () => {
+        artifact3D.isDragging = false;
+      });
+      
+      // Scroll for zoom
+      viewer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        artifact3D.zoom = Math.max(0.5, Math.min(3, artifact3D.zoom + delta));
+        updateModel();
+        updateZoomSlider();
+      });
+      
+      // Zoom slider
+      if (zoomSlider) {
+        zoomSlider.addEventListener('click', (e) => {
+          const rect = zoomSlider.getBoundingClientRect();
+          const position = (e.clientX - rect.left) / rect.width;
+          artifact3D.zoom = 0.5 + position * 2.5; // 0.5 to 3
+          updateModel();
+          updateZoomSlider();
+        });
+      }
+      
+      // Control buttons
+      if (rotateBtn) {
+        rotateBtn.addEventListener('click', () => {
+          artifact3D.autoRotate = !artifact3D.autoRotate;
+          rotateBtn.classList.toggle('active');
+        });
+      }
+      
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          artifact3D.rotation = { x: 0, y: 0 };
+          artifact3D.zoom = 1;
+          artifact3D.autoRotate = true;
+          rotateBtn.classList.add('active');
+          updateModel();
+          updateZoomSlider();
+        });
+      }
+      
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          } else {
+            viewer.requestFullscreen();
+          }
+        });
+      }
+      
+      // Auto rotation animation
+      setInterval(() => {
+        if (artifact3D.autoRotate && !artifact3D.isDragging) {
+          artifact3D.rotation.y += 0.5;
+          updateModel();
+        }
+      }, 50);
+    }
+    
+    function updateModel() {
+      const model = $('#artifactModel');
+      if (model) {
+        model.style.transform = `
+          rotateX(${artifact3D.rotation.x}deg) 
+          rotateY(${artifact3D.rotation.y}deg) 
+          scale(${artifact3D.zoom})
+        `;
+      }
+    }
+    
+    function updateZoomSlider() {
+      const thumb = $('#zoomThumb');
+      if (thumb) {
+        const position = ((artifact3D.zoom - 0.5) / 2.5) * 100;
+        thumb.style.left = Math.max(0, Math.min(100, position)) + '%';
+      }
+    }
+    
+    function initPanoramaViewer() {
+      const viewer = $('#panoramaViewer');
+      const image = $('#panoramaImage');
+      const playBtn = $('#tourPlay');
+      const resetBtn = $('#tourReset');
+      const locationSelect = $('#locationSelect');
+      
+      if (!viewer || !image) return;
+      
+      // Mouse interactions for panorama
+      viewer.addEventListener('mousedown', (e) => {
+        panorama.isDragging = true;
+        panorama.lastMouse = { x: e.clientX };
+        panorama.autoTour = false;
+        if (playBtn) playBtn.textContent = '▶ Auto Tour';
+        e.preventDefault();
+      });
+      
+      document.addEventListener('mousemove', (e) => {
+        if (!panorama.isDragging) return;
+        
+        const deltaX = e.clientX - panorama.lastMouse.x;
+        panorama.position += deltaX * 0.5;
+        
+        // Wrap around
+        if (panorama.position > 0) panorama.position = -360;
+        if (panorama.position < -360) panorama.position = 0;
+        
+        updatePanorama();
+        panorama.lastMouse = { x: e.clientX };
+      });
+      
+      document.addEventListener('mouseup', () => {
+        panorama.isDragging = false;
+      });
+      
+      // Control buttons
+      if (playBtn) {
+        playBtn.addEventListener('click', () => {
+          panorama.autoTour = !panorama.autoTour;
+          playBtn.textContent = panorama.autoTour ? '⏸ Stop Tour' : '▶ Auto Tour';
+        });
+      }
+      
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          panorama.position = 0;
+          panorama.autoTour = false;
+          if (playBtn) playBtn.textContent = '▶ Auto Tour';
+          updatePanorama();
+        });
+      }
+      
+      if (locationSelect) {
+        locationSelect.addEventListener('change', (e) => {
+          changePanoramaLocation(e.target.value);
+        });
+      }
+      
+      // Auto tour animation
+      setInterval(() => {
+        if (panorama.autoTour && !panorama.isDragging) {
+          panorama.position -= 0.3;
+          if (panorama.position < -360) panorama.position = 0;
+          updatePanorama();
+        }
+      }, 50);
+    }
+    
+    function updatePanorama() {
+      const image = $('#panoramaImage');
+      if (image) {
+        image.style.transform = `translateX(${panorama.position}px)`;
+      }
+    }
+    
+    function changePanoramaLocation(location) {
+      const image = $('#panoramaImage');
+      const locationData = {
+        'mujibnagar': {
+          src: 'https://via.placeholder.com/800x300/006a4e/ffffff?text=360%C2%B0+Mujibnagar+Memorial',
+          alt: '360° view of Mujibnagar Memorial'
+        },
+        'museum': {
+          src: 'https://via.placeholder.com/800x300/8B4513/ffffff?text=360%C2%B0+Liberation+War+Museum',
+          alt: '360° view of Liberation War Museum'
+        },
+        'shaheed-minar': {
+          src: 'https://via.placeholder.com/800x300/FF4500/ffffff?text=360%C2%B0+Shaheed+Minar',
+          alt: '360° view of Shaheed Minar'
+        },
+        'national-memorial': {
+          src: 'https://via.placeholder.com/800x300/2F4F4F/ffffff?text=360%C2%B0+National+Memorial',
+          alt: '360° view of National Memorial'
+        }
+      };
+      
+      const data = locationData[location] || locationData.mujibnagar;
+      if (image) {
+        image.src = data.src;
+        image.alt = data.alt;
+      }
+      
+      panorama.position = 0;
+      updatePanorama();
+    }
+    
+    function open3DArtifact(artifactId) {
+      const modal = $('#artifact3DModal');
+      const content = $('#artifact3DModalContent');
+      
+      const artifacts = {
+        'freedom-fighter-uniform': {
+          title: 'Freedom Fighter Uniform - 3D Model',
+          description: 'This authentic Mukti Bahini uniform has been meticulously scanned to preserve every detail of this important historical artifact.',
+          details: [
+            'Material: Cotton and canvas construction',
+            'Era: Used during 1971 Liberation War',
+            'Condition: Well-preserved with minor wear patterns',
+            'Provenance: Donated by veteran Abdul Karim',
+            'Significance: Standard issue for Sector 7 fighters'
+          ]
+        },
+        'liberation-medal': {
+          title: 'Bir Sreshtho Medal - 3D Model',
+          description: 'The highest military decoration of Bangladesh, awarded posthumously to heroes of the Liberation War.',
+          details: [
+            'Material: Bronze with gold plating',
+            'Design: Featuring national symbols and Bengali script',
+            'Recipients: Only 7 individuals awarded',
+            'Engraving: Hand-crafted details visible in 3D',
+            'Historical Value: Symbol of ultimate sacrifice'
+          ]
+        },
+        'historic-rifle': {
+          title: 'Liberation War Rifle - 3D Model',
+          description: 'A rifle carried by freedom fighters during the 1971 Liberation War, now preserved for future generations.',
+          details: [
+            'Model: Lee-Enfield .303 caliber',
+            'Era: British colonial era, used in 1971',
+            'Condition: Deactivated for museum display',
+            'History: Used in multiple operations',
+            'Significance: Represents armed resistance'
+          ]
+        }
+      };
+      
+      const artifact = artifacts[artifactId] || artifacts['freedom-fighter-uniform'];
+      
+      content.innerHTML = `
+        <h2>${artifact.title}</h2>
+        <div class="viewer-3d" style="margin: 20px 0;">
+          <div class="viewer-3d-container" style="height: 300px;">
+            <div class="viewer-3d-model">
+              <div class="model-placeholder"></div>
+            </div>
+          </div>
+          <div class="viewer-controls">
+            <button class="control-btn active">🔄 Auto Rotate</button>
+            <button class="control-btn">🏠 Reset View</button>
+            <span style="color: var(--muted); font-size: 12px;">Zoom:</span>
+            <div class="zoom-slider">
+              <div class="zoom-slider-thumb" style="left: 50%;"></div>
+            </div>
+            <button class="control-btn">⛶ Fullscreen</button>
+          </div>
+        </div>
+        <p style="margin: 15px 0; line-height: 1.6;">${artifact.description}</p>
+        <h4 style="margin: 20px 0 10px 0;">Artifact Details:</h4>
+        <ul style="line-height: 1.8;">
+          ${artifact.details.map(detail => `<li>${detail}</li>`).join('')}
+        </ul>
+        <div style="margin-top: 25px;">
+          <button class="btn" onclick="alert('This would open in specialized 3D viewer software')">
+            Open in Advanced 3D Viewer →
+          </button>
+        </div>
+      `;
+      
+      modal.classList.add('active');
+    }
+    
+    function openVirtualTour(tourId) {
+      const modal = $('#virtualTourModal');
+      const content = $('#virtualTourModalContent');
+      
+      const tours = {
+        'dhaka-university': {
+          title: 'Dhaka University 1971 - Virtual Tour',
+          description: 'Experience Dhaka University as it was during the Liberation War period, a center of resistance and intellectual activism.',
+          locations: [
+            'Curzon Hall - Site of student protests',
+            'Arts Building - Where proclamations were read',
+            'TSC - Traditional student gathering place',
+            'Shahidullah Hall - Student residence during war',
+            'Central Library - Repository of resistance literature'
+          ]
+        },
+        'racecourse': {
+          title: 'Race Course Ground 1971 - Virtual Tour',
+          description: 'Stand where millions gathered to hear Bangabandhu\'s historic 7 March speech that galvanized the independence movement.',
+          locations: [
+            'The Podium - Where Bangabandhu spoke',
+            'Crowd Areas - Million-person gathering spots',
+            'Press Section - International media positions',
+            'Entry Gates - Where people poured in',
+            'Memorial Markers - Present-day commemoration'
+          ]
+        }
+      };
+      
+      const tour = tours[tourId] || tours['dhaka-university'];
+      
+      content.innerHTML = `
+        <h2>${tour.title}</h2>
+        <div class="viewer-360" style="height: 400px; margin: 20px 0;">
+          <img class="panorama-image" 
+               src="https://via.placeholder.com/800x400/228B22/ffffff?text=360%C2%B0+Virtual+Tour+%28Drag+to+Explore%29" 
+               alt="360° virtual tour">
+        </div>
+        <div class="viewer-controls">
+          <button class="control-btn">▶ Auto Tour</button>
+          <button class="control-btn">🏠 Reset View</button>
+          <span style="color: var(--muted); font-size: 12px;">Location:</span>
+          <select class="control-btn" style="background: var(--surface); min-width: 150px;">
+            ${tour.locations.map((loc, i) => `<option value="${i}">${loc}</option>`).join('')}
+          </select>
+        </div>
+        <p style="margin: 15px 0; line-height: 1.6;">${tour.description}</p>
+        <h4 style="margin: 20px 0 10px 0;">Tour Locations:</h4>
+        <ul style="line-height: 1.8;">
+          ${tour.locations.map(location => `<li>${location}</li>`).join('')}
+        </ul>
+        <div style="margin-top: 25px;">
+          <button class="btn" onclick="alert('This would launch immersive VR experience')">
+            Launch VR Experience →
+          </button>
+        </div>
+      `;
+      
+      modal.classList.add('active');
+    }
+
+    // Initialize interactive features
+    initAudioPlayer();
+    initCounters();
+    init3DViewer();
+    initPanoramaViewer();
+
+    // API buttons
+    $('#recipientsBtn').addEventListener('click', () => {
+      // Replace with real route in production
+      window.location.href = '/awards/recipients';
+    });
+    $('#apiDocsBtn').addEventListener('click', () => {
+      window.location.href = '/api/docs';
+    });
+
+    // Intersection fade-in with enhanced animations
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e => { 
+        if(e.isIntersecting) {
+          e.target.classList.add('seen');
+          // Add staggered animation for timeline items
+          if(e.target.classList.contains('timeline-item')) {
+            setTimeout(() => {
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.opacity = '1';
+            }, 100);
+          }
+        }
+      });
+    }, { threshold: .1 });
+    $$('.fade-up, .timeline-item').forEach(el => io.observe(el));
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+          case 'k':
+            e.preventDefault();
+            $('#q').focus();
+            break;
+          case '/':
+            e.preventDefault();
+            toggleAdvancedSearch();
+            break;
+        }
+      }
+      if (e.key === 'Escape') {
+        // Close any open modals
+        $$('.modal-overlay.active').forEach(modal => {
+          modal.classList.remove('active');
+        });
+        $('#searchSuggestions').classList.remove('active');
+        // Close 3D modals
+        const artifact3DModal = $('#artifact3DModal');
+        const virtualTourModal = $('#virtualTourModal');
+        if (artifact3DModal) artifact3DModal.classList.remove('active');
+        if (virtualTourModal) virtualTourModal.classList.remove('active');
+      }
+    });
+    
+    // Add loading states and smooth transitions
+    document.addEventListener('DOMContentLoaded', () => {
+      // Animate page elements on load
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+  </script>
+</body>
+</html>
