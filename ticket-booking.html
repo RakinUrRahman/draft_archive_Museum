@@ -3,88 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan Your Visit - Liberation War Museum</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Liberation War Museum - Digital Archive</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="Museum_Logo.png">
     <style>
+        /* CSS Variables for Liberation Museum Theme */
         :root {
-            --primary: #8e0000;
-            --secondary: #006b3c;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gold: #daa520;
+            /* Heritage Colors - Inspired by Bangladesh flag and liberation symbols */
+            --liberation-green: #006A4E;
+            --freedom-red: #F42A41;
+            --victory-gold: #FFD700;
+            --heritage-bronze: #CD7F32;
+            --wisdom-blue: #1B4B6B;
+            
+            /* Cultural Neutrals for International Appeal */
+            --parchment: #F5F3E7;
+            --aged-paper: #F0EDE0;
+            --stone-gray: #6B7280;
+            --charcoal: #1F2937;
+            --ivory: #FFFEF7;
+            --museum-black: #0F172A;
+            
+            /* Light Theme (Default - Professional & Accessible) */
+            --primary-bg: #ffffff;
+            --secondary-bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --text-primary: var(--charcoal);
+            --text-secondary: var(--stone-gray);
+            --border-color: rgba(107, 114, 128, 0.15);
+            --shadow-color: rgba(31, 41, 55, 0.08);
+            --accent-gradient: linear-gradient(135deg, var(--liberation-green), var(--wisdom-blue));
+            
+            /* Typography Scale - Classical Proportions */
+            --font-family-primary: 'Playfair Display', 'Times New Roman', serif;
+            --font-family-secondary: 'Inter', 'Segoe UI', sans-serif;
+            --font-family-bengali: 'Noto Sans Bengali', 'SolaimanLipi', sans-serif;
+            
+            /* Animation Properties */
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --fade-in: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
+        /* Dark Theme - Museum Nighttime Elegance */
+        .dark-theme {
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: rgba(203, 213, 225, 0.2);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --accent-gradient: linear-gradient(135deg, var(--liberation-green), var(--heritage-bronze));
+        }
+
+        /* Bengali Language Styling */
+        .lang-bn {
+            font-family: var(--font-family-bengali);
+        }
+
+        .lang-bn h1, .lang-bn h2, .lang-bn h3, .lang-bn h4, .lang-bn h5, .lang-bn h6 {
+            font-family: var(--font-family-bengali);
+            font-weight: 600;
+        }
+
+        /* Advanced Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Body and Global Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
+            font-family: var(--font-family-secondary);
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: var(--transition-smooth);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
         }
-        
-        .navbar {
-            background-color: var(--primary);
+
+        /* Simplified Heritage Pattern Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 106, 78, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(244, 42, 65, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
-        
-        .hero-section {
+
+        /* Container System */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Enhanced Header Design */
+        header {
+            background: rgba(255, 254, 247, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 20px var(--shadow-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+        }
+
+        .dark-theme header {
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--liberation-green);
+            box-shadow: 0 4px 12px rgba(0, 106, 78, 0.3);
+            transition: var(--transition-smooth);
+        }
+
+        .logo:hover img {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 106, 78, 0.4);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            font-family: var(--font-family-primary);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--liberation-green);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Navigation with Cultural Elements */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-menu-toggle:hover {
+            background: rgba(0, 106, 78, 0.1);
+            color: var(--liberation-green);
+        }
+
+        nav ul.nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 12px;
+            position: relative;
+            transition: var(--transition-smooth);
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--liberation-green);
+            transform: translateY(-1px);
+        }
+
+        /* Header Controls */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle, .lang-toggle {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            background: var(--liberation-green);
+            color: white;
+            border-color: var(--liberation-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 106, 78, 0.3);
+        }
+
+        /* Ticket Booking Page Styles */
+        .ticket-hero {
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://placehold.co/1200x600/8e0000/white?text=Liberation+War+Museum') no-repeat center center;
             background-size: cover;
             color: white;
-            padding: 4rem 0;
+            padding: 8rem 0 4rem;
             margin-bottom: 2rem;
         }
-        
+
         .pricing-card {
             transition: transform 0.3s;
             border: none;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: var(--card-bg);
+            margin-bottom: 20px;
         }
-        
+
         .pricing-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .pricing-card .card-header {
-            background-color: var(--primary);
+            background-color: var(--liberation-green);
             color: white;
             font-weight: bold;
         }
-        
+
         .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
+            background-color: var(--liberation-green);
+            border-color: var(--liberation-green);
         }
-        
+
         .btn-primary:hover {
-            background-color: #7a0000;
-            border-color: #7a0000;
+            background-color: #005a42;
+            border-color: #005a42;
         }
-        
+
         .btn-outline-primary {
-            color: var(--primary);
-            border-color: var(--primary);
+            color: var(--liberation-green);
+            border-color: var(--liberation-green);
         }
-        
+
         .btn-outline-primary:hover {
-            background-color: var(--primary);
+            background-color: var(--liberation-green);
             color: white;
         }
-        
+
         .booking-container {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             padding: 2rem;
+            margin-bottom: 2rem;
         }
-        
+
         .section-title {
             position: relative;
             padding-bottom: 15px;
             margin-bottom: 30px;
             text-align: center;
         }
-        
+
         .section-title:after {
             content: '';
             position: absolute;
@@ -93,75 +348,70 @@
             transform: translateX(-50%);
             width: 80px;
             height: 3px;
-            background-color: var(--primary);
+            background-color: var(--liberation-green);
         }
-        
+
         .info-card {
-            border-left: 4px solid var(--primary);
+            border-left: 4px solid var(--liberation-green);
             border-radius: 4px;
             padding: 15px;
             margin-bottom: 15px;
-            background-color: #f9f9f9;
+            background-color: rgba(0, 106, 78, 0.05);
         }
-        
+
         .payment-option {
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
             cursor: pointer;
             transition: all 0.3s;
+            background: var(--card-bg);
         }
-        
+
         .payment-option:hover {
-            border-color: var(--primary);
-            background-color: #f8f8f8;
+            border-color: var(--liberation-green);
+            background-color: rgba(0, 106, 78, 0.05);
         }
-        
+
         .payment-option.selected {
-            border-color: var(--primary);
-            background-color: rgba(142, 0, 0, 0.05);
+            border-color: var(--liberation-green);
+            background-color: rgba(0, 106, 78, 0.1);
         }
-        
+
         .timeline-slots {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-top: 15px;
         }
-        
+
         .time-slot {
             padding: 8px 5px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s;
+            background: var(--card-bg);
         }
-        
+
         .time-slot:hover {
-            border-color: var(--primary);
+            border-color: var(--liberation-green);
         }
-        
+
         .time-slot.selected {
-            background-color: var(--primary);
+            background-color: var(--liberation-green);
             color: white;
-            border-color: var(--primary);
+            border-color: var(--liberation-green);
         }
-        
+
         .time-slot.disabled {
             background-color: #f8f8f8;
             color: #aaa;
             cursor: not-allowed;
         }
-        
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 3rem 0;
-            margin-top: 4rem;
-        }
-        
+
         .confirmation-banner {
             background-color: #d4edda;
             color: #155724;
@@ -170,60 +420,128 @@
             margin-bottom: 20px;
             display: none;
         }
-        
+
         .confirmation-banner.show {
             display: block;
         }
-        
+
         .badge-discount {
-            background-color: var(--gold);
+            background-color: var(--victory-gold);
             color: black;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            nav ul.nav-menu {
+                gap: 15px;
+            }
+            
+            nav a {
+                font-size: 13px;
+                padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            nav ul.nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 0 0 15px 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                gap: 10px;
+                z-index: 1000;
+            }
+            
+            nav ul.nav-menu.active {
+                display: flex;
+            }
+            
+            nav a {
+                font-size: 14px;
+                padding: 12px 16px;
+                border-radius: 8px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav a:hover {
+                background: rgba(0, 106, 78, 0.1);
+            }
+            
+            .timeline-slots {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="https://placehold.co/150x50/ffffff/8e0000?text=Museum+Logo" alt="Liberation War Museum" height="40">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="user.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="virtual_tour.html">Virtual Tour</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="ticket-booking.html">Tickets</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="map_of_memory.html">Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="education.html">Education</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="untold_stories.html">Stories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-outline-light ms-2" href="index.html">Login</a>
-                    </li>
-                </ul>
+<body class="lang-en">
+    <!-- Header -->
+    <header id="header">
+        <div class="logo">
+            <img src="Museum_Logo.png" alt="Liberation War Museum Logo" class="logo-img">
+            <div class="logo-text">
+                <h1 data-en="Liberation War Museum" data-bn="মুক্তিযুদ্ধ জাদুঘর">Liberation War Museum</h1>
+                <p data-en="Digital Archive" data-bn="ডিজিটাল আর্কাইভ">Digital Archive</p>
             </div>
         </div>
-    </nav>
+
+        <nav>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link" data-en="Home" data-bn="হোম">Home</a></li>
+                <li><a href="index.html#interactive-map" class="nav-link" data-en="Interactive Map" data-bn="ইন্টারঅ্যাক্টিভ ম্যাপ">Interactive Map</a></li>
+                <li><a href="index.html#virtual-gallery" class="nav-link" data-en="Virtual Gallery" data-bn="ভার্চুয়াল গ্যালারি">Virtual Gallery</a></li>
+                <li><a href="index.html#storytelling" class="nav-link" data-en="Story Telling" data-bn="গল্প বলার বিভাগ">Story Telling</a></li>
+                <li><a href="index.html#educational" class="nav-link" data-en="Educational" data-bn="শিক্ষামূলক বিভাগ">Educational</a></li>
+                <li><a href="index.html#digital-exhibition" class="nav-link" data-en="Digital Exhibition" data-bn="ডিজিটাল প্রদর্শনী">Digital Exhibition</a></li>
+                <li><a href="index.html#citizen-historian" class="nav-link" data-en="Citizen Historian" data-bn="নাগরিক ইতিহাসবিদ">Citizen Historian</a></li>
+                <li><a href="index.html#virtual-memorial" class="nav-link" data-en="Memorial Wall" data-bn="স্মৃতি প্রাচীর">Memorial Wall</a></li>
+                <li><a href="index.html#contact" class="nav-link" data-en="Contact" data-bn="যোগাযোগ">Contact</a></li>
+                <li><a href="tickets.html" class="nav-link active" data-en="Ticket Booking" data-bn="টিকিট বুকিং">Ticket Booking</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+                <i class="fas fa-sun"></i>
+            </button>
+            <button class="lang-toggle" id="langToggle">EN</button>
+        </div>
+    </header>
 
     <!-- Hero Section -->
-    <div class="hero-section">
+    <div class="ticket-hero">
         <div class="container text-center">
-            <h1 class="display-4 fw-bold">Plan Your Visit</h1>
-            <p class="lead">Book your tickets to experience the history of our Liberation War</p>
+            <h1 class="display-4 fw-bold" data-en="Plan Your Visit" data-bn="আপনার ভিজিট পরিকল্পনা করুন">Plan Your Visit</h1>
+            <p class="lead" data-en="Book your tickets to experience the history of our Liberation War" data-bn="আমাদের মুক্তিযুদ্ধের ইতিহাস অনুভব করতে আপনার টিকিট বুক করুন">Book your tickets to experience the history of our Liberation War</p>
         </div>
     </div>
 
@@ -232,35 +550,35 @@
         <div class="row">
             <!-- Left Column - Museum Information -->
             <div class="col-lg-4">
-                <div class="sticky-top" style="top: 20px;">
-                    <h2 class="section-title">Museum Information</h2>
+                <div class="sticky-top" style="top: 100px;">
+                    <h2 class="section-title" data-en="Museum Information" data-bn="জাদুঘর তথ্য">Museum Information</h2>
                     
                     <div class="info-card">
-                        <h5><i class="fas fa-clock me-2"></i>Opening Hours</h5>
-                        <p class="mb-1">Sunday - Thursday: 10:00 AM - 6:00 PM</p>
-                        <p class="mb-1">Friday: 3:00 PM - 8:00 PM</p>
-                        <p class="mb-0">Saturday: Closed</p>
+                        <h5><i class="fas fa-clock me-2"></i> <span data-en="Opening Hours" data-bn="খোলার সময়">Opening Hours</span></h5>
+                        <p class="mb-1" data-en="Sunday - Thursday: 10:00 AM - 6:00 PM" data-bn="রবিবার - বৃহস্পতিবার: সকাল ১০টা - সন্ধ্যা ৬টা">Sunday - Thursday: 10:00 AM - 6:00 PM</p>
+                        <p class="mb-1" data-en="Friday: 3:00 PM - 8:00 PM" data-bn="শুক্রবার: বিকাল ৩টা - রাত ৮টা">Friday: 3:00 PM - 8:00 PM</p>
+                        <p class="mb-0" data-en="Saturday: Closed" data-bn="শনিবার: বন্ধ">Saturday: Closed</p>
                     </div>
                     
                     <div class="info-card">
-                        <h5><i class="fas fa-map-marker-alt me-2"></i>Location</h5>
-                        <p>5 Segun Bagicha, Dhaka 1000, Bangladesh</p>
+                        <h5><i class="fas fa-map-marker-alt me-2"></i> <span data-en="Location" data-bn="অবস্থান">Location</span></h5>
+                        <p data-en="5 Segun Bagicha, Dhaka 1000, Bangladesh" data-bn="৫ সেগুনবাগিচা, ঢাকা ১০০০, বাংলাদেশ">5 Segun Bagicha, Dhaka 1000, Bangladesh</p>
                         <div class="ratio ratio-16x9">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.216984934741!2d90.400314975054!3d23.743054888948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8dacca5d98d%3A0xcbddd91cc186b32c!2sLiberation%20War%20Museum!5e0!3m2!1sen!2sbd!4v1690812462489!5m2!1sen!2sbd" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                         </div>
                     </div>
                     
                     <div class="info-card">
-                        <h5><i class="fas fa-phone me-2"></i>Contact Us</h5>
-                        <p class="mb-1">Phone: +880 2-XXXX-XXXX</p>
-                        <p class="mb-1">Email: info@liberationwarmuseum.gov.bd</p>
+                        <h5><i class="fas fa-phone me-2"></i> <span data-en="Contact Us" data-bn="যোগাযোগ করুন">Contact Us</span></h5>
+                        <p class="mb-1" data-en="Phone: +880 2-XXXX-XXXX" data-bn="ফোন: +৮৮০ ২-XXXX-XXXX">Phone: +880 2-XXXX-XXXX</p>
+                        <p class="mb-1" data-en="Email: info@liberationwarmuseum.gov.bd" data-bn="ইমেইল: info@liberationwarmuseum.gov.bd">Email: info@liberationwarmuseum.gov.bd</p>
                     </div>
                     
                     <div class="info-card">
-                        <h5><i class="fas fa-tags me-2"></i>Special Discounts</h5>
-                        <p class="mb-1">Students: 50% off with valid ID</p>
-                        <p class="mb-1">Groups (10+): 20% discount</p>
-                        <p class="mb-0">School groups: Free entry with prior booking</p>
+                        <h5><i class="fas fa-tags me-2"></i> <span data-en="Special Discounts" data-bn="বিশেষ ছাড়">Special Discounts</span></h5>
+                        <p class="mb-1" data-en="Students: 50% off with valid ID" data-bn="ছাত্রছাত্রী: বৈধ আইডি সহ ৫০% ছাড়">Students: 50% off with valid ID</p>
+                        <p class="mb-1" data-en="Groups (10+): 20% discount" data-bn="গ্রুপ (১০+): ২০% ছাড়">Groups (10+): 20% discount</p>
+                        <p class="mb-0" data-en="School groups: Free entry with prior booking" data-bn="স্কুল গ্রুপ: পূর্বাবস্থায় বুকিং সহ বিনামূল্যে প্রবেশ">School groups: Free entry with prior booking</p>
                     </div>
                 </div>
             </div>
@@ -270,22 +588,22 @@
                 <div class="booking-container">
                     <div class="confirmation-banner" id="confirmationBanner">
                         <i class="fas fa-check-circle me-2"></i>
-                        <span id="confirmationText">Your booking has been confirmed! Details have been sent to your email.</span>
+                        <span id="confirmationText" data-en="Your booking has been confirmed! Details have been sent to your email." data-bn="আপনার বুকিং নিশ্চিত করা হয়েছে! বিস্তারিত তথ্য আপনার ইমেইলে পাঠানো হয়েছে।">Your booking has been confirmed! Details have been sent to your email.</span>
                     </div>
                     
-                    <h2 class="section-title">Book Your Tickets</h2>
+                    <h2 class="section-title" data-en="Book Your Tickets" data-bn="আপনার টিকিট বুক করুন">Book Your Tickets</h2>
                     
                     <!-- Step 1: Ticket Selection -->
                     <div class="mb-4" id="step1">
-                        <h4 class="mb-3">1. Select Ticket Types</h4>
+                        <h4 class="mb-3" data-en="1. Select Ticket Types" data-bn="১. টিকিটের ধরন নির্বাচন করুন">1. Select Ticket Types</h4>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="pricing-card card">
-                                    <div class="card-header">Adult</div>
+                                    <div class="card-header" data-en="Adult" data-bn="প্রাপ্তবয়স্ক">Adult</div>
                                     <div class="card-body">
                                         <h5 class="card-title">৳ 100</h5>
-                                        <p class="card-text">General admission for visitors aged 13-59</p>
+                                        <p class="card-text" data-en="General admission for visitors aged 13-59" data-bn="১৩-৫৯ বছর বয়সী দর্শনার্থীদের জন্য সাধারণ প্রবেশ">General admission for visitors aged 13-59</p>
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('adult', -1)">-</button>
                                             <span class="mx-2" id="adultCount">0</span>
@@ -297,10 +615,10 @@
                             
                             <div class="col-md-6 mb-3">
                                 <div class="pricing-card card">
-                                    <div class="card-header">Child (6-12)</div>
+                                    <div class="card-header" data-en="Child (6-12)" data-bn="শিশু (৬-১২)">Child (6-12)</div>
                                     <div class="card-body">
                                         <h5 class="card-title">৳ 50</h5>
-                                        <p class="card-text">Children between 6 and 12 years</p>
+                                        <p class="card-text" data-en="Children between 6 and 12 years" data-bn="৬ থেকে ১২ বছর বয়সী শিশু">Children between 6 and 12 years</p>
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('child', -1)">-</button>
                                             <span class="mx-2" id="childCount">0</span>
@@ -312,10 +630,13 @@
                             
                             <div class="col-md-6 mb-3">
                                 <div class="pricing-card card">
-                                    <div class="card-header">Student <span class="badge badge-discount">50% off</span></div>
+                                    <div class="card-header">
+                                        <span data-en="Student" data-bn="ছাত্রছাত্রী">Student</span> 
+                                        <span class="badge-discount" data-en="50% off" data-bn="৫০% ছাড়">50% off</span>
+                                    </div>
                                     <div class="card-body">
                                         <h5 class="card-title">৳ 50</h5>
-                                        <p class="card-text">With valid student ID card</p>
+                                        <p class="card-text" data-en="With valid student ID card" data-bn="বৈধ ছাত্র আইডি কার্ড সহ">With valid student ID card</p>
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('student', -1)">-</button>
                                             <span class="mx-2" id="studentCount">0</span>
@@ -327,10 +648,10 @@
                             
                             <div class="col-md-6 mb-3">
                                 <div class="pricing-card card">
-                                    <div class="card-header">Senior (60+)</div>
+                                    <div class="card-header" data-en="Senior (60+)" data-bn="বয়স্ক (৬০+)">Senior (60+)</div>
                                     <div class="card-body">
                                         <h5 class="card-title">৳ 50</h5>
-                                        <p class="card-text">Visitors aged 60 and above</p>
+                                        <p class="card-text" data-en="Visitors aged 60 and above" data-bn="৬০ এবং তার以上 বয়সী দর্শনার্থী">Visitors aged 60 and above</p>
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('senior', -1)">-</button>
                                             <span class="mx-2" id="seniorCount">0</span>
@@ -342,10 +663,10 @@
                             
                             <div class="col-md-6 mb-3">
                                 <div class="pricing-card card">
-                                    <div class="card-header">Freedom Fighter</div>
+                                    <div class="card-header" data-en="Freedom Fighter" data-bn="মুক্তিযোদ্ধা">Freedom Fighter</div>
                                     <div class="card-body">
-                                        <h5 class="card-title">Free</h5>
-                                        <p class="card-text">With valid freedom fighter ID</p>
+                                        <h5 class="card-title" data-en="Free" data-bn="বিনামূল্যে">Free</h5>
+                                        <p class="card-text" data-en="With valid freedom fighter ID" data-bn="বৈধ মুক্তিযোদ্ধা আইডি সহ">With valid freedom fighter ID</p>
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('ff', -1)">-</button>
                                             <span class="mx-2" id="ffCount">0</span>
@@ -357,10 +678,10 @@
                             
                             <div class="col-md-6 mb-3">
                                 <div class="pricing-card card">
-                                    <div class="card-header">Foreign Visitor</div>
+                                    <div class="card-header" data-en="Foreign Visitor" data-bn="বিদেশী দর্শনার্থী">Foreign Visitor</div>
                                     <div class="card-body">
                                         <h5 class="card-title">৳ 500</h5>
-                                        <p class="card-text">International visitors</p>
+                                        <p class="card-text" data-en="International visitors" data-bn="আন্তর্জাতিক দর্শনার্থী">International visitors</p>
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('foreign', -1)">-</button>
                                             <span class="mx-2" id="foreignCount">0</span>
@@ -373,21 +694,24 @@
                         
                         <div class="d-flex justify-content-between mt-4">
                             <div></div>
-                            <button class="btn btn-primary" onclick="showStep(2)">Continue to Date & Time <i class="fas fa-arrow-right ms-2"></i></button>
+                            <button class="btn btn-primary" onclick="showStep(2)">
+                                <span data-en="Continue to Date & Time" data-bn="তারিখ ও সময় এগিয়ে যান">Continue to Date & Time</span> 
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
                         </div>
                     </div>
                     
                     <!-- Step 2: Date & Time Selection -->
                     <div class="mb-4 d-none" id="step2">
-                        <h4 class="mb-3">2. Select Date & Time</h4>
+                        <h4 class="mb-3" data-en="2. Select Date & Time" data-bn="২. তারিখ ও সময় নির্বাচন করুন">2. Select Date & Time</h4>
                         
                         <div class="mb-3">
-                            <label for="visitDate" class="form-label">Visit Date</label>
+                            <label for="visitDate" class="form-label" data-en="Visit Date" data-bn="ভিজিটের তারিখ">Visit Date</label>
                             <input type="date" class="form-control" id="visitDate" min="">
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label">Available Time Slots</label>
+                            <label class="form-label" data-en="Available Time Slots" data-bn="উপলব্ধ সময় স্লট">Available Time Slots</label>
                             <div class="timeline-slots">
                                 <div class="time-slot">10:00 AM</div>
                                 <div class="time-slot">10:30 AM</div>
@@ -405,26 +729,32 @@
                         </div>
                         
                         <div class="d-flex justify-content-between mt-4">
-                            <button class="btn btn-outline-primary" onclick="showStep(1)"><i class="fas fa-arrow-left me-2"></i> Back</button>
-                            <button class="btn btn-primary" onclick="showStep(3)">Continue to Payment <i class="fas fa-arrow-right ms-2"></i></button>
+                            <button class="btn btn-outline-primary" onclick="showStep(1)">
+                                <i class="fas fa-arrow-left me-2"></i> 
+                                <span data-en="Back" data-bn="পিছনে">Back</span>
+                            </button>
+                            <button class="btn btn-primary" onclick="showStep(3)">
+                                <span data-en="Continue to Payment" data-bn="পেমেন্ট এগিয়ে যান">Continue to Payment</span> 
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
                         </div>
                     </div>
                     
                     <!-- Step 3: Payment -->
                     <div class="mb-4 d-none" id="step3">
-                        <h4 class="mb-3">3. Payment Method</h4>
+                        <h4 class="mb-3" data-en="3. Payment Method" data-bn="৩. পেমেন্ট পদ্ধতি">3. Payment Method</h4>
                         
                         <div class="mb-4">
-                            <h5>Order Summary</h5>
+                            <h5 data-en="Order Summary" data-bn="অর্ডার সারাংশ">Order Summary</h5>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <span>Date:</span>
-                                        <span id="summaryDate">Not selected</span>
+                                        <span data-en="Date:" data-bn="তারিখ:">Date:</span>
+                                        <span id="summaryDate" data-en="Not selected" data-bn="নির্বাচিত হয়নি">Not selected</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                        <span>Time:</span>
-                                        <span id="summaryTime">Not selected</span>
+                                        <span data-en="Time:" data-bn="সময়:">Time:</span>
+                                        <span id="summaryTime" data-en="Not selected" data-bn="নির্বাচিত হয়নি">Not selected</span>
                                     </div>
                                     <hr>
                                     <div id="ticketSummary">
@@ -432,7 +762,7 @@
                                     </div>
                                     <hr>
                                     <div class="d-flex justify-content-between fw-bold">
-                                        <span>Total:</span>
+                                        <span data-en="Total:" data-bn="মোট:">Total:</span>
                                         <span id="totalAmount">৳ 0</span>
                                     </div>
                                 </div>
@@ -440,13 +770,13 @@
                         </div>
                         
                         <div class="mb-4">
-                            <h5 class="mb-3">Select Payment Method</h5>
+                            <h5 class="mb-3" data-en="Select Payment Method" data-bn="পেমেন্ট পদ্ধতি নির্বাচন করুন">Select Payment Method</h5>
                             
                             <div class="payment-option" onclick="selectPayment('card')">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="paymentMethod" id="cardPayment">
                                     <label class="form-check-label fw-bold" for="cardPayment">
-                                        Credit/Debit Card
+                                        <span data-en="Credit/Debit Card" data-bn="ক্রেডিট/ডেবিট কার্ড">Credit/Debit Card</span>
                                     </label>
                                 </div>
                                 <div class="mt-2">
@@ -464,7 +794,7 @@
                                     </label>
                                 </div>
                                 <div class="mt-2 text-muted">
-                                    You will be redirected to bKash payment gateway
+                                    <span data-en="You will be redirected to bKash payment gateway" data-bn="আপনাকে bKash পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হবে">You will be redirected to bKash payment gateway</span>
                                 </div>
                             </div>
                             
@@ -476,7 +806,7 @@
                                     </label>
                                 </div>
                                 <div class="mt-2 text-muted">
-                                    You will be redirected to Nagad payment gateway
+                                    <span data-en="You will be redirected to Nagad payment gateway" data-bn="আপনাকে Nagad পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হবে">You will be redirected to Nagad payment gateway</span>
                                 </div>
                             </div>
                             
@@ -484,18 +814,24 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="paymentMethod" id="bankPayment">
                                     <label class="form-check-label fw-bold" for="bankPayment">
-                                        Bank Transfer
+                                        <span data-en="Bank Transfer" data-bn="ব্যাংক ট্রান্সফার">Bank Transfer</span>
                                     </label>
                                 </div>
                                 <div class="mt-2 text-muted">
-                                    Transfer money to our bank account
+                                    <span data-en="Transfer money to our bank account" data-bn="আমাদের ব্যাংক অ্যাকাউন্টে টাকা ট্রান্সফার করুন">Transfer money to our bank account</span>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="d-flex justify-content-between mt-4">
-                            <button class="btn btn-outline-primary" onclick="showStep(2)"><i class="fas fa-arrow-left me-2"></i> Back</button>
-                            <button class="btn btn-primary" onclick="processPayment()">Complete Booking <i class="fas fa-check ms-2"></i></button>
+                            <button class="btn btn-outline-primary" onclick="showStep(2)">
+                                <i class="fas fa-arrow-left me-2"></i> 
+                                <span data-en="Back" data-bn="পিছনে">Back</span>
+                            </button>
+                            <button class="btn btn-primary" onclick="processPayment()">
+                                <span data-en="Complete Booking" data-bn="বুকিং সম্পূর্ণ করুন">Complete Booking</span> 
+                                <i class="fas fa-check ms-2"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -504,11 +840,11 @@
                 <div class="mt-4">
                     <div class="card">
                         <div class="card-header bg-light">
-                            <h5 class="mb-0">Cancellation Policy</h5>
+                            <h5 class="mb-0" data-en="Cancellation Policy" data-bn="বাতিলকরণ নীতি">Cancellation Policy</h5>
                         </div>
                         <div class="card-body">
-                            <p>Tickets can be cancelled up to 24 hours before your scheduled visit for a full refund. Cancellations made less than 24 hours in advance are non-refundable.</p>
-                            <p>To cancel your booking, please visit the "My Bookings" section in your account or contact our support team.</p>
+                            <p data-en="Tickets can be cancelled up to 24 hours before your scheduled visit for a full refund. Cancellations made less than 24 hours in advance are non-refundable." data-bn="আপনার নির্ধারিত ভিজিটের ২৪ ঘন্টা আগ পর্যন্ত টিকিট বাতিল করা যাবে সম্পূর্ণ রিফান্ডের জন্য। ২৪ ঘন্টার কম সময়ে বাতিল করা টিকিট রিফান্ডযোগ্য নয়।">Tickets can be cancelled up to 24 hours before your scheduled visit for a full refund. Cancellations made less than 24 hours in advance are non-refundable.</p>
+                            <p data-en="To cancel your booking, please visit the 'My Bookings' section in your account or contact our support team." data-bn="আপনার বুকিং বাতিল করতে, আপনার অ্যাকাউন্টের 'আমার বুকিং' বিভাগে যান বা আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন।">To cancel your booking, please visit the 'My Bookings' section in your account or contact our support team.</p>
                         </div>
                     </div>
                 </div>
@@ -516,50 +852,107 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5>Liberation War Museum</h5>
-                    <p>Preserving the memory of our liberation war and the journey to freedom for future generations.</p>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Home</a></li>
-                        <li><a href="#" class="text-white">Exhibits</a></li>
-                        <li><a href="#" class="text-white">Collections</a></li>
-                        <li><a href="#" class="text-white">Visit</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h5>Contact Info</h5>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-map-marker-alt me-2"></i> 5 Segun Bagicha, Dhaka 1000</li>
-                        <li><i class="fas fa-phone me-2"></i> +880 2-XXXX-XXXX</li>
-                        <li><i class="fas fa-envelope me-2"></i> info@liberationwarmuseum.gov.bd</li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h5>Connect With Us</h5>
-                    <div class="d-flex">
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr class="bg-light">
-            <div class="text-center">
-                <p class="mb-0">Copyright © Liberation War Museum. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
+    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Current language state
+        let currentLanguage = 'en';
+        
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileMenuToggle && navMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                const icon = mobileMenuToggle.querySelector('i');
+                if (navMenu.classList.contains('active')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+            });
+            
+            // Close mobile menu when clicking on a link
+            navMenu.addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-link')) {
+                    navMenu.classList.remove('active');
+                    mobileMenuToggle.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+        }
+        
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        let isDarkMode = false;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            isDarkMode = !isDarkMode;
+            
+            const icon = themeToggle.querySelector('i');
+            icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+            
+            // Save preference
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('darkMode');
+        if (savedTheme === 'true') {
+            body.classList.add('dark-theme');
+            isDarkMode = true;
+            const icon = themeToggle.querySelector('i');
+            icon.className = 'fas fa-sun';
+        }
+
+        // Language Toggle
+        const languageToggle = document.getElementById('langToggle');
+        
+        languageToggle.addEventListener('click', () => {
+            currentLanguage = currentLanguage === 'en' ? 'bn' : 'en';
+            switchLanguage(currentLanguage);
+            
+            // Update button text
+            languageToggle.innerHTML = currentLanguage === 'en' ? 
+                '<i class="fas fa-language"></i> বাং' : 
+                '<i class="fas fa-language"></i> ENG';
+            
+            // Save preference
+            localStorage.setItem('language', currentLanguage);
+        });
+
+        // Load saved language
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            currentLanguage = savedLanguage;
+            switchLanguage(currentLanguage);
+            languageToggle.innerHTML = currentLanguage === 'en' ? 
+                '<i class="fas fa-language"></i> বাং' : 
+                '<i class="fas fa-language"></i> ENG';
+        }
+
+        // Switch language function
+        function switchLanguage(lang) {
+            const elements = document.querySelectorAll('[data-en][data-bn]');
+            elements.forEach(element => {
+                if (element.tagName === 'INPUT' && element.type === 'text') {
+                    element.placeholder = element.getAttribute(`data-placeholder-${lang}`);
+                } else {
+                    element.textContent = element.getAttribute(`data-${lang}`);
+                }
+            });
+            
+            // Update body class for Bengali font
+            if (lang === 'bn') {
+                body.classList.add('lang-bn');
+            } else {
+                body.classList.remove('lang-bn');
+            }
+        }
+
+        // Ticket Booking Functionality
         // Set minimum date to today
         document.getElementById('visitDate').min = new Date().toISOString().split('T')[0];
         
@@ -600,20 +993,20 @@
             if (step === 2) {
                 const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
                 if (totalTickets === 0) {
-                    alert('Please select at least one ticket');
+                    alert(currentLanguage === 'bn' ? 'অনুগ্রহ করে কমপক্ষে একটি টিকিট নির্বাচন করুন' : 'Please select at least one ticket');
                     return;
                 }
             } else if (step === 3) {
                 selectedDate = document.getElementById('visitDate').value;
                 if (!selectedDate) {
-                    alert('Please select a date');
+                    alert(currentLanguage === 'bn' ? 'অনুগ্রহ করে একটি তারিখ নির্বাচন করুন' : 'Please select a date');
                     return;
                 }
                 
                 // Check if a time slot is selected
                 const selectedSlots = document.querySelectorAll('.time-slot.selected');
                 if (selectedSlots.length === 0) {
-                    alert('Please select a time slot');
+                    alert(currentLanguage === 'bn' ? 'অনুগ্রহ করে একটি সময় স্লট নির্বাচন করুন' : 'Please select a time slot');
                     return;
                 }
                 
@@ -644,7 +1037,7 @@
                     const subtotal = price * count;
                     total += subtotal;
                     
-                    const typeName = type.charAt(0).toUpperCase() + type.slice(1);
+                    const typeName = document.querySelector(`.card-header:contains('${type.charAt(0).toUpperCase() + type.slice(1)}')`)?.getAttribute(`data-${currentLanguage}`) || type.charAt(0).toUpperCase() + type.slice(1);
                     summaryHTML += `
                         <div class="d-flex justify-content-between">
                             <span>${typeName} x ${count}</span>
@@ -672,13 +1065,15 @@
         function processPayment() {
             const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
             if (!paymentMethod) {
-                alert('Please select a payment method');
+                alert(currentLanguage === 'bn' ? 'অনুগ্রহ করে একটি পেমেন্ট পদ্ধতি নির্বাচন করুন' : 'Please select a payment method');
                 return;
             }
             
             // Simulate payment processing
             setTimeout(() => {
-                document.getElementById('confirmationText').textContent = 'Your booking has been confirmed! A confirmation email with your tickets has been sent to your email.';
+                document.getElementById('confirmationText').textContent = currentLanguage === 'bn' ? 
+                    'আপনার বুকিং নিশ্চিত করা হয়েছে! একটি কনফার্মেশন ইমেইল আপনার টিকিট সহ আপনার ইমেইলে পাঠানো হয়েছে।' : 
+                    'Your booking has been confirmed! A confirmation email with your tickets has been sent to your email.';
                 document.getElementById('confirmationBanner').classList.add('show');
                 
                 // Reset form
@@ -724,6 +1119,12 @@
                 }
             });
         });
+
+        // Helper function for text content search
+        function containsText(selector, text) {
+            const elements = document.querySelectorAll(selector);
+            return Array.from(elements).find(el => el.textContent.includes(text));
+        }
     </script>
 </body>
 </html>
