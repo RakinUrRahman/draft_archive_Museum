@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Visit - Liberation War Museum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8e0000;
+            --secondary: #006b3c;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gold: #daa520;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://placehold.co/1200x600/8e0000/white?text=Liberation+War+Museum') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-card {
+            transition: transform 0.3s;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .pricing-card .card-header {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #7a0000;
+            border-color: #7a0000;
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .booking-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .info-card {
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .payment-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+            background-color: #f8f8f8;
+        }
+        
+        .payment-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(142, 0, 0, 0.05);
+        }
+        
+        .timeline-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .time-slot {
+            padding: 8px 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .time-slot:hover {
+            border-color: var(--primary);
+        }
+        
+        .time-slot.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .time-slot.disabled {
+            background-color: #f8f8f8;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .confirmation-banner {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .confirmation-banner.show {
+            display: block;
+        }
+        
+        .badge-discount {
+            background-color: var(--gold);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://placehold.co/150x50/ffffff/8e0000?text=Museum+Logo" alt="Liberation War Museum" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Exhibits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Tickets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Visit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Collections</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light ms-2" href="#">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Plan Your Visit</h1>
+            <p class="lead">Book your tickets to experience the history of our Liberation War</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Left Column - Museum Information -->
+            <div class="col-lg-4">
+                <div class="sticky-top" style="top: 20px;">
+                    <h2 class="section-title">Museum Information</h2>
+                    
+                    <div class="info-card">
+                        <h5><i class="fas fa-clock me-2"></i>Opening Hours</h5>
+                        <p class="mb-1">Sunday - Thursday: 10:00 AM - 6:00 PM</p>
+                        <p class="mb-1">Friday: 3:00 PM - 8:00 PM</p>
+                        <p class="mb-0">Saturday: Closed</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h5><i class="fas fa-map-marker-alt me-2"></i>Location</h5>
+                        <p>5 Segun Bagicha, Dhaka 1000, Bangladesh</p>
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.216984934741!2d90.400314975054!3d23.743054888948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8dacca5d98d%3A0xcbddd91cc186b32c!2sLiberation%20War%20Museum!5e0!3m2!1sen!2sbd!4v1690812462489!5m2!1sen!2sbd" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h5><i class="fas fa-phone me-2"></i>Contact Us</h5>
+                        <p class="mb-1">Phone: +880 2-XXXX-XXXX</p>
+                        <p class="mb-1">Email: info@liberationwarmuseum.gov.bd</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h5><i class="fas fa-tags me-2"></i>Special Discounts</h5>
+                        <p class="mb-1">Students: 50% off with valid ID</p>
+                        <p class="mb-1">Groups (10+): 20% discount</p>
+                        <p class="mb-0">School groups: Free entry with prior booking</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Booking Section -->
+            <div class="col-lg-8">
+                <div class="booking-container">
+                    <div class="confirmation-banner" id="confirmationBanner">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <span id="confirmationText">Your booking has been confirmed! Details have been sent to your email.</span>
+                    </div>
+                    
+                    <h2 class="section-title">Book Your Tickets</h2>
+                    
+                    <!-- Step 1: Ticket Selection -->
+                    <div class="mb-4" id="step1">
+                        <h4 class="mb-3">1. Select Ticket Types</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="pricing-card card">
+                                    <div class="card-header">Adult</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">৳ 100</h5>
+                                        <p class="card-text">General admission for visitors aged 13-59</p>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('adult', -1)">-</button>
+                                            <span class="mx-2" id="adultCount">0</span>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('adult', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="pricing-card card">
+                                    <div class="card-header">Child (6-12)</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">৳ 50</h5>
+                                        <p class="card-text">Children between 6 and 12 years</p>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('child', -1)">-</button>
+                                            <span class="mx-2" id="childCount">0</span>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('child', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="pricing-card card">
+                                    <div class="card-header">Student <span class="badge badge-discount">50% off</span></div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">৳ 50</h5>
+                                        <p class="card-text">With valid student ID card</p>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('student', -1)">-</button>
+                                            <span class="mx-2" id="studentCount">0</span>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('student', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="pricing-card card">
+                                    <div class="card-header">Senior (60+)</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">৳ 50</h5>
+                                        <p class="card-text">Visitors aged 60 and above</p>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('senior', -1)">-</button>
+                                            <span class="mx-2" id="seniorCount">0</span>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('senior', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="pricing-card card">
+                                    <div class="card-header">Freedom Fighter</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Free</h5>
+                                        <p class="card-text">With valid freedom fighter ID</p>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('ff', -1)">-</button>
+                                            <span class="mx-2" id="ffCount">0</span>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('ff', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="pricing-card card">
+                                    <div class="card-header">Foreign Visitor</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">৳ 500</h5>
+                                        <p class="card-text">International visitors</p>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('foreign', -1)">-</button>
+                                            <span class="mx-2" id="foreignCount">0</span>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="updateTicketCount('foreign', 1)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <div></div>
+                            <button class="btn btn-primary" onclick="showStep(2)">Continue to Date & Time <i class="fas fa-arrow-right ms-2"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Date & Time Selection -->
+                    <div class="mb-4 d-none" id="step2">
+                        <h4 class="mb-3">2. Select Date & Time</h4>
+                        
+                        <div class="mb-3">
+                            <label for="visitDate" class="form-label">Visit Date</label>
+                            <input type="date" class="form-control" id="visitDate" min="">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Available Time Slots</label>
+                            <div class="timeline-slots">
+                                <div class="time-slot">10:00 AM</div>
+                                <div class="time-slot">10:30 AM</div>
+                                <div class="time-slot">11:00 AM</div>
+                                <div class="time-slot">11:30 AM</div>
+                                <div class="time-slot">12:00 PM</div>
+                                <div class="time-slot">12:30 PM</div>
+                                <div class="time-slot">02:00 PM</div>
+                                <div class="time-slot">02:30 PM</div>
+                                <div class="time-slot">03:00 PM</div>
+                                <div class="time-slot">03:30 PM</div>
+                                <div class="time-slot">04:00 PM</div>
+                                <div class="time-slot">04:30 PM</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="showStep(1)"><i class="fas fa-arrow-left me-2"></i> Back</button>
+                            <button class="btn btn-primary" onclick="showStep(3)">Continue to Payment <i class="fas fa-arrow-right ms-2"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Payment -->
+                    <div class="mb-4 d-none" id="step3">
+                        <h4 class="mb-3">3. Payment Method</h4>
+                        
+                        <div class="mb-4">
+                            <h5>Order Summary</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <span>Date:</span>
+                                        <span id="summaryDate">Not selected</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Time:</span>
+                                        <span id="summaryTime">Not selected</span>
+                                    </div>
+                                    <hr>
+                                    <div id="ticketSummary">
+                                        <!-- Ticket summary will be inserted here -->
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between fw-bold">
+                                        <span>Total:</span>
+                                        <span id="totalAmount">৳ 0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Select Payment Method</h5>
+                            
+                            <div class="payment-option" onclick="selectPayment('card')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="cardPayment">
+                                    <label class="form-check-label fw-bold" for="cardPayment">
+                                        Credit/Debit Card
+                                    </label>
+                                </div>
+                                <div class="mt-2">
+                                    <img src="https://placehold.co/40x25/ffffff/000000?text=Visa" alt="Visa" class="me-2">
+                                    <img src="https://placehold.co/40x25/ffffff/000000?text=MC" alt="Mastercard" class="me-2">
+                                    <img src="https://placehold.co/40x25/ffffff/000000?text=Amex" alt="American Express">
+                                </div>
+                            </div>
+                            
+                            <div class="payment-option" onclick="selectPayment('bkash')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="bkashPayment">
+                                    <label class="form-check-label fw-bold" for="bkashPayment">
+                                        bKash
+                                    </label>
+                                </div>
+                                <div class="mt-2 text-muted">
+                                    You will be redirected to bKash payment gateway
+                                </div>
+                            </div>
+                            
+                            <div class="payment-option" onclick="selectPayment('nagad')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="nagadPayment">
+                                    <label class="form-check-label fw-bold" for="nagadPayment">
+                                        Nagad
+                                    </label>
+                                </div>
+                                <div class="mt-2 text-muted">
+                                    You will be redirected to Nagad payment gateway
+                                </div>
+                            </div>
+                            
+                            <div class="payment-option" onclick="selectPayment('bank')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="bankPayment">
+                                    <label class="form-check-label fw-bold" for="bankPayment">
+                                        Bank Transfer
+                                    </label>
+                                </div>
+                                <div class="mt-2 text-muted">
+                                    Transfer money to our bank account
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="showStep(2)"><i class="fas fa-arrow-left me-2"></i> Back</button>
+                            <button class="btn btn-primary" onclick="processPayment()">Complete Booking <i class="fas fa-check ms-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cancellation Policy -->
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Cancellation Policy</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Tickets can be cancelled up to 24 hours before your scheduled visit for a full refund. Cancellations made less than 24 hours in advance are non-refundable.</p>
+                            <p>To cancel your booking, please visit the "My Bookings" section in your account or contact our support team.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Liberation War Museum</h5>
+                    <p>Preserving the memory of our liberation war and the journey to freedom for future generations.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#" class="text-white">Exhibits</a></li>
+                        <li><a href="#" class="text-white">Collections</a></li>
+                        <li><a href="#" class="text-white">Visit</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 5 Segun Bagicha, Dhaka 1000</li>
+                        <li><i class="fas fa-phone me-2"></i> +880 2-XXXX-XXXX</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@liberationwarmuseum.gov.bd</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center">
+                <p class="mb-0">Copyright © Liberation War Museum. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set minimum date to today
+        document.getElementById('visitDate').min = new Date().toISOString().split('T')[0];
+        
+        // Ticket counts and prices
+        const ticketPrices = {
+            adult: 100,
+            child: 50,
+            student: 50,
+            senior: 50,
+            ff: 0,
+            foreign: 500
+        };
+        
+        let ticketCounts = {
+            adult: 0,
+            child: 0,
+            student: 0,
+            senior: 0,
+            ff: 0,
+            foreign: 0
+        };
+        
+        let selectedDate = '';
+        let selectedTime = '';
+        
+        // Update ticket count
+        function updateTicketCount(type, change) {
+            const newCount = ticketCounts[type] + change;
+            if (newCount >= 0) {
+                ticketCounts[type] = newCount;
+                document.getElementById(`${type}Count`).textContent = newCount;
+            }
+        }
+        
+        // Show specific step
+        function showStep(step) {
+            // Validate before proceeding to next step
+            if (step === 2) {
+                const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
+                if (totalTickets === 0) {
+                    alert('Please select at least one ticket');
+                    return;
+                }
+            } else if (step === 3) {
+                selectedDate = document.getElementById('visitDate').value;
+                if (!selectedDate) {
+                    alert('Please select a date');
+                    return;
+                }
+                
+                // Check if a time slot is selected
+                const selectedSlots = document.querySelectorAll('.time-slot.selected');
+                if (selectedSlots.length === 0) {
+                    alert('Please select a time slot');
+                    return;
+                }
+                
+                selectedTime = selectedSlots[0].textContent;
+                updateOrderSummary();
+            }
+            
+            // Hide all steps
+            document.querySelectorAll('[id^="step"]').forEach(step => {
+                step.classList.add('d-none');
+            });
+            
+            // Show selected step
+            document.getElementById(`step${step}`).classList.remove('d-none');
+        }
+        
+        // Update order summary
+        function updateOrderSummary() {
+            document.getElementById('summaryDate').textContent = selectedDate;
+            document.getElementById('summaryTime').textContent = selectedTime;
+            
+            let summaryHTML = '';
+            let total = 0;
+            
+            for (const [type, count] of Object.entries(ticketCounts)) {
+                if (count > 0) {
+                    const price = ticketPrices[type];
+                    const subtotal = price * count;
+                    total += subtotal;
+                    
+                    const typeName = type.charAt(0).toUpperCase() + type.slice(1);
+                    summaryHTML += `
+                        <div class="d-flex justify-content-between">
+                            <span>${typeName} x ${count}</span>
+                            <span>৳ ${subtotal}</span>
+                        </div>
+                    `;
+                }
+            }
+            
+            document.getElementById('ticketSummary').innerHTML = summaryHTML;
+            document.getElementById('totalAmount').textContent = `৳ ${total}`;
+        }
+        
+        // Select payment method
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            document.querySelector(`[id="${method}Payment"]`).parentNode.parentNode.classList.add('selected');
+            document.querySelector(`[id="${method}Payment"]`).checked = true;
+        }
+        
+        // Process payment
+        function processPayment() {
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+            if (!paymentMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                document.getElementById('confirmationText').textContent = 'Your booking has been confirmed! A confirmation email with your tickets has been sent to your email.';
+                document.getElementById('confirmationBanner').classList.add('show');
+                
+                // Reset form
+                setTimeout(() => {
+                    showStep(1);
+                    document.getElementById('confirmationBanner').classList.remove('show');
+                    
+                    // Reset ticket counts
+                    for (const type in ticketCounts) {
+                        ticketCounts[type] = 0;
+                        document.getElementById(`${type}Count`).textContent = '0';
+                    }
+                    
+                    // Reset date and time
+                    document.getElementById('visitDate').value = '';
+                    selectedDate = '';
+                    selectedTime = '';
+                    
+                    // Reset time slots selection
+                    document.querySelectorAll('.time-slot').forEach(slot => {
+                        slot.classList.remove('selected');
+                    });
+                    
+                    // Reset payment selection
+                    document.querySelectorAll('.payment-option').forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+                        radio.checked = false;
+                    });
+                }, 5000);
+            }, 1500);
+        }
+        
+        // Initialize time slot selection
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            slot.addEventListener('click', function() {
+                if (!this.classList.contains('disabled')) {
+                    document.querySelectorAll('.time-slot').forEach(s => {
+                        s.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
