@@ -1,0 +1,154 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body and background */
+body {
+    background: linear-gradient(to bottom, #0b1e1e, #2b0a0a);
+    color: #fff;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #111;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo .circle {
+    width: 30px;
+    height: 30px;
+    background-color: #f00;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.logo h1 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.logo p {
+    font-size: 14px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+}
+
+.options button {
+    background: none;
+    border: 1px solid #666;
+    color: #fff;
+    padding: 5px 15px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    padding: 60px 50px;
+}
+
+.hero-left {
+    flex: 0.6;
+}
+
+.hero-left h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.hero-left p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.stats {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.stats div {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.stats h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.hero-right {
+    flex: 0.35;
+}
+
+.search-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin: 10px 0;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+}
+
+.search-box .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.search-box .tags span {
+    padding: 5px 10px;
+    border: 1px dashed #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.search-box .tip {
+    font-size: 12px;
+    color: #aaa;
+}

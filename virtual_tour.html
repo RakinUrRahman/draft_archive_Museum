@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Museum Gallery</title>
+    <link rel="stylesheet" href="virtual_tour.css">
+</head>
+<body>
+    <header>
+         <div class="logo">
+    <!-- Replace with your image location -->
+    <img src="image/large-logo.png" alt="Logo" class="logo-img">
+    
+</div>
+        <h1>Virtual Museum Gallery</h1>
+        <div class="view-toggle">
+            <button id="galleryBtn" class="active">Gallery View</button>
+            <button id="timelineBtn">Timeline View</button>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Virtual Tour</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="galleryView" class="gallery">
+            <div class="theme">
+                <h2>Freedom Fighters</h2>
+                <div class="artifacts">
+                    <div class="artifact">
+                        <img src="image/fig1.jpg" alt="Fighter 1">
+                        <p><b>Bir Sreshtho Matiur Rahman </b><br><b>LifeSpan:</b>1941-1971 <br><b>Role:</b>Pilot in the Pakistan Air Force; martyred during the war. "</p>
+                    </div>
+                    <div class="artifact">
+                        <img src="image/fig2.jpeg" alt="Fighter 2">
+                        <p> <b>Bir Sreshtho Mohiuddin Jahangir</b> <br><b>LifeSpan:</b> 1949-1971 <br> <b>Role:</b> Captain in the Bangladesh Army; led significant operations. "</p>
+                    </div>
+                    <div class="artifact">
+                        <img src="image/fig3.jpeg" alt="Fighter 3">
+                        <p><b>Sepoy Hamidur Rahman</b> <br> <b>LifeSpan:</b> 1953-1971 <br><b>Role:</b> Soldier in the Bangladesh Army; sacrificed his life in battle. </p>
+                    </div>
+                    <div class="artifact">
+                        <img src="image/fig4.jpeg" alt="Fighter 3">
+                        <p><b>General Mohammad Ataul Gani Osmani</b> <br> <b>LifeSpan:</b> 1918-1984 <br><b>Role:</b> Commander-in-Chief of Mukti Bahini; strategic leader. </p>
+                    </div>
+                    
+                    <div class="artifact">
+                        <img src="image/fig5.jpg" alt="Fighter 3">
+                        <p><b>Sepoy Mostafa Kamal</b> <br> <b>LifeSpan:</b> 1947-1971 <br><b>Role:</b> Engaged in early resistance against Pakistani forces. </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theme">
+                <h2>Memorabilia</h2>
+                <div class="artifacts">
+                    <div class="artifact">
+                        <img src="image/mem1.webp" alt="Memorabilia 1">
+                        <p><b>Freedom Fighters Marching Near Jessore</b><br><b>Description:</b> Mukti Bahini (Liberation Army) troops marching towards the frontlines near Jessore, symbolizing the relentless spirit of the freedom fighters.</p>
+                    </div>
+                    <div class="artifact">
+                        <img src="image/mem2.jpeg" alt="Memorabilia 2">
+                        <p><b>The Surrender at Dhaka (16 December 1971)</b> <br><b>Description:</b> On this historic day, Lieutenant General A.A.K. Niazi of Pakistan signed the Instrument of Surrender in Dhaka, marking the end of the war and the birth of Bangladesh. </p>
+                    </div>
+                    <div class="artifact">
+                        <img src="image/mem3.png" alt="Memorabilia 2">
+                        <p><b>Refugees Fleeing to India</b> <br><b>Description:</b> On this historic day, Lieutenant General A.A.K. Niazi of Pakistan signed the Instrument of Surrender in Dhaka, marking the end of the war and the birth of Bangladesh. </p>
+                    </div>
+                    <div class="artifact">
+                        <img src="image/mem4.webp" alt="Memorabilia 2">
+                        <p><b>The First Flag Hoisting After Surrender</b> <br><b>Description:</b> Following the surrender, the first hoisting of the Bangladeshi flag in Dhaka marked the nation's newfound sovereignty. </p>
+                    </div>
+                    <div class="artifact">
+                        <img src="image/mem5.jpeg" alt="Memorabilia 2">
+                        <p><b>The 7 March Speech of Sheikh Mujibur Rahman</b> <br><b>Description:</b> On 7 March 1971, Sheikh Mujibur Rahman delivered a historic speech at the Ramna Racecourse in Dhaka, </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timelineView" class="timeline hidden">
+            <div class="event">
+                <h3>1947 - Independence Movement</h3>
+                <p>Important events and artifacts from 1947.</p>
+            </div>
+            <div class="event">
+                <h3>1971 - Liberation War</h3>
+                <p>Key artifacts and stories from 1971.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="virtual_tour.js"></script>
+</body>
+</html>

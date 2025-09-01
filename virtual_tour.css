@@ -1,0 +1,219 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body and background */
+body {
+    background: linear-gradient(to bottom, #0b1e1e, #2b0a0a);
+    color: #fff;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #111;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.view-toggle button {
+    background: none;
+    border: 1px solid #666;
+    color: #fff;
+    padding: 5px 15px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.view-toggle button.active, .view-toggle button:hover {
+    background-color: #222;
+    border-color: #f00;
+}
+
+/* Navigation Bar */
+nav {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px 50px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #f00;
+}
+
+/* Gallery Section */
+.gallery .theme {
+    margin-bottom: 40px;
+}
+
+.gallery .theme h2 {
+    font-size: 22px;
+    color: #f00;
+    margin-bottom: 15px;
+}
+
+.artifacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.artifact {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 10px;
+    width: 180px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.artifact:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.3);
+}
+
+.artifact img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.artifact p {
+    font-size: 14px;
+}
+
+/* Timeline Section */
+.timeline .event {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid #f00;
+    border-radius: 10px;
+}
+
+.timeline .event h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.timeline .event p {
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Hidden class for toggling views */
+.hidden {
+    display: none;
+}
+/* Gallery Section */
+.gallery .theme {
+    margin-bottom: 40px;
+}
+
+.gallery .theme h2 {
+    font-size: 26px; /* slightly bigger */
+    color: #f00;
+    margin-bottom: 15px;
+}
+
+.artifacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.artifact {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 15px;
+    width: 180px; /* default size */
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.artifact:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.3);
+}
+
+.artifact img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.artifact p {
+    font-size: 14px;
+}
+
+/* Bigger cards for Freedom Fighters and Memorabilia */
+.theme:nth-of-type(1) .artifact, /* Freedom Fighters */
+.theme:nth-of-type(2) .artifact  /* Memorabilia */ {
+    width: 250px;       /* bigger width */
+    height: auto;
+}
+
+.theme:nth-of-type(1) .artifact img,
+.theme:nth-of-type(2) .artifact img {
+    height: 180px;      /* bigger image */
+}
+/* Navigation Bar */
+nav {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px 50px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center; /* center the links */
+    gap: 25px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #f00;
+}
