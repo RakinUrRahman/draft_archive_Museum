@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Historian Contribution Portal</title>
+    <link rel="stylesheet" href="contribution_portal.css">
+</head>
+<body>
+    <!-- Header with Logo and Title -->
+    <header>
+        <div class="header-top">
+            <div class="logo">
+                <img src="images/large-logo.png" alt="Museum Logo">
+                <span></span>
+            </div>
+        </div>
+        <h1>Citizen Historian Contribution Portal</h1>
+
+        <!-- Navigation Bar -->
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Virtual Tour</a></li>
+                <li><a href="#">Map Of Memory</a></li>
+                <li><a href="#">Citizen Contribution</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Form -->
+    <main>
+        <form id="archiveForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="story">Your Story / Description:</label>
+            <textarea id="story" name="story" placeholder="Tell us about your artifact or story" rows="5" required></textarea>
+
+            <label for="file">Upload Photo / Document:</label>
+            <input type="file" id="file" name="file" accept=".jpg,.jpeg,.png,.pdf" required>
+
+            <button type="submit">Submit for Review</button>
+        </form>
+
+        <div id="message"></div>
+    </main>
+
+    <script src="contribution_portal.js"></script>
+</body>
+</html>
