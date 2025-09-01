@@ -44,17 +44,15 @@
                 <i class="fas fa-bars"></i>
             </button>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link" data-en="Home" data-bn="হোম">Home</a></li>
-                <li><a href="#interactive-map" class="nav-link" data-en="Interactive Map (Map of Memory)" data-bn="ইন্টারঅ্যাক্টিভ ম্যাপ (স্মৃতির মানচিত্র)">Interactive Map</a></li>
-                <li><a href="#virtual-gallery" class="nav-link" data-en="Virtual Museum Gallery" data-bn="ভার্চুয়াল জাদুঘর গ্যালারি">Virtual Gallery</a></li>
-                <li><a href="#storytelling" class="nav-link" data-en="Story Telling Section" data-bn="গল্প বলার বিভাগ">Story Telling</a></li>
-                <li><a href="#educational" class="nav-link" data-en="Educational Section" data-bn="শিক্ষামূলক বিভাগ">Educational</a></li>
-                <li><a href="#digital-exhibition" class="nav-link" data-en="Thematic Digital Exhibition" data-bn="থিমেটিক ডিজিটাল প্রদর্শনী">Digital Exhibition</a></li>
-                <li><a href="#citizen-historian" class="nav-link" data-en="Citizen Historian Portal" data-bn="নাগরিক ইতিহাসবিদ পোর্টাল">Citizen Historian</a></li>
-                <li><a href="#virtual-memorial" class="nav-link" data-en="Virtual Memorial Wall" data-bn="ভার্চুয়াল স্মৃতি প্রাচীর">Memorial Wall</a></li>
-                <li><a href="#contact" class="nav-link" data-en="Contact" data-bn="যোগাযোগ">Contact</a></li>
-                <li><a href="#ticket-booking" class="nav-link" data-en="Ticket Booking" data-bn="টিকিট বুকিং">Ticket Booking</a></li>
-                <li><a href="index.html" class="nav-link" data-en="logout" data-bn="লগআউট">Ticket Booking</a></li>
+                <li><a href="user.html" class="nav-link" data-en="Home" data-bn="হোম">Home</a></li>
+                <li><a href="map_of_memory.html" class="nav-link" data-en="Interactive Map (Map of Memory)" data-bn="ইন্টারঅ্যাক্টিভ ম্যাপ (স্মৃতির মানচিত্র)">Interactive Map</a></li>
+                <li><a href="virtual_tour.html" class="nav-link" data-en="Virtual Museum Gallery" data-bn="ভার্চুয়াল জাদুঘর গ্যালারি">Virtual Gallery</a></li>
+                <li><a href="untold_stories.html" class="nav-link" data-en="Story Telling Section" data-bn="গল্প বলার বিভাগ">Story Telling</a></li>
+                <li><a href="education.html" class="nav-link" data-en="Educational Section" data-bn="শিক্ষামূলক বিভাগ">Educational</a></li>
+                <li><a href="contribution_portal.html" class="nav-link" data-en="Citizen Historian Portal" data-bn="নাগরিক ইতিহাসবিদ পোর্টাল">Citizen Historian</a></li>
+                <li><a href="memorial.html" class="nav-link" data-en="Virtual Memorial Wall" data-bn="ভার্চুয়াল স্মৃতি প্রাচীর">Memorial Wall</a></li>
+                <li><a href="ticket-booking.html" class="nav-link" data-en="Ticket Booking" data-bn="টিকিট বুকিং">Ticket Booking</a></li>
+                <li><a href="index.html" class="nav-link" data-en="Logout" data-bn="লগআউট">Logout</a></li>
 
             </ul>
         </nav>
@@ -472,19 +470,24 @@
             console.log('Updated currentLanguage to:', currentLanguage);
         }
         
-        // Smooth Scrolling for Navigation
+        // Smooth Scrolling for Navigation (only for internal anchors)
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
                 const targetId = link.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
                 
-                if (targetSection) {
-                    targetSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                // Only prevent default for internal anchor links (starting with #)
+                if (targetId && targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
+                // For external links (.html files), let the default behavior happen
             });
         });
         
