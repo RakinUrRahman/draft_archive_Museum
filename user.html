@@ -1,4 +1,4 @@
-<!D    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liberation War Museum - Digital Archive</title>
     <link rel="stylesheet" href="style.css">
@@ -247,7 +247,7 @@
             </div>
             <div class="object-showcase">
                 <div class="object-image">
-                    <img src="https://via.placeholder.com/400x300?text=Liberation+War+Rifle" alt="Object of the Month">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Artifact_in_liberation_war_museum%2C_Agargaon_61.jpg/640px-Artifact_in_liberation_war_museum%2C_Agargaon_61.jpg" alt="Object of the Month - Liberation War Artifacts">
                     <div class="object-badge">
                         <span data-en="September 2025" data-bn="সেপ্টেম্বর ২০২৫">September 2025</span>
                     </div>
@@ -392,48 +392,75 @@
         }
 
         // Language Toggle
-        const languageToggle = document.getElementById('languageToggle');
+        const languageToggle = document.getElementById('langToggle');
         
-        languageToggle.addEventListener('click', () => {
-            currentLanguage = currentLanguage === 'en' ? 'bn' : 'en';
-            switchLanguage(currentLanguage);
-            
-            // Update button text
-            languageToggle.innerHTML = currentLanguage === 'en' ? 
-                '<i class="fas fa-language"></i> বাং' : 
-                '<i class="fas fa-language"></i> ENG';
-            
-            // Save preference
-            localStorage.setItem('language', currentLanguage);
-        });
+        if (languageToggle) {
+            languageToggle.addEventListener('click', () => {
+                console.log('Language toggle clicked, current language:', currentLanguage);
+                currentLanguage = currentLanguage === 'en' ? 'bn' : 'en';
+                console.log('Switching to language:', currentLanguage);
+                
+                switchLanguage(currentLanguage);
+                
+                // Update button text
+                languageToggle.innerHTML = currentLanguage === 'en' ? 'বাং' : 'ENG';
+                console.log('Button updated to:', languageToggle.innerHTML);
+                
+                // Save preference
+                localStorage.setItem('language', currentLanguage);
+                console.log('Language saved to localStorage:', currentLanguage);
+            });
 
-        // Load saved language
-        const savedLanguage = localStorage.getItem('language');
-        if (savedLanguage) {
-            currentLanguage = savedLanguage;
-            switchLanguage(currentLanguage);
-            languageToggle.innerHTML = currentLanguage === 'en' ? 
-                '<i class="fas fa-language"></i> বাং' : 
-                '<i class="fas fa-language"></i> ENG';
+            // Load saved language
+            const savedLanguage = localStorage.getItem('language');
+            if (savedLanguage) {
+                console.log('Loading saved language:', savedLanguage);
+                currentLanguage = savedLanguage;
+                switchLanguage(currentLanguage);
+                languageToggle.innerHTML = currentLanguage === 'en' ? 'বাং' : 'ENG';
+            }
+        } else {
+            console.error('Language toggle button not found!');
         }
 
         // Switch language function
         function switchLanguage(lang) {
+            console.log('switchLanguage called with:', lang);
+            
             const elements = document.querySelectorAll('[data-en][data-bn]');
-            elements.forEach(element => {
+            console.log('Found', elements.length, 'elements with language data');
+            
+            elements.forEach((element, index) => {
                 if (element.tagName === 'INPUT' && element.type === 'text') {
-                    element.placeholder = element.getAttribute(`data-placeholder-${lang}`);
+                    const placeholder = element.getAttribute(`data-placeholder-${lang}`);
+                    if (placeholder) {
+                        element.placeholder = placeholder;
+                        console.log(`Updated input ${index} placeholder to:`, placeholder);
+                    }
                 } else {
-                    element.textContent = element.getAttribute(`data-${lang}`);
+                    const text = element.getAttribute(`data-${lang}`);
+                    if (text) {
+                        element.textContent = text;
+                        console.log(`Updated element ${index} text to:`, text);
+                    }
                 }
             });
             
             // Update body class for Bengali font
+            const body = document.body;
             if (lang === 'bn') {
                 body.classList.add('lang-bn');
+                body.classList.remove('lang-en');
+                console.log('Added lang-bn class to body');
             } else {
+                body.classList.add('lang-en');
                 body.classList.remove('lang-bn');
+                console.log('Added lang-en class to body');
             }
+            
+            // Update currentLanguage variable
+            currentLanguage = lang;
+            console.log('Updated currentLanguage to:', currentLanguage);
         }
         
         // Smooth Scrolling for Navigation
@@ -981,9 +1008,9 @@
                 }
             };
 
-            const timeline = timelineData[currentLanguage];
-            createTimelineModal(timeline);
-        }
+    const timeline = timelineData[currentLanguage];
+    createTimelineModal(timeline);
+}
 
         // Create Timeline Modal
         function createTimelineModal(timeline) {
@@ -1220,6 +1247,25 @@
                 }
             }, autoRemoveTime);
         }
+
+        // Initialize language system on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved language preference
+            const savedLanguage = localStorage.getItem('language');
+            if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'bn')) {
+                currentLanguage = savedLanguage;
+                switchLanguage(currentLanguage);
+                
+                const languageToggle = document.getElementById('langToggle');
+                if (languageToggle) {
+                    languageToggle.innerHTML = currentLanguage === 'en' ? 'বাং' : 'ENG';
+                }
+            } else {
+                // Default to English
+                currentLanguage = 'en';
+                switchLanguage(currentLanguage);
+            }
+        });
     </script>
 </body>
 </html>

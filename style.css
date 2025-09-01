@@ -24,23 +24,31 @@ html {
     --heritage-bronze: #CD7F32;
     --wisdom-blue: #1B4B6B;
     
-    /* Cultural Neutrals for International Appeal */
-    --parchment: #F5F3E7;
-    --aged-paper: #F0EDE0;
-    --stone-gray: #6B7280;
-    --charcoal: #1F2937;
-    --ivory: #FFFEF7;
-    --museum-black: #0F172A;
+    /* Enhanced Green-Red Theme Colors */
+    --light-green: #E8F5E8;
+    --soft-green: #C8E6C8;
+    --medium-green: #4CAF50;
+    --light-red: #FFF5F5;
+    --soft-red: #FFCCCB;
+    --medium-red: #E57373;
     
-    /* Light Theme (Default - Professional & Accessible) */
-    --primary-bg: #ffffff;
-    --secondary-bg: #f8fafc;
-    --card-bg: rgba(255, 255, 255, 0.98);
+    /* Cultural Neutrals for International Appeal */
+    --parchment: #F9F7F1;
+    --aged-paper: #F5F2E8;
+    --stone-gray: #6B7280;
+    --charcoal: #2D3748;
+    --ivory: #FFFEF9;
+    --museum-black: #1A202C;
+    
+    /* Light Theme with Green-Red Accents */
+    --primary-bg: linear-gradient(135deg, #FEFFFE 0%, #F9FDF9 50%, #FFFAFA 100%);
+    --secondary-bg: linear-gradient(135deg, #F0FFF0 0%, #F8F8FF 50%, #FFF8F8 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
     --text-primary: var(--charcoal);
     --text-secondary: var(--stone-gray);
-    --border-color: rgba(107, 114, 128, 0.15);
-    --shadow-color: rgba(31, 41, 55, 0.08);
-    --accent-gradient: linear-gradient(135deg, var(--liberation-green), var(--wisdom-blue));
+    --border-color: rgba(107, 114, 128, 0.12);
+    --shadow-color: rgba(31, 41, 55, 0.06);
+    --accent-gradient: linear-gradient(135deg, var(--medium-green), var(--medium-red));
     
     /* Typography Scale - Classical Proportions */
     --font-family-primary: 'Playfair Display', 'Times New Roman', serif;
@@ -63,6 +71,38 @@ html {
     --border-color: rgba(203, 213, 225, 0.2);
     --shadow-color: rgba(0, 0, 0, 0.3);
     --accent-gradient: linear-gradient(135deg, var(--liberation-green), var(--heritage-bronze));
+}
+
+/* Dark Theme Liberation War Background Enhancements */
+.dark-theme body::before {
+    background: 
+        /* Enhanced Liberation War patterns for dark theme */
+        linear-gradient(45deg, rgba(0, 106, 78, 0.08) 25%, transparent 25%), 
+        linear-gradient(-45deg, rgba(0, 106, 78, 0.08) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, rgba(244, 42, 65, 0.05) 75%), 
+        linear-gradient(-45deg, transparent 75%, rgba(244, 42, 65, 0.05) 75%),
+        /* Stronger historical texture for visibility */
+        radial-gradient(circle at 25% 25%, rgba(0, 106, 78, 0.12) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(244, 42, 65, 0.10) 1px, transparent 1px),
+        /* Enhanced liberation flame pattern */
+        conic-gradient(from 45deg at 50% 50%, 
+            transparent 0deg, 
+            rgba(0, 106, 78, 0.04) 90deg,
+            transparent 180deg,
+            rgba(244, 42, 65, 0.03) 270deg,
+            transparent 360deg
+        );
+    opacity: 0.6;
+}
+
+.dark-theme body::after {
+    background: 
+        /* Enhanced memorial patterns for dark mode */
+        linear-gradient(90deg, transparent 49%, rgba(0, 106, 78, 0.06) 50%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, rgba(0, 106, 78, 0.06) 50%, transparent 51%),
+        radial-gradient(circle at 20% 20%, rgba(244, 42, 65, 0.08) 1px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(0, 106, 78, 0.08) 1px, transparent 2px);
+    opacity: 0.4;
 }
 
 /* Bengali Language Styling */
@@ -149,7 +189,7 @@ html {
     }
 }
 
-/* Body and Global Styles */
+/* Body and Global Styles with Liberation War Heritage Background */
 body {
     font-family: var(--font-family-secondary);
     background: var(--primary-bg);
@@ -161,7 +201,7 @@ body {
     min-height: 100vh;
 }
 
-/* Simplified Heritage Pattern Overlay */
+/* Liberation War Heritage Background Pattern */
 body::before {
     content: '';
     position: fixed;
@@ -170,10 +210,62 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 80%, rgba(0, 106, 78, 0.02) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(244, 42, 65, 0.02) 0%, transparent 50%);
+        /* Subtle Bangladesh flag colors */
+        linear-gradient(45deg, rgba(0, 106, 78, 0.03) 25%, transparent 25%), 
+        linear-gradient(-45deg, rgba(0, 106, 78, 0.03) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, rgba(244, 42, 65, 0.02) 75%), 
+        linear-gradient(-45deg, transparent 75%, rgba(244, 42, 65, 0.02) 75%),
+        /* Historical texture overlay */
+        radial-gradient(circle at 25% 25%, rgba(0, 106, 78, 0.08) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(244, 42, 65, 0.06) 1px, transparent 1px),
+        /* Liberation flame pattern */
+        conic-gradient(from 45deg at 50% 50%, 
+            transparent 0deg, 
+            rgba(0, 106, 78, 0.01) 90deg,
+            transparent 180deg,
+            rgba(244, 42, 65, 0.01) 270deg,
+            transparent 360deg
+        );
+    background-size: 60px 60px, 60px 60px, 60px 60px, 60px 60px, 40px 40px, 30px 30px, 200px 200px;
+    background-position: 0 0, 30px 30px, 30px 0, 0 30px, 0 0, 0 0, 50% 50%;
+    pointer-events: none;
+    z-index: -2;
+    opacity: 0.3;
+}
+
+/* Additional Heritage Elements */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        /* Shaheed Minar inspired pattern */
+        linear-gradient(90deg, transparent 49%, rgba(0, 106, 78, 0.02) 50%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, rgba(0, 106, 78, 0.02) 50%, transparent 51%),
+        /* Star pattern reminiscent of liberation */
+        radial-gradient(circle at 20% 20%, rgba(244, 42, 65, 0.03) 1px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(0, 106, 78, 0.03) 1px, transparent 2px);
+    background-size: 120px 120px, 120px 120px, 80px 80px, 80px 80px;
+    background-position: 0 0, 0 0, 40px 40px, 40px 40px;
     pointer-events: none;
     z-index: -1;
+    opacity: 0.2;
+    animation: subtleMove 60s linear infinite;
+}
+
+@keyframes subtleMove {
+    0% {
+        background-position: 0 0, 0 0, 40px 40px, 40px 40px;
+    }
+    50% {
+        background-position: 60px 60px, 60px 60px, 100px 100px, 100px 100px;
+    }
+    100% {
+        background-position: 0 0, 0 0, 40px 40px, 40px 40px;
+    }
 }
 
 /* Container System */
@@ -185,16 +277,16 @@ body::before {
 
 /* Enhanced Header Design */
 header {
-    background: rgba(255, 254, 247, 0.95);
+    background: linear-gradient(135deg, var(--light-green) 0%, rgba(255, 255, 255, 0.98) 50%, var(--light-red) 100%);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid rgba(76, 175, 80, 0.15);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
     transition: var(--transition-smooth);
-    box-shadow: 0 4px 20px var(--shadow-color);
+    box-shadow: 0 4px 20px rgba(76, 175, 80, 0.1);
 }
 
 .dark-theme header {
@@ -298,6 +390,7 @@ nav a {
     transition: var(--transition-smooth);
     border-radius: 6px;
     white-space: nowrap;
+    border: 1px solid transparent;
 }
 
 nav a::after {
@@ -307,7 +400,7 @@ nav a::after {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--accent-gradient);
+    background: linear-gradient(135deg, var(--medium-green), var(--medium-red));
     transition: width 0.3s ease;
 }
 
@@ -316,8 +409,11 @@ nav a:hover::after {
 }
 
 nav a:hover {
-    color: var(--liberation-green);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, var(--light-green), var(--light-red));
+    color: var(--charcoal);
+    border-color: rgba(76, 175, 80, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
 }
 
 /* Header Controls */
@@ -329,7 +425,7 @@ nav a:hover {
 
 .control-btn {
     background: transparent;
-    border: 2px solid var(--border-color);
+    border: 2px solid rgba(76, 175, 80, 0.3);
     color: var(--text-primary);
     padding: 8px 16px;
     border-radius: 25px;
@@ -343,18 +439,18 @@ nav a:hover {
 }
 
 .control-btn:hover {
-    background: var(--liberation-green);
+    background: linear-gradient(135deg, var(--medium-green), var(--medium-red));
     color: white;
-    border-color: var(--liberation-green);
+    border-color: var(--medium-green);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 106, 78, 0.3);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
-/* Hero Section - Museum Showcase */
+/* Hero Section - Liberation War Heritage Showcase */
 .hero {
     margin-top: 80px;
     padding: 80px 0 100px;
-    background: var(--secondary-bg);
+    background: var(--primary-bg);
     position: relative;
     overflow: hidden;
 }
@@ -367,11 +463,30 @@ nav a:hover {
     right: 0;
     bottom: 0;
     background: 
-        linear-gradient(45deg, rgba(0, 106, 78, 0.03) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(244, 42, 65, 0.03) 25%, transparent 25%);
-    background-size: 40px 40px;
-    background-position: 0 0, 20px 20px;
-    opacity: 0.5;
+        /* Bangladesh flag inspired gradient with lighter tones */
+        radial-gradient(ellipse at center, var(--light-green) 30%, transparent 70%),
+        radial-gradient(circle at 80% 20%, var(--light-red) 20%, transparent 40%),
+        /* Liberation flame pattern */
+        conic-gradient(from 30deg at 20% 80%, transparent 0%, rgba(76, 175, 80, 0.08) 60%, transparent 100%),
+        /* Heritage geometric patterns */
+        linear-gradient(30deg, rgba(0, 106, 78, 0.02) 12%, transparent 12.5%, transparent 87%, rgba(0, 106, 78, 0.02) 87.5%),
+        linear-gradient(-30deg, rgba(244, 42, 65, 0.02) 12%, transparent 12.5%, transparent 87%, rgba(244, 42, 65, 0.02) 87.5%),
+        /* Subtle memorial cross pattern */
+        linear-gradient(90deg, transparent 47%, rgba(0, 106, 78, 0.03) 49%, rgba(0, 106, 78, 0.03) 51%, transparent 53%),
+        linear-gradient(0deg, transparent 47%, rgba(0, 106, 78, 0.03) 49%, rgba(0, 106, 78, 0.03) 51%, transparent 53%);
+    background-size: 300px 300px, 200px 200px, 250px 250px, 60px 60px, 60px 60px, 120px 120px, 120px 120px;
+    background-position: center center, top right, bottom left, 0 0, 30px 30px, 0 0, 0 0;
+    opacity: 0.4;
+    animation: heroBackgroundFloat 30s ease-in-out infinite;
+}
+
+@keyframes heroBackgroundFloat {
+    0%, 100% {
+        background-position: center center, top right, bottom left, 0 0, 30px 30px, 0 0, 0 0;
+    }
+    50% {
+        background-position: center bottom, top left, bottom right, 30px 30px, 60px 60px, 60px 60px, 60px 60px;
+    }
 }
 
 .hero-content {
@@ -690,11 +805,45 @@ nav a:hover {
     transform: translateY(-2px);
 }
 
-/* Quick Access Section */
+/* Quick Access Section with Heritage Pattern */
 .quick-access {
     padding: 100px 0;
     background: var(--primary-bg);
     position: relative;
+    overflow: hidden;
+}
+
+.quick-access::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        /* Shaheed Minar inspired vertical lines */
+        linear-gradient(90deg, transparent 48%, rgba(0, 106, 78, 0.015) 50%, transparent 52%),
+        /* Liberation War memorial pattern */
+        radial-gradient(circle at 25% 25%, rgba(244, 42, 65, 0.02) 2px, transparent 3px),
+        radial-gradient(circle at 75% 75%, rgba(0, 106, 78, 0.02) 2px, transparent 3px),
+        /* Heritage star pattern */
+        conic-gradient(from 0deg at 50% 50%, 
+            transparent 0deg, 
+            rgba(0, 106, 78, 0.008) 72deg,
+            transparent 144deg,
+            rgba(244, 42, 65, 0.008) 216deg,
+            transparent 288deg,
+            rgba(0, 106, 78, 0.008) 360deg
+        );
+    background-size: 150px 150px, 100px 100px, 100px 100px, 300px 300px;
+    background-position: 0 0, 0 0, 50px 50px, center center;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.quick-access .container {
+    position: relative;
+    z-index: 2;
 }
 
 .quick-access h2 {
@@ -1327,10 +1476,37 @@ nav ul li a:hover {
     }
 }
 
-/* Museum Information Section */
+/* Museum Information Section with Liberation Heritage */
 .museum-info {
     padding: 60px 0;
     background: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.museum-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        /* Liberation War map-inspired pattern */
+        linear-gradient(45deg, rgba(0, 106, 78, 0.02) 50%, transparent 50%),
+        linear-gradient(-45deg, rgba(244, 42, 65, 0.015) 50%, transparent 50%),
+        /* Historical document texture */
+        radial-gradient(circle at 30% 70%, rgba(0, 106, 78, 0.03) 1px, transparent 2px),
+        radial-gradient(circle at 70% 30%, rgba(244, 42, 65, 0.025) 1px, transparent 2px);
+    background-size: 80px 80px, 80px 80px, 60px 60px, 60px 60px;
+    background-position: 0 0, 40px 40px, 0 0, 30px 30px;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.museum-info .container {
+    position: relative;
+    z-index: 2;
 }
 
 .info-grid {
@@ -1346,8 +1522,15 @@ nav ul li a:hover {
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.08);
+    border: 1px solid rgba(76, 175, 80, 0.15);
+    transition: var(--transition-smooth);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(76, 175, 80, 0.15);
+    border-color: rgba(229, 115, 115, 0.2);
 }
 
 .info-header {
@@ -1961,29 +2144,30 @@ nav ul li a:hover {
 .timeline-marker {
     width: 20px;
     height: 20px;
-    background: var(--liberation-green);
+    background: var(--medium-green);
     border-radius: 50%;
     position: relative;
     z-index: 2;
     margin-right: 30px;
     margin-top: 5px;
-    box-shadow: 0 0 0 4px var(--card-bg), 0 0 0 8px var(--liberation-green);
+    box-shadow: 0 0 0 4px var(--card-bg), 0 0 0 8px var(--soft-green);
     flex-shrink: 0;
 }
 
 .timeline-content {
-    background: rgba(0, 106, 78, 0.05);
+    background: linear-gradient(135deg, var(--light-green), var(--light-red));
     padding: 25px;
     border-radius: 15px;
-    border-left: 4px solid var(--liberation-green);
+    border-left: 4px solid var(--medium-green);
     flex: 1;
     transition: all 0.3s ease;
     overflow: hidden;
 }
 
 .timeline-content:hover {
-    background: rgba(0, 106, 78, 0.1);
+    background: linear-gradient(135deg, var(--soft-green), var(--soft-red));
     transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.15);
 }
 
 .timeline-image {

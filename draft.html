@@ -376,27 +376,28 @@
       
       // Sample artifacts with realistic data and local images
       const artifacts = [
-        { category: 'Photograph', title: 'Mukti Bahini Training Camp', titleBn: 'মুক্তিবাহিনীর প্রশিক্ষণ শিবির', district: 'Dhaka', year: '1971', media: 'images/muktibahini.jpg' },
-        { category: 'Document', title: 'Proclamation of Independence', titleBn: 'স্বাধীনতার ঘোষণাপত্র', district: 'Chittagong', year: '1971', media: 'images/Procl.jpg' },
-        { category: 'Artifact', title: 'Freedom Fighter\'s Rifle', titleBn: 'মুক্তিযোদ্ধার রাইফেল', district: 'Jessore', year: '1971', media: 'images/rifel.jpg' },
-        { category: 'Photograph', title: 'Liberation War Victory Parade', titleBn: 'মুক্তিযুদ্ধ বিজয় কুচকাওয়াজ', district: 'Dhaka', year: '1971', media: 'images/parade.jpg' },
-        { category: 'Map', title: 'Battle Strategy Map - Jessore', titleBn: 'যুদ্ধের কৌশল মানচিত্র - যশোর', district: 'Jessore', year: '1971', media: 'images/jossore.jpg' },
-        { category: 'Document', title: 'Martyred Intellectuals List', titleBn: 'নিহত বুদ্ধিজীবীদের তালিকা', district: 'Dhaka', year: '1971', media: 'images/list.jpg' },
-        { category: 'Poster', title: 'Joy Bangla Propaganda Poster', titleBn: 'জয় বাংলা প্রচারণা পোস্টার', district: 'Chittagong', year: '1971', media: 'images/poster_1.jpg' },
-        { category: 'Artifact', title: 'Mukti Bahini Uniform', titleBn: 'মুক্তিবাহিনীর পোশাক', district: 'Sylhet', year: '1971', media: 'images/artifact_2.jpg' },
-        { category: 'Audio', title: 'Radio Broadcast - Swadhin Bangla Betar', titleBn: 'স্বাধীন বাংলা বেতার সম্প্রচার', district: 'Chittagong', year: '1971', media: '' },
-        { category: 'Photograph', title: 'Refugee Camp in India', titleBn: 'ভারতে শরণার্থী শিবির', district: 'Comilla', year: '1971', media: 'images/photograph_1.jpg' },
-        { category: 'Document', title: 'Geneva Convention Appeal', titleBn: 'জেনেভা কনভেনশন আবেদন', district: 'Dhaka', year: '1971', media: 'images/document_1.jpg' },
-        { category: 'Artifact', title: 'Swadhin Bangla Flag', titleBn: 'স্বাধীন বাংলার পতাকা', district: 'Mymensingh', year: '1971', media: 'Bangladeshi Flag.jpg' },
-        { category: 'Map', title: 'Sector Division Map', titleBn: 'সেক্টর বিভাগের মানচিত্র', district: 'Dhaka', year: '1971', media: 'images/map_1.jpg' },
-        { category: 'Photograph', title: 'Mass Grave Discovery', titleBn: 'গণকবর আবিষ্কার', district: 'Rajshahi', year: '1972', media: 'images/photograph_2.jpg' },
-        { category: 'Poster', title: 'Bir Sreshtho Memorial Poster', titleBn: 'বীরশ্রেষ্ঠ স্মৃতি পোস্টার', district: 'Rangpur', year: '1972', media: 'images/poster_1.jpg' },
-        { category: 'Document', title: 'War Crimes Documentation', titleBn: 'যুদ্ধাপরাধের দলিলপত্র', district: 'Khulna', year: '1971', media: 'images/document_2.jpg' },
-        { category: 'Artifact', title: 'Liberation Medal', titleBn: 'মুক্তিযুদ্ধের পদক', district: 'Barishal', year: '1973', media: 'images/artifact_1.jpg' },
-        { category: 'Audio', title: 'Bangabandhu\'s 7th March Speech', titleBn: 'বঙ্গবন্ধুর ৭ই মার্চের ভাষণ', district: 'Dhaka', year: '1971', media: '' },
-        { category: 'Photograph', title: 'Pakistani Surrender Ceremony', titleBn: 'পাকিস্তানি আত্মসমর্পণ অনুষ্ঠান', district: 'Dhaka', year: '1971', media: 'images/photograph_1.jpg' },
-        { category: 'Map', title: 'Liberation Route Map', titleBn: 'মুক্তিযুদ্ধের রুট মানচিত্র', district: 'Faridpur', year: '1971', media: 'images/map_1.jpg' }
-      ];
+  { category: 'Photograph', title: 'Mukti Bahini Training Camp', titleBn: 'মুক্তিবাহিনীর প্রশিক্ষণ শিবির', district: 'Dhaka', year: '1971', media: 'images/muktibahini.jpg' },
+  { category: 'Document', title: 'Proclamation of Independence', titleBn: 'স্বাধীনতার ঘোষণাপত্র', district: 'Chittagong', year: '1971', media: 'images/Procl.jpg' },
+  { category: 'Artifact', title: 'Freedom Fighter\'s Rifle', titleBn: 'মুক্তিযোদ্ধার রাইফেল', district: 'Jessore', year: '1971', media: 'images/rifel.jpg' },
+  { category: 'Photograph', title: 'Liberation War Victory Parade', titleBn: 'মুক্তিযুদ্ধ বিজয় কুচকাওয়াজ', district: 'Dhaka', year: '1971', media: 'images/parade.jpg' },
+  { category: 'Map', title: 'Battle Strategy Map - Jessore', titleBn: 'যুদ্ধের কৌশল মানচিত্র - যশোর', district: 'Jessore', year: '1971', media: 'https://tds-images.thedailystar.net/sites/default/files/styles/social_share/public/images/2024/09/25/7b111f55-d37d-45da-acf4-6daeb46b9d47.jpg' },
+  { category: 'Document', title: 'Martyred Intellectuals List', titleBn: 'নিহত বুদ্ধিজীবীদের তালিকা', district: 'Dhaka', year: '1971', media: 'images/list.jpg' },
+  { category: 'Poster', title: 'Joy Bangla Propaganda Poster', titleBn: 'জয় বাংলা প্রচারণা পোস্টার', district: 'Chittagong', year: '1971', media: 'https://png.pngtree.com/png-vector/20220325/ourmid/pngtree-joy-bangla-national-slogan-of-bangladesh-and-bongobondhu-clip-art-png-image_4479880.png' },
+  { category: 'Artifact', title: 'Mukti Bahini Uniform', titleBn: 'মুক্তিবাহিনীর পোশাক', district: 'Sylhet', year: '1971', media: 'https://media.gettyimages.com/id/1346514816/photo/members-of-the-mukti-bahini-undergo-training-ahead-of-the-bangladesh-liberation-war-at-their.jpg?s=612x612&w=gi&k=20&c=TBodRP4flmPwybun6e-IjTW3N-EiT6dOpuPv9b587V4=' },
+  { category: 'Audio', title: 'Radio Broadcast - Swadhin Bangla Betar', titleBn: 'স্বাধীন বাংলা বেতার সম্প্রচার', district: 'Chittagong', year: '1971', media: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj_4vITRjrEGX4muhRIcJgTHuuP5luLJJp7Q&s' },
+  { category: 'Photograph', title: 'Refugee Camp in India', titleBn: 'ভারতে শরণার্থী শিবির', district: 'Comilla', year: '1971', media: 'images/photograph_1.jpg' },
+  { category: 'Document', title: 'Geneva Convention Appeal', titleBn: 'জেনেভা কনভেনশন আবেদন', district: 'Dhaka', year: '1971', media: 'images/document_1.jpg' },
+  { category: 'Artifact', title: 'Swadhin Bangla Flag', titleBn: 'স্বাধীন বাংলার পতাকা', district: 'Mymensingh', year: '1971', media: 'Bangladeshi Flag.jpg' },
+  { category: 'Map', title: 'Sector Division Map', titleBn: 'সেক্টর বিভাগের মানচিত্র', district: 'Dhaka', year: '1971', media: 'images/map_1.jpg' },
+  { category: 'Photograph', title: 'Mass Grave Discovery', titleBn: 'গণকবর আবিষ্কার', district: 'Rajshahi', year: '1972', media: 'images/photograph_2.jpg' },
+  { category: 'Poster', title: 'Bir Sreshtho Memorial Poster', titleBn: 'বীরশ্রেষ্ঠ স্মৃতি পোস্টার', district: 'Rangpur', year: '1972', media: 'images/poster_1.jpg' },
+  { category: 'Document', title: 'War Crimes Documentation', titleBn: 'যুদ্ধাপরাধের দলিলপত্র', district: 'Khulna', year: '1971', media: 'images/document_2.jpg' },
+  { category: 'Artifact', title: 'Liberation Medal', titleBn: 'মুক্তিযুদ্ধের পদক', district: 'Barishal', year: '1973', media: 'images/artifact_1.jpg' },
+  { category: 'Audio', title: 'Bangabandhu\'s 7th March Speech', titleBn: 'বঙ্গবন্ধুর ৭ই মার্চের ভাষণ', district: 'Dhaka', year: '1971', media: '' },
+  { category: 'Photograph', title: 'Pakistani Surrender Ceremony', titleBn: 'পাকিস্তানি আত্মসমর্পণ অনুষ্ঠান', district: 'Dhaka', year: '1971', media: 'images/photograph_1.jpg' },
+  { category: 'Map', title: 'Liberation Route Map', titleBn: 'মুক্তিযুদ্ধের রুট মানচিত্র', district: 'Faridpur', year: '1971', media: 'images/map_1.jpg' }
+];
+
       
       const sample = [];
       for(let i=0; i<20; i++){

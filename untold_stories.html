@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untold Stories - Freedom Fighters</title>
+    <link rel="stylesheet" href="untold_stories.css">
+</head>
+<body>
+    <header>
+    <div class="header-left">
+        <img src="images/large-logo.png" alt="Museum Logo" class="logo-img">
+        <h1>Untold Stories</h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Virtual Tour</a></li>
+            <li><a href="#">Map Of Memory</a></li>
+            <li><a href="#">Untold Stories</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    </header>
+
+
+    <main>
+        <div class="stories-container">
+            <div class="story-card" onclick="openStory(0)">
+                <img src="https://via.placeholder.com/300x200" alt="Story 1">
+                <h3>Freedom Fighter A</h3>
+                <p>During the Liberation War, Freedom Fighter A risked everything to protect innocent lives...</p>
+            </div>
+            <div class="story-card" onclick="openStory(1)">
+                <img src="https://via.placeholder.com/300x200" alt="Story 2">
+                <h3>Freedom Fighter B</h3>
+                <p>Worked behind the scenes gathering crucial information about enemy movements...</p>
+            </div>
+            <div class="story-card" onclick="openStory(2)">
+                <img src="https://via.placeholder.com/300x200" alt="Story 3">
+                <h3>Freedom Fighter C</h3>
+                <p>Started as a young student who joined the liberation movement and inspired many...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeStory()">&times;</span>
+            <h2 id="storyTitle"></h2>
+            <p id="storyText"></p>
+        </div>
+    </div>
+
+    <script src="untold_stories.js"></script>
+</body>
+</html>
